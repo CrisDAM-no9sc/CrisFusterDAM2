@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox Deslizante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            display: flex; /* Utiliza flexbox para alinear elementos */
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            height: 100vh; /* Altura de la ventana del navegador */
+            background-color: #f0f0f0; /* Color de fondo */
+        }
+
+        .toggle {
+            position: relative; /* Posiciona el contenedor relativo a su posición normal */
+            display: inline-block; /* Permite que se comporte como un botón */
+            width: 60px; /* Ancho del checkbox */
+            height: 34px; /* Alto del checkbox */
+        }
+
+        .toggle input {
+            opacity: 0; /* Hace invisible el checkbox original */
+            width: 0; /* Ancho 0 para ocultarlo */
+            height: 0; /* Alto 0 para ocultarlo */
+        }
+
+        .slider {
+            position: absolute; /* Posiciona el slider dentro del contenedor */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el slider */
+            top: 0; /* Alinea el slider en la parte superior */
+            left: 0; /* Alinea el slider a la izquierda */
+            right: 0; /* Extiende el slider hasta la derecha */
+            bottom: 0; /* Extiende el slider hasta la parte inferior */
+            background-color: orange; /* Color del slider */
+            transition: .4s; /* Suaviza la transición al cambiar */
+            border-radius: 34px; /* Bordes redondeados */
+            box-shadow: 0px 0px 5px black inset;
+
+        }
+
+        .slider:before {
+            position: absolute; /* Posiciona el "botón" dentro del slider */
+            content: ""; /* Necesario para crear un pseudoelemento */
+            height: 26px; /* Alto del botón deslizante */
+            width: 26px; /* Ancho del botón deslizante */
+            left: 4px; /* Posición inicial del botón a la izquierda */
+            bottom: 4px; /* Posición del botón en la parte inferior */
+            background-color: white; /* Color del botón deslizante */
+            border-radius: 50%; /* Hace que el botón sea redondo */
+            transition: .4s; /* Suaviza la transición al moverse */
+        }
+
+        input:checked + .slider {
+            background-color: #ff9800; /* Cambia el color del slider cuando está activado */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px); /* Mueve el botón a la derecha cuando está activado */
+        }
+    </style>
+</head>
+<body>
+
+    <label class="toggle"> <!-- Contenedor del checkbox -->
+        <input type="checkbox"> <!-- Checkbox oculto -->
+        <span class="slider"></span> <!-- Slider visible que actúa como el botón deslizante -->
+    </label>
+
+
+</body>
+</html>

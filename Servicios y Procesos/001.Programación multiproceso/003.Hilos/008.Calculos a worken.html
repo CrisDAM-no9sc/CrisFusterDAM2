@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <body>
+    <!-- Se crea un elemento de canvas donde se dibujará la imagen -->
+    <canvas id="lienzo1"></canvas>
+    
+    <script>
+        // Capturamos el tiempo de inicio en el que se comienza el procesamiento de la imagen
+        const tiempoinicio = new Date();  // Fecha y hora actuales
+        const epochinicio = tiempoinicio.getTime();  // Tiempo en milisegundos desde 1970 (Epoch)
+
+        // Seleccionamos el lienzo (canvas) que se encuentra en el DOM mediante su ID
+        const lienzo = document.querySelector("#lienzo1");
+        
+        // Establecemos el tamaño del canvas (lienzo), 6000 píxeles de ancho y 4000 píxeles de alto
+        lienzo.width = 6000;
+        lienzo.height = 4000;
+
+        // Creamos un contexto 2D sobre el lienzo, que nos permitirá dibujar y manipular la imagen
+        const contexto = lienzo.getContext("2d");
+
+        // Creamos un nuevo objeto de tipo Image para cargar una imagen
+        var imagen = new Image();
+
+        // Definimos la fuente de la imagen (su URL o ubicación), en este caso es "foto.JPG"
+        imagen.src = "foto.JPG";
+
+        // Definimos una función que se ejecutará cuando la imagen haya terminado de cargarse completamente
+        imagen.onload = function(){
+          // Dibujamos la imagen sobre el canvas, comenzando en la posición (0, 0) del lienzo
+          contexto.drawImage(imagen, 0, 0);
+
+          // Obtenemos los datos de imagen del área especificada del canvas (6000 píxeles de ancho y 1000 píxeles de alto)
+          // Esto nos devuelve un objeto de tipo ImageData que contiene los datos de los píxeles
+          var datos = contexto.getImageData(0, 0, 6000, 1000);
+
+          // Creamos un nuevo trabajador (Web Worker) para procesar los datos de la imagen en un hilo separado
+          var trabajador = new Worker("008.worker.js");
+
+          // Enviamos los datos de la imagen (datos.data, que es un array de los píxeles en formato RGBA) al worker
+          trabajador.postMessage(datos.data);
+          
+          //se ejecutará cuando el worker nos envíe de vuelta los datos procesados
+          //contiene los datos procesados por el Web Worker
+          trabajador.onmessage = function(misdatos){
+            // Recorremos los datos devueltos por el worker y los actualizamos en el array de datos de imagen original
+            for (let i = 0; i < datos.data.length; i++) {
+              datos.data[i] = misdatos.data[i];  
+            }
+
+            // Colocamos los datos procesados de nuevo en el canvas, sobrescribiendo la imagen original
+            contexto.putImageData(datos, 0, 0);
+
+            // Capturamos el tiempo final cuando el procesamiento haya terminado
+            const tiempofinal = new Date();
+            const epochfinal = tiempofinal.getTime();  // Tiempo en milisegundos desde 1970 (Epoch)
+
+            // Calculamos el tiempo total que tomó la operación (en milisegundos)
+            const resta = epochfinal - epochinicio;
+
+            // Mostramos en la consola cuánto tiempo tomó realizar la operación de procesamiento
+            console.log("Esta operación tarda en hacerse", resta, "milisegundos");
+          }
+        }
+    </script>
+  </body>
+</html>

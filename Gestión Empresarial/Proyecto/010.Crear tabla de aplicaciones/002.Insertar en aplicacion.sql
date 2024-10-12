@@ -1,0 +1,1 @@
+INSERT INTO `aplicaciones` (`Identificador`, `nombre`, `descripcion`, `icono`, `ruta`, `activa`) VALUES (NULL, 'crm', 'Vas a poder hacer un seguimiento de los clientes de la aplicación.', 'crm.png', 'crm', '1');

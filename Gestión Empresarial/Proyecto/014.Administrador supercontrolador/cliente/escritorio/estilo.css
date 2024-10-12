@@ -1,0 +1,41 @@
+html, body {
+  padding: 40px; /* Cambié el padding a 40px */
+  margin: 0;
+  font-family: Arial, sans-serif; /* Agregué una fuente */
+}
+
+main {
+  box-sizing: border-box;
+  padding: 30px; /* Cambié el padding a 30px */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Cambié el minmax a 200px */
+  grid-auto-rows: calc(200px * 9 / 16); /* Ajusté la altura de las filas */
+  gap: 15px; /* Aumenté el gap a 15px */
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease; /* Cambié la duración de la transición */
+}
+
+.aplicacion {
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Cambié el borde a uno sólido */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem; /* Disminuí el tamaño de fuente */
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5; /* Cambié la opacidad a 0.5 */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: rgb(0, 204, 204); /* Cambié el color de fondo */
+  position: relative;
+  cursor: pointer;
+  border-radius: 10px; /* Aumenté el radio de las esquinas */
+}
+
+/* Efecto hover para aumentar la opacidad y aplicar una sombra */
+.aplicacion:hover {
+  opacity: 0.8; /* Aumenté la opacidad al pasar el mouse */
+  transform: scale(1.05); /* Agregué un efecto de escala */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Agregué una sombra al cuadro */
+}

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+        }
+
+        button, select {
+          margin: 10px;
+          padding: 10px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+
+        canvas {
+          border: 2px solid #333;
+          margin-top: 20px;
+        }
+
+        button:hover {
+          background-color: #4CAF50;
+          color: white;
+        }
+    </style>
+  </head>
+  <body>
+    <button id="comenzar">Comenzar</button>
+    <select id="tamanio">
+      <option value="4">4</option>
+      <option value="8">8</option>
+      <option value="16">16</option>
+      <option value="32">32</option>
+      <option value="64">64</option>
+    </select>
+    <canvas id="lienzo1"></canvas>
+
+    <script>
+
+      const lienzo = document.querySelector("#lienzo1");
+      lienzo.width = 512; // Tamaño reducido para que sea más rápido
+      lienzo.height = 512;
+      const contexto = lienzo.getContext("2d");
+      
+      let imagen = new Image();
+      let x = 0, y = 0, bucket;
+
+      // Cargar la imagen
+      imagen.src = "mariposa.jpg"; // Reemplaza con una imagen local si es necesario
+      imagen.onload = function() {
+        contexto.drawImage(imagen, 0, 0, lienzo.width, lienzo.height);
+      };
+
+      // Función que se activa cuando el usuario presiona "Comenzar"
+      document.getElementById("comenzar").onclick = function() {
+        // Tamaño del bloque seleccionado
+        bucket = parseInt(document.getElementById("tamanio").value);
+        x = 0; y = 0;  // Reiniciar coordenadas
+        //Inicia el procesamiento de la imagen 
+        procesaImagen();
+      };
+      /* Función principal que divide la imagen y envía datos al Worker */
+      function procesaImagen() {
+        // Si ya recorrimos toda la imagen, detenemos el proceso
+        if (y >= lienzo.height) return; 
+
+        // Obtener los datos de imagen (los píxeles) de la región especificada
+        let datos = contexto.getImageData(x, y, bucket, bucket);
+        // Crear un nuevo Worker que procesará esta parte de la imagen
+        let worker = new Worker("014.worker.js");
+        // Enviar los datos del bloque de píxeles al Worker
+        worker.postMessage({ data: datos.data, width: bucket });
+
+        // Cuando el Worker termina de procesar, devuelve los datos procesados
+        worker.onmessage = function(event) {
+          let resultado = event.data;
+          //sustituimos los datos originales con los del worker
+          for (let i = 0; i < datos.data.length; i++) {
+            datos.data[i] = resultado[i];
+          }
+          //Actualizamos la parte procesada de la imagen del lienzo
+          contexto.putImageData(datos, x, y); 
+
+          // Avanzar al siguiente bloque
+          x += bucket;
+          if (x >= lienzo.width) {
+            //si lleguamos al finanl, volvemos al principio
+            x = 0;
+            //para bajar a la siguiente fila 
+            y += bucket;
+          }
+
+          // Procesar el siguiente bloque después de un pequeño retraso
+          setTimeout(procesaImagen, 30); // Un retraso para que se vea el proceso
+        };
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interfaz>
+  <boton>Pulsame</boton>
+  <texto>Aqui tenemos un texto</texto>
+  
+  <entrada></entrada>
+  
+  <boton>Pulsame</boton>
+  <boton>Tenemos un tercer boton </boton>
+  <texto>otro texto </texto>
+  <texto>Y aqui tenemos otro texto</texto>
+  <entrada></entrada>
+  <entrada></entrada>
+  <entrada></entrada>
+
+  
+  
+</interfaz>

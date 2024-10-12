@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <body>
+    <script>
+       // Obtenemos el objeto 'navigator' para acceder a información del navegador.
+      const navegador = navigator;    
+      // Mostramos información del navegador.    
+      console.log(navegador);             
+      const nucleos = navegador.hardwareConcurrency 
+      console.log("Tu ordenador tiene",nucleos,"núcleos")
+      // Creamos un array vacío para almacenar a los trabajadores (workers)
+      let trabajadores = [];  
+       // Definimos cuántos trabajadores (o núcleos virtuales) queremos usar.                       
+      let numerotrabajadores = 4; 
+      //hacemos un contadro para ver cuan tos trabajadoress han terminado su tarea                   
+      let semaforo = 0
+      // Creamos un ciclo para crear tantos trabajadores como queramos.
+      for(let w = 0;w<numerotrabajadores;w++){ 
+        // Creamos una instancia de Worker y asignamos cada worker a una posición del array.       
+        trabajadores[w] = new Worker("009.worker.js");   
+        // Enviamos un mensaje al Worker (aquí le mandamos el índice 'w', que representa su ID)
+        trabajadores[w].postMessage(w); 
+        // Definimos lo que sucede cuando el Worker devuelve un mensaje.                
+        trabajadores[w].onmessage = function(e){            
+          //console.log("El worker me ha devuelto un mensaje")  // Digo algo por consola
+          //console.log("Y el worker dice:",e.data)             // Soy capaz de comunicarme con el worker
+          // Incrementamos el contador 'semaforo' para saber cuántos Workers han terminado.
+          semaforo++;
+           // Si todos los trabajadores han respondido, imprimimos un mensaje.
+          if(semaforo == numerotrabajadores){
+            console.log("todos los nucleos han vuelto")
+          }else{
+            console.log("un nucleo ha acabado, pero no todos han acabado")
+          }
+        }
+      }
+      
+      
+      
+      
+    </script>
+  </body>
+</html>

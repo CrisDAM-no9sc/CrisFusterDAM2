@@ -1,0 +1,1 @@
+CREATE TABLE `crismon1`.`aplicaciones` (`Identificador` INT(10) NOT NULL AUTO_INCREMENT , `nombre` VARCHAR(100) NOT NULL , `descripcion` TEXT NOT NULL , `icono` VARCHAR(100) NOT NULL , `ruta` VARCHAR(100) NOT NULL , `activa` BOOLEAN NOT NULL , PRIMARY KEY (`Identificador`)) ENGINE = InnoDB;

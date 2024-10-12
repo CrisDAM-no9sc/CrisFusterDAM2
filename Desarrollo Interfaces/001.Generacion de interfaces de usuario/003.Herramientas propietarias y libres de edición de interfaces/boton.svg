@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="125.57401mm"
+   height="128.49149mm"
+   viewBox="0 0 125.57401 128.49149"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.72880595"
+     inkscape:cx="396.53902"
+     inkscape:cy="604.41328"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="1912"
+     inkscape:window-y="305"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient5"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#008080;stop-opacity:0.41729305;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#008080;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#008080;stop-opacity:0.41729305;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#008080;stop-opacity:0;"
+         offset="1"
+         id="stop4" />
+    </linearGradient>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1"
+       x="-0.035346594"
+       y="-0.034488669"
+       width="1.0706932"
+       height="1.0689773">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.727313"
+         id="feGaussianBlur1" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3"
+       id="linearGradient4"
+       x1="119.0334"
+       y1="105.61297"
+       x2="117.28291"
+       y2="165.71317"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5"
+       id="linearGradient6"
+       x1="109.69745"
+       y1="251.48723"
+       x2="86.941063"
+       y2="43.76228"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-51.286668,-85.712995)">
+    <ellipse
+       style="fill:#101010;fill-opacity:0.417293;stroke-width:0.225;filter:url(#filter1)"
+       id="path1"
+       cx="114.07367"
+       cy="149.95874"
+       rx="58.641453"
+       ry="60.100193" />
+    <circle
+       style="fill:#008080;fill-opacity:0.417293;stroke-width:0.296946"
+       id="path2"
+       cx="113.78193"
+       cy="149.95871"
+       r="56.599213" />
+    <ellipse
+       style="fill:url(#linearGradient4);fill-opacity:1;stroke-width:0.280917"
+       id="path3"
+       cx="114.36543"
+       cy="150.83397"
+       rx="51.931236"
+       ry="52.222984" />
+    <ellipse
+       style="fill:url(#linearGradient6);fill-opacity:1;stroke-width:0.323946"
+       id="path4"
+       cx="113.19843"
+       cy="151.70923"
+       rx="51.93124"
+       ry="51.347744" />
+    <text
+       xml:space="preserve"
+       style="font-size:36.7532px;fill:#ffffff;fill-opacity:1;stroke-width:2.60456"
+       x="133.8808"
+       y="113.33909"
+       id="text6"
+       transform="scale(0.66949846,1.4936554)"><tspan
+         sodipodi:role="line"
+         id="tspan6"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:2.60456"
+         x="133.8808"
+         y="113.33909">---&gt;</tspan></text>
+  </g>
+</svg>

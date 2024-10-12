@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        canvas{
+            border: 1px solid grey;
+        }
+    </style>
+    <body>
+        <input type="color" id="color">
+        <canvas></canvas>
+        <script>
+       
+            //declaramos la variable en falsa (para determinar si se esta presioanndo)
+            var pulsado = false;
+            //Se activara cuando apretemos el ratón
+            //mientras se presione dibujara
+            document.onmousedown = function(){
+                pulsado = true;
+            }
+            //si se deja de apretar el raton dejara de dibujar
+            document.onmouseup = function(){
+                pulsado = false;
+            }
+            const lienzo = document.querySelector("canvas")
+            const contexto = lienzo.getContext("2d")
+            lienzo.width = 800;
+            lienzo.height = 800;
+            ///se activa cuando el raton se mueve por encima del lienzo
+            lienzo.onmousemove = function(e){
+                if(pulsado){
+                    //se activa cuando estamos pulsando dibujando una linea de 2 x2 pixeles
+                    contexto.fillRect(e.offsetX,e.offsetY,2,2)
+                }
+                //aqui abrimo como una caja donde podemos ir cambiando de color
+                document.getElementById("color").onchange = function(){ 
+                    contexto.fillStyle = this.value                       
+                }
+            }
+        </script>
+    </body>
+</html>

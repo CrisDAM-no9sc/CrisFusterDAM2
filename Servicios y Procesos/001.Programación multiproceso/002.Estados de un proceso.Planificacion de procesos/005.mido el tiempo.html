@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <canvas id="lienzo1"></canvas>
+        <script>
+            const tiempoinicio = new Date();
+            const epochinicio = tiempoinicio.getTime();
+            const lienzo = document.querySelector("#lienzo1");                          
+            lienzo.width = 6000;
+            lienzo.height = 4000;
+            const contexto = lienzo.getContext("2d");                                   
+            var imagen = new Image();
+            imagen.src = "foto.jpg";                                                    
+            imagen.onload = function() {
+                contexto.drawImage(imagen, 0, 0);                                       
+                var datos = contexto.getImageData(0, 0, 6000, 4000);                    
+                
+                for (let i = 0; i < datos.data.length; i += 4) {                       
+                    let rojo = datos.data[i];                                           
+                    let verde = datos.data[i + 1];                                     
+                    let azul = datos.data[i + 2];                                       
+                    
+                    let gris = Math.round((rojo + verde + azul) / 3);                   
+                    
+                    datos.data[i] = gris;                                               
+                    datos.data[i + 1] = gris;                                           
+                    datos.data[i + 2] = gris;                                           
+                }
+                
+                contexto.putImageData(datos, 0, 0); 
+                 // Captura el momento final después de completar el procesamiento                                    
+                const tiempofinal = new Date();
+                 // Obtiene el tiempo en milisegundos al finalizar
+                const epochfinal = tiempofinal.getTime();
+                // Calcula el tiempo que ha tardado en procesar la imagen
+                const resta = epochfinal - epochinicio;
+                 // Muestra el tiempo en la consola
+                console.log("Esta operacion tarda en hacerse",resta,"milisegundos");
+            }
+        </script>
+    </body>
+</html>

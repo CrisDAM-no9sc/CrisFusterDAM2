@@ -1,0 +1,116 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #FFF4EA; /* Fondo crema suave */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #333; /* Texto gris oscuro para mejor legibilidad */
+}
+
+#formlogin {
+    width: 320px;
+    padding: 40px;
+    background: #FADFA1; /* Amarillo claro para el formulario */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+#logo {
+    width: 100%; /* La imagen ocupará todo el ancho del contenedor */
+    height: auto; /* La altura se ajustará automáticamente para mantener la proporción */
+    max-height: 150px; /* Limitar la altura máxima para que no sobresalga del contenedor */
+    margin-bottom: 30px; /* Espacio debajo del logo */
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #C96868; /* Borde en rojo suave */
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background: #FFFFFF; /* Fondo blanco para los campos de entrada */
+    color: #333; /* Texto en gris oscuro */
+}
+
+input:focus {
+    border-color: #EA7EAC; /* Borde rosa suave al enfocar */
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #C96868; /* Botón en rojo suave */
+    color: #FFFFFF; /* Texto en blanco para el botón */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #EA7EAC; /* Botón en rosa suave al hacer hover */
+    transform: translateY(-2px);
+}
+
+button:active {
+    background-color: #A55C5C; /* Botón más oscuro al hacer clic */
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Estilo para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semitransparente */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor del contenido del modal */
+.modal-contenido {
+    background-color: #FADFA1; /* Amarillo claro */
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #C96868; /* Borde en rojo suave */
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    color: #333; /* Texto gris oscuro */
+}
+
+/* Botón para cerrar el modal */
+.cerrar {
+    color: #C96868; /* Color del texto en rojo suave */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+    color: #EA7EAC; /* Rojo suave para resaltar el botón de cerrar */
+}

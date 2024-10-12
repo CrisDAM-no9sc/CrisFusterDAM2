@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <body>
+    <style>
+      canvas{border:1px solid grey;} 
+    </style>
+    <input type="color" id="color">
+    <select id="radio">
+        <!--aqui abrimos las opciones para seleccionar el pincel -->
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10>10</option>
+    </select>
+    <canvas></canvas>
+    <script>
+        //declaramos la variable en falsa (para determinar si se esta presioanndo)
+        var pulsado = false;
+        //Se activara cuando apretemos el ratón
+        //mientras se presione dibujara
+        document.onmousedown = function(){
+            pulsado = true;
+        }
+        //si se deja de apretar el raton dejara de dibujar
+        document.onmouseup = function(){
+            pulsado = false;
+        }
+        const lienzo = document.querySelector("canvas")
+        const contexto = lienzo.getContext("2d")
+        lienzo.width = 800;
+        lienzo.height = 800;
+        ///se activa cuando el raton se mueve por encima del lienzo
+        lienzo.onmousemove = function(e){
+            if(pulsado){
+                //se activa cuando estamos pulsando dibujando una linea de 2 x2 pixeles
+                contexto.fillRect(e.offsetX,e.offsetY,2,2)
+            }
+            document.getElementById("color").onchange = function(){ 
+                contexto.fillStyle = this.value                       
+            }
+        }
+    </script>
+  </body>
+</html>

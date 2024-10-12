@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* Contenedor de la barra de progreso */
+        .progress-container {
+            width: 100%;          /* Ancho completo */
+            background-color: #e0e0e0;  /* Color de fondo (gris claro) */
+            border-radius: 25px;  /* Bordes redondeados */
+            padding: 3px;         /* Espacio alrededor de la barra */
+            margin: 20px 0;       /* Margen arriba y abajo */
+        }
+
+        /* Barra de progreso que se llenará */
+        .progress-bar {
+            width: 0%;            /* Comienza vacía */
+            height: 30px;         /* Altura de la barra */
+            background-color: #76c7c0; /* Color de la barra (verde azulado) */
+            border-radius: 25px;  /* Bordes redondeados */
+            text-align: center;   /* Centra el texto dentro de la barra */
+            color: white;         /* Color del texto */
+            line-height: 30px;    /* Alinea el texto verticalmente */
+            transition: width 0.4s ease; /* Transición suave para el ancho */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Contenedor de la barra de progreso -->
+    <div class="progress-container">
+        <!-- Barra de progreso interna que se llenará -->
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Botón para simular la actualización de la barra de progreso -->
+    <button id="startButton">Iniciar Progreso</button>
+
+    <script>
+        document.getElementById('startButton').addEventListener('click', function() {
+        let progressBar = document.getElementById('progressBar');
+        let width = 0;
+
+        // Simular la carga de la barra de progreso
+        let interval = setInterval(function() {
+            if (width >= 100) {
+                clearInterval(interval);  // Detener cuando llegue al 100%
+            } else {
+                width++;  // Incrementar el ancho
+                progressBar.style.width = width + '%';  // Actualizar el estilo de la barra
+                progressBar.innerHTML = width + '%';    // Mostrar el porcentaje dentro de la barra
+            }
+        }, 50);  // Ajusta la velocidad del progreso (más bajo es más rápido)
+    });
+
+    </script>
+</body>
+</html>

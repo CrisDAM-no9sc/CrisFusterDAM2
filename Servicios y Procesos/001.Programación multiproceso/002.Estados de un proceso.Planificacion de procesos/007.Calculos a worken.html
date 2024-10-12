@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas id="lienzo1"></canvas> 
+    <script>
+        const tiempoinicio = new Date(); 
+        const epochinicio = tiempoinicio.getTime();  
+
+        const lienzo = document.querySelector("#lienzo1");  
+        lienzo.width = 6000;  
+        lienzo.height = 4000; 
+
+        const contexto = lienzo.getContext("2d");  
+
+        var imagen = new Image();  
+        imagen.src = "foto.jpg"; 
+
+        imagen.onload = function(){ 
+          contexto.drawImage(imagen, 0, 0); 
+          
+          var datos = contexto.getImageData(0, 0, 6000, 4000);  
+          //se crea un nuevo Worker que ejecutará el código en "007.worker.js"
+          var trabajador = new Worker("007.worker.js");
+          // Se envían los datos de los píxeles al worker para su procesamiento
+          trabajador.postMessage(datos.data);
+          // Se define la función que se ejecutará cuando el worker envíe de vuelta un mensaje
+          trabajador.onmessage = function(misdatos){
+             // Se recorre el array de datos y se actualizan los datos del canvas con los procesados por el worker
+            for(let i =0; i<datos.data.length; i++){
+                datos.data[i] = misdatos.data[i];
+            }
+            // Se vuelve a colocar la imagen procesada en el canvas, sobrescribiendo la imagen original
+            contexto.putImageData(datos, 0, 0);  
+            // Se captura la fecha y hora actuales al final del proceso
+            const tiempofinal = new Date();  
+            const epochfinal = tiempofinal.getTime();  
+            const resta = epochfinal - epochinicio;  
+            console.log("Esta operación tarda en hacerse", resta, "milisegundos");
+          }
+  
+        }
+    </script>
+  </body>
+</html>

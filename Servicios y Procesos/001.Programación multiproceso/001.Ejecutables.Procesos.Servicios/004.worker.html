@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            // Accedemos al objeto 'navigator'.
+            const navegador = navigator;
+            // Mostramos la información del navegador.
+            console.log(navegador); //sacamos por cnsola 
+            // Obtenemos el número de núcleos de la CPU.
+            const nucleos = navegador.hardwareConcurrency;
+            console.log("tu ordenador tiene",nucleos,"nucleos");
+            // Creamos un nuevo Web Worker que ejecutará el script 004.worker.js.
+            let trabajador = new Worker("004.worker.js");
+            // Enviamos un mensaje al Worker. 
+            trabajador.postMessage("hola");
+            // Definimos lo que ocurre cuando el Worker responde con un mensaje.
+            trabajador.onmessage = function(e) {
+                console.log("El worker me ha devuelto un mensaje");
+                // Mostramos el mensaje devuelto por el Worker.
+                console.log("Y el worker dice:", e.data);
+            }
+        </script>
+    </body>
+</html>

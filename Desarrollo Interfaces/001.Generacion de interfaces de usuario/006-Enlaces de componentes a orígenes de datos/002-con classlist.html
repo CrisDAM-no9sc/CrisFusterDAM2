@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <!-- Barra deslizante (slider) con un rango de valores entre 0 y 10 -->
+    <input id="rangeInput" type="range" min="0" max="10" value="0">
+    
+    <style>
+      /*********** Estilos básicos y reinicio de estilos predeterminados ***********/
+      /* Eliminamos el estilo predeterminado del slider y lo hacemos transparente */
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        cursor: pointer; /* Cambia el cursor a una mano cuando está sobre el slider */
+        outline: none; /* Elimina el borde que aparece cuando el elemento está enfocado */
+      }
+
+      /* Elimina el foco predeterminado del slider cuando está activo */
+      input[type="range"]:focus {
+        outline: none;
+      }
+
+      /******** Estilos para Chrome, Safari, Opera y Edge Chromium ********/
+      /* Estilo del track (la pista) del slider */
+      input[type="range"]::-webkit-slider-runnable-track {
+        background-color: #add8e6; /* Color de fondo de la pista */
+        border-radius: 5rem; /* Bordes redondeados en la pista */
+        height: 1rem; /* Altura de la pista */
+        outline: none; /* Elimina cualquier borde externo */
+      }
+
+      /* Estilo del thumb (la "manija" que se mueve) del slider */
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Elimina el estilo predeterminado del thumb */
+        appearance: none;
+        margin-top: 0px; /* Centra el thumb verticalmente en la pista */
+        background-color: #808080; /* Color del thumb */
+        border-radius: 1rem; /* Bordes redondeados en el thumb */
+        height: 1rem; /* Altura del thumb */
+        width: 50px; /* Ancho inicial del thumb */
+        transition: width 0.3s ease; /* Transición suave para cambiar el tamaño del thumb */
+      }
+
+      /* Estilo del thumb cuando el slider está enfocado */
+      input[type="range"]:focus::-webkit-slider-thumb {
+        outline: 3px solid #808080; /* Borde gris alrededor del thumb */
+        outline-offset: 0.125rem; /* Distancia del borde del thumb */
+      }
+
+      /* Clase para aumentar el tamaño del thumb */
+      .large-thumb::-webkit-slider-thumb {
+        width: 100px; /* Ancho del thumb (boton que se arrastra) más grande */
+      }
+
+    </style>
+
+    <script>
+      const rangeInput = document.getElementById('rangeInput');
+      
+      // Configura el ancho del slider (la barra completa) al 50% del contenedor
+      rangeInput.style.width = "50%"; 
+      
+    </script>
+  </body>
+</html>

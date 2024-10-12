@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas id="lienzo1"></canvas>
+    <script>
+        const tiempoinicio = new Date()
+        const epochinicio = tiempoinicio.getTime()
+        const lienzo = document.querySelector("#lienzo1")       
+        lienzo.width = 6000                                     
+        lienzo.height = 4000                                    
+        const contexto = lienzo.getContext("2d")                
+        var imagen = new Image()                                
+        imagen.src = "foto.JPG";                                
+        imagen.onload = function(){                             
+          contexto.drawImage(imagen,0,0)                        
+          
+          var datos;
+          //////////////////////////////////   VAMOS A DIVIDIR LA IMAGEN EN 4 PARTES /////////////////////////////////////
+          ////////////////  PARTE 1 ///////////////////////
+
+          datos1 = contexto.getImageData(0,0,6000,1000)        
+          var trabajador = new Worker("009.worker.js");         
+          trabajador.postMessage(datos1.data)                   
+          
+          trabajador.onmessage = function(misdatos){            
+            for(let i = 0;i<datos1.data.length;i++){              
+              datos1.data[i] = misdatos.data[i]                 
+            }
+            contexto.putImageData(datos1,0,0)                            
+           }
+          //////////////////// PARTE 2  ////////////////////
+          
+          datos2 = contexto.getImageData(0,1000,6000,2000)      
+          var trabajador2 = new Worker("009.worker.js");
+          trabajador2.postMessage(datos2.data)
+          trabajador2.onmessage = function(misdatos){
+            for(let i = 0;i<datos2.data.length;i++){
+              datos2.data[i] = misdatos.data[i]
+            }
+            contexto.putImageData(datos2,0,1000)                      
+          }
+          /////////////////   PARTE 3  ////////////////////
+          // X desde el borde izquierdo + Y parte superior
+          // es el valor del ancho + el alto del lienzo
+          datos3 = contexto.getImageData(0,2000,6000,3000)      
+          var trabajador3 = new Worker("009.worker.js");
+          trabajador3.postMessage(datos3.data)
+          trabajador3.onmessage = function(misdatos){
+            for(let i = 0;i<datos3.data.length;i++){
+              datos3.data[i] = misdatos.data[i]
+            }
+            contexto.putImageData(datos3,0,2000)                      
+          }
+          ////////////////  PARTE 4  //////////////////////
+
+          datos4 = contexto.getImageData(0,3000,6000,4000)     
+          var trabajador4 = new Worker("009.worker.js");
+          trabajador4.postMessage(datos3.data)
+          trabajador4.onmessage = function(misdatos){
+            for(let i = 0;i<datos4.data.length;i++){
+              datos4.data[i] = misdatos.data[i]
+            }
+            contexto.putImageData(datos4,0,2000)                      
+          }
+          //////////////////////////////////   VAMOS A DIVIDIR LA IMAGEN EN 4 PARTES /////////////////////////////////////
+            
+            const tiempofinal = new Date()
+            const epochfinal = tiempofinal.getTime()
+            const resta = epochfinal - epochinicio;
+            console.log("Esta operacion tarda en hacerse",resta,"milisegundos")
+         
+          
+        }
+    </script>
+  </body>
+</html>

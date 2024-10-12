@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <canvas id="lienzo1"></canvas>
+        <script>
+            const lienzo = document.querySelector("#lienzo1");                        
+            lienzo.width = 6000;
+            lienzo.height = 4000;
+            const contexto = lienzo.getContext("2d"); 
+             // Creamos una nueva instancia del objeto Image                                  
+            var imagen = new Image();
+            imagen.src = "foto.jpg"; 
+            //definimos la funcion una vez sse haya cargado la imagen                                                   
+            imagen.onload = function() {
+                // Pintamos la imagen en el lienzo en la posición (0,0)
+                contexto.drawImage(imagen, 0, 0);  
+                //leemos los datos en memoria asegurandonos de que la altura sea de 4000                                 
+                var datos = contexto.getImageData(0, 0, 6000, 4000);                   
+                // Recorremos cada píxel del área de imagen
+                // Se incrementa de 4 en 4 porque cada píxel tiene 4 componentes (RGBA)
+                for (let i = 0; i < datos.data.length; i += 4) {                       
+                    let rojo = datos.data[i];                   //rojo                                      
+                    let verde = datos.data[i + 1];              //verde                         
+                    let azul = datos.data[i + 2];               //azul                       
+                    //sacamos el promedio para convertlo en gris
+                    let gris = Math.round((rojo + verde + azul) / 3);                   
+                    //actualizamos los colorres de los pixeles para que sean grises
+                    datos.data[i] = gris;                                               
+                    datos.data[i + 1] = gris;                                           
+                    datos.data[i + 2] = gris;                                           
+                }
+                //pegamos en el canvas los datos procesados en escala de grises 
+                contexto.putImageData(datos, 0, 0);                                     
+            }
+        </script>
+    </body>
+</html>

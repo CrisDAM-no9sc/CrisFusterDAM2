@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            button {
+                width: 100px; /* anchura botón */
+                height: 25px; /* altura del botón */
+                border: none; /* quitamos el borde */
+                border-radius: 20px; /* borde redondeado */
+                background: linear-gradient(0deg, rgba(34,193,195,1) 0%, 
+                rgba(253,187,45,1) 100%); /* colores degradados */
+                position: relative; /* relativa para brillo */
+                box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.3); /* sombra inicial */
+                color: white; /* texto blanco */
+                text-shadow: 0px 2px 4px black; /* sombra del texto */
+                transition: all 0.3s ease; /* transición rápida para suavizar */
+            }
+    
+            button:hover {
+                background: linear-gradient(0deg, rgba(34,67,195,0.74) 0%, 
+                rgba(210,253,45,0.76) 100%);
+            }
+    
+            button:active {
+            box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
+            transform: translateY(2px); /* Imita la presión del botón */
+        }
+    
+            #brillo {
+                width: 96px; /* brillo es un poco menos ancho que el botón */
+                height: 21px; /* y menos alto también */
+                top: 2px;
+                left: 2px;
+                border-radius: 20px; /* bordes redondeados */
+                position: absolute; /* posición absoluta */
+                background-image: linear-gradient(
+                    rgba(255, 255, 255, 0.8),
+                    rgba(255, 255, 255, 0.5),
+                    rgba(255, 255, 255, 0)
+                ); /* degradado blanco */
+                pointer-events: none; /* no intercepta eventos de clic */
+            }
+        </style>
+    </head>
+
+    <body>
+        <button>
+            <div id="brillo"></div>
+            Pulsame
+        </button>
+        <script>
+            document.querySelector("button").onclick = function(){
+                alert("Has pulsado el boton");
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            const navegador = navigator;//instanciamos el objeto navigator 
+            console.log(navegador); //sacamos por cnsola 
+            const nucleos = navegador.hardwareConcurrency;//sacamos con esto el numero de nucleos de nuestro ordenador 
+            console.log("tu ordenador tiene",nucleos,"nucleos");
+            let trabajadores = [];
+            let numerodetrabajadores =3;
+            for (let w = 0; w<numerodetrabajadores;w++){
+                trabajadores[w] = new Worker("005.worker.js");//creamos una instancia de worker 
+                trabajadores[w].postMessage("hola");//mandamos un menaje
+                trabajadores[w].onmessage = function(e) {
+                    console.log("El worker me ha devuelto un mensaje");
+                    console.log("Y el worker dice:", e.data);
+                }
+            }
+            
+        </script>
+    </body>
+</html>

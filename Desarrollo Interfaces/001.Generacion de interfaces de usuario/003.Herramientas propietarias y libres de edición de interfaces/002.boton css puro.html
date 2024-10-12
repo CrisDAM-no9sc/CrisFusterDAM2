@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            button{
+                width:100px;/*anchura boton*/
+                height: 25px;/*altura del boton*/
+                border:none;/*quitamos el borde*/
+                border-radius: 20px;/*le hacemos un radio redondeado (un borde)*/
+                background: 
+                linear-gradient(0deg, rgba(34,193,195,1) 0%, 
+                rgba(253,187,45,1) 100%); /*le applicamos los colores gradiantes*/
+                position: relative;/*es relativa para poder ponerle en el brillo dentro */
+                box-shadow:0px 5px 4px rgba(0,0,0,0.3) ;/*aqui vamos a ponerle el color de la sombra*/
+                color: white;/*el texto va a ser blanco */
+                text-shadow: 0px 2px 4px black;/*le aplicamos una pequeña sombra a las letras del boton*/
+            }
+            #brillo{
+                width: 96px;/*el brillo es un poco menos ancho que el boton*/
+                height: 21px;/*y menos alto tambien para que este dentro dl boton*/
+                top: 2px;/**/
+                left: 2px;/**/
+                border-radius: 20px;/*para que los bordes esten reondeados*/
+                position: absolute;/*la posicion la declaramos absoluta para que mande mas que la relativa*/
+                background-image: 
+                linear-gradient(rgb(255,255,255,0.8),
+                rgb(255,255,255,0.5),
+                rgb(255,255,255,0.0));/*para hacerle el gradiante blanco*/
+            }
+        </style>
+    </head>
+
+    <body>
+        <button>
+            <div id="brillo"></div>
+            Pulsame
+        </button>
+        <script>
+            document.querySelector("button").onclick = function(){
+                alert("Has pulsado el boton");
+            }
+        </script>
+    </body>
+</html>

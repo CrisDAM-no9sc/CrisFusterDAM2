@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas { border: 1px solid grey; }
+    </style>
+  </head>
+  <body>
+    <input type="color" id="color">
+    <select id="radio">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <canvas></canvas>
+    <script>
+      var radio = 1; // Variable para el tamaño del pincel (radio)
+      var pulsado = false; // Variable para determinar si se está presionando el ratón
+      
+      document.onmousedown = function() {
+        pulsado = true;
+      }
+      
+      document.onmouseup = function() {
+        pulsado = false;
+      }
+
+      const lienzo = document.querySelector("canvas");
+      const contexto = lienzo.getContext("2d");
+      lienzo.width = 800;
+      lienzo.height = 800;
+
+      lienzo.onmousemove = function(e) {
+        if (pulsado) {
+          // Dibuja un círculo en lugar de un rectángulo
+          contexto.beginPath(); // Comienza un nuevo camino
+          contexto.arc(e.offsetX, e.offsetY, radio, 0, Math.PI * 2); // Dibuja un círculo
+          contexto.fill(); // Rellena el círculo
+        }
+      }
+
+      document.getElementById("color").onchange = function() { 
+        contexto.fillStyle = this.value; // Cambia el color de relleno
+      }
+
+      document.getElementById("radio").onchange = function() {
+        radio = parseInt(this.value); // Actualiza el tamaño del pincel con el valor seleccionado
+      }
+    </script>
+  </body>
+</html>

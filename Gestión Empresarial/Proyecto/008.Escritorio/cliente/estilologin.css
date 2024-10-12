@@ -1,0 +1,64 @@
+/* Estilo General del Cuerpo */
+body { 
+  font-family: Arial, sans-serif; /* Fuente más legible */
+  background-color: #DCDCDC; /* Color de fondo más claro y consistente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura completa de la ventana para centrar verticalmente */
+  margin: 0; /* Elimina márgenes predeterminados */
+}
+
+/* Contenedor del Formulario de Login */
+#formlogin {
+  width: 320px; /* Ancho ligeramente mayor para acomodar padding */
+  background-color: #FFFFFF; /* Fondo blanco para el formulario */
+  padding: 30px;
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+  text-align: center; /* Centra el contenido horizontalmente */
+  position: relative; /* Para posicionar el mensaje de error si es necesario */
+}
+
+/* Logo */
+#logo {
+  width: 60%; /* Ajusta el tamaño según sea necesario */
+  margin-bottom: 20px; /* Espacio debajo del logo */
+}
+
+/* Campos de Entrada y Botón */
+input, button {
+  width: 100%;
+  padding: 12px 0; /* Más padding para mejor usabilidad */
+  margin: 10px 0; /* Espacio arriba y abajo */
+  border: 1px solid #ccc; /* Borde sutil */
+  border-radius: 5px; /* Esquinas redondeadas */
+  box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+  font-size: 16px; /* Tamaño de fuente más grande para legibilidad */
+}
+
+/* Estilo del Botón */
+button {
+  background-color: #28a745; /* Verde para el botón */
+  color: white; /* Texto blanco */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s ease; /* Transición suave para el hover */
+}
+
+button:hover {
+  background-color: #218838; /* Color al pasar el cursor */
+}
+
+
+/* Responsividad para Dispositivos Móviles */
+@media (max-width: 400px) {
+  #formlogin {
+      width: 90%; /* Ajusta el ancho en pantallas pequeñas */
+      padding: 20px;
+  }
+
+  input, button {
+      font-size: 14px; /* Ajusta el tamaño de fuente */
+  }
+}

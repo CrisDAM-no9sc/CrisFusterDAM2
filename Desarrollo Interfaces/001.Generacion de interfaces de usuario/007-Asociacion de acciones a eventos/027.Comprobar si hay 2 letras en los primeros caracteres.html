@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <body>
+    <input class="iban">
+    <script>
+        //esta funcion lo que hace es verificar si hay letras (mayusculas o minusculas)
+      function isLetter(char){
+        return /^[a-zA-Z]$/.test(char);
+      }
+      const entrada = document.querySelector("input")
+      // Evento que se ejecuta cuando el usuario cambia el valor en el input
+      entrada.onchange = function(e){
+        let contenido = this.value;
+        for(let i =0; i<contenido.length;i++){
+            if (
+                //verificamos los espacios en esas posiciones
+                contenido[4]==" " 
+                && contenido[9] ==" " 
+                && contenido[14] == " " 
+                && contenido[19] ==" "
+                //verifica si los primeros caracters son letras 
+                && isLetter (contenido[0])
+                && isLetter (contenido[1])
+            ){
+                this.style.background = "green";
+            }else{
+                this.style.background = "red";
+            }
+        }
+      }
+    </script>
+  </body>
+</html>

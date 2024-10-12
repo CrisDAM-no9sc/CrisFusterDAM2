@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <label>Introduce tu nombre:</label>
+        <input type="text" value="hola">
+        <select>
+            <option>Asturias</option>
+            <option>Valencia</option>
+            <option>Sevilla</option>
+        </select>
+        <textarea></textarea>
+        <button>Pulsame</button>
+        <fieldset>
+            <legend>Personalia:</legend>
+            <label for="fname">First name:</label><br>
+            <input type="text" id="fname" name="fname" value="John"><br>
+            <label for="lname">Last name:</label><br>
+            <input type="text" id="lname" name="lname" value="Doe"><br><br>
+            <input type="submit" value="Submit">
+          </fieldset>
+          <!-- Campo de entrada que permite seleccionar un navegador de la lista predefinida -->
+          <input list="browsers">
+          <!-- Lista de opciones de navegadores disponibles para el campo de entrada -->
+          <datalist id="browsers">
+            <option value="Edge">
+            <option value="Firefox">
+            <option value="Chrome">
+            <option value="Opera">
+            <option value="Safari">
+          </datalist>
+    </body>
+</html>

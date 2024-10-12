@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <canvas id="lienzo1"></canvas>
+        <script>
+            // Selecciona el lienzo
+            const lienzo = document.querySelector("#lienzo1");
+             // Establece el ancho del lienzo              
+            lienzo.width = 6000;
+            // Establece la altura
+            lienzo.height = 4000;
+            // Obtiene el contexto 2D para dibujar en el lienzo
+            const contexto = lienzo.getContext("2d");
+            // Crea una nueva instancia del objeto Image                       
+            var imagen = new Image();
+            // Carga la imagen
+            imagen.src ="foto.jpg";
+            // Cuando la imagen se haya cargado                                         
+            imagen.onload = function(){
+                // Dibuja la imagen en el lienzo
+                contexto.drawImage(imagen,0,0) 
+                // Lee los datos de los píxeles en el área especificada                             
+                var datos = contexto.getImageData(0,0,6000,5) 
+                // Muestra los datos de los píxeles en la consola              
+                console.log(datos.data)
+            }
+        </script>
+    </body>
+</html>

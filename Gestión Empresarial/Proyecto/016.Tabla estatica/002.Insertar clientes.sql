@@ -1,0 +1,3 @@
+INSERT INTO `clientes` (`Identificador`, `nombre`, `apellidos`, `email`, `telefono`, `direccion`, `pais`, `cp`) VALUES (NULL, 'Ana', 'Perez Martinez', 'ana.perez@email.com', '656555680', 'Calle central 1', 'España', '28001');
+INSERT INTO `clientes` (`Identificador`, `nombre`, `apellidos`, `email`, `telefono`, `direccion`, `pais`, `cp`) VALUES (NULL, 'Carlos', 'Fernandez', 'carlos.fernandez@email.com', '6564545680', 'Calle Monasterio 50', 'España', '49117');
+INSERT INTO `clientes` (`Identificador`, `nombre`, `apellidos`, `email`, `telefono`, `direccion`, `pais`, `cp`) VALUES (NULL, 'Marcos', 'Torres Sánchez', 'sanchezz@gmail.com', '665498880', 'Avenida Mallorca 100', 'España', '50161');

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Calcular Diferencia de Epoch</title>
+        </head>
+        <body>
+            <script>
+                let inicio = new Date(); // Creamos nueva instancia del objeto Date
+                let epochinicio = inicio.getTime(); // Para obtener el tiempo en epoch desde la fecha de inicio
+                
+                let numero = 1.00000054; // Creamos un número cercano a 1
+                let iteraciones = 10000000; // Definimos el número de iteraciones
+                
+                // Realizamos un cálculo intensivo para forzar la CPU
+                for (let i = 0; i < iteraciones; i++) {
+                    numero *= 1.000000076;
+                }
+                
+                console.log("Finalizado");
+                
+                let final = new Date(); // Obtenemos la fecha después de la operación
+                let epochfinal = final.getTime(); // Obtenemos el tiempo en epoch del final del programa
+                let resta = epochfinal - epochinicio; // Calculamos la diferencia en milisegundos
+                
+                console.log("La diferencia de tiempo ha sido:", resta, "milisegundos");
+            </script>
+        </body>
+        </html>
+        

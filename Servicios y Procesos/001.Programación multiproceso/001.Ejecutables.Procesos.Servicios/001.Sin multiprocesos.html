@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            // Se inicializa un número flotante.
+            let numero= 1.00000054;
+            // Número de iteraciones para realizar un cálculo repetitivo.
+            let iteraciones = 10000000;
+             // Imprime el valor inicial de 'numero' en la consola.
+            console.log(numero)
+            for(let i = 0; i<iteraciones;i++){
+                // Multiplicamos 'numero' por una pequeña cantidad en cada iteración.
+                numero *= 1.000000076;
+
+            }
+            // Mensaje para indicar que el bucle ha terminado.
+            console.log("finalizado");
+            // Imprime el valor final de 'numero' después del cálculo.
+            console.log(numero)
+        </script>
+    </body>
+</html>

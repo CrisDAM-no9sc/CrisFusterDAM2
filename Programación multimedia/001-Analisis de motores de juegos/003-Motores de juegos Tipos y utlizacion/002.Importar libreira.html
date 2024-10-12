@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js Simple Example</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      // En primer lugar creo una escena 3D
+      const scene = new THREE.Scene();
+
+      // Cámara, 75 grados, proporción como la pantalla, recorte cercano 0.1, lejano 1000
+      const camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );
+
+      // Creo un renderizador que usa WebGL(aceleracion grafica que existe )
+      const renderer = new THREE.WebGLRenderer();
+
+      // Establezco el tamaño del renderizador
+      renderer.setSize(
+        window.innerWidth, 
+        window.innerHeight
+      );
+
+      // Y lo añado al body
+      document.body.appendChild(renderer.domElement);
+    </script>
+  </body>
+</html>

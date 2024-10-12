@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <body>
+    <canvas id="lienzo1"></canvas>  <!-- Se crea un elemento de canvas donde se dibujará la imagen -->
+    <script>
+        const tiempoinicio = new Date();  // Se captura la fecha y hora actuales al inicio del proceso
+        const epochinicio = tiempoinicio.getTime();  // Se obtiene el tiempo en milisegundos desde el 1 de enero de 1970 (epoch)
+
+        const lienzo = document.querySelector("#lienzo1");  // Se selecciona el elemento canvas usando su id
+        lienzo.width = 6000;  // Se establece el ancho del canvas en 6000 píxeles
+        lienzo.height = 4000; // Se establece la altura del canvas en 4000 píxeles
+
+        const contexto = lienzo.getContext("2d");  // Se crea un contexto 2D en el que se puede dibujar dentro del canvas
+
+        var imagen = new Image();  // Se crea un nuevo objeto de imagen
+        imagen.src = "foto.jpg";  // Se establece la ruta de la imagen que se quiere cargar y procesar
+
+        imagen.onload = function() {  // Esta función se ejecuta cuando la imagen ha terminado de cargarse en la memoria
+            contexto.drawImage(imagen, 0, 0);  // Se dibuja la imagen cargada en el canvas, empezando en la posición (0, 0)
+            
+            var datos = contexto.getImageData(0, 0, 6000, 4000);  // Se obtiene un objeto ImageData que contiene la información de los píxeles en el área especificada (toda la imagen en este caso)
+
+            // Dividimos la imagen en 4 partes iguales
+            var cuarto = datos.data.length / 4;
+
+            // Creamos cuatro Workers
+            var trabajador1 = new Worker("007.worker.js");
+            var trabajador2 = new Worker("007.worker.js");
+            var trabajador3 = new Worker("007.worker.js");
+            var trabajador4 = new Worker("007.worker.js");
+
+            // Enviamos las 4 partes a cada worker
+            trabajador1.postMessage(datos.data.slice(0, cuarto));                     // Primera parte
+            trabajador2.postMessage(datos.data.slice(cuarto, 2 * cuarto));            // Segunda parte
+            trabajador3.postMessage(datos.data.slice(2 * cuarto, 3 * cuarto));        // Tercera parte
+            trabajador4.postMessage(datos.data.slice(3 * cuarto));                    // Cuarta parte
+            // Array para almacenar los resultados de cada worker
+            var resultados = new Array(4);  
+
+            // Función para manejar el resultado de cada worker
+            function recibirResultado(workerIndex, resultado) {
+                resultados[workerIndex] = resultado;
+                if (resultados.filter(r => r).length === 4) {  // Comprueba si ya llegaron los 4 resultados
+                    // Combinamos los resultados en una sola imagen
+                    var datosCombinados = new Uint8ClampedArray(datos.data.length);
+                    datosCombinados.set(resultados[0], 0);                 // Primera parte
+                    datosCombinados.set(resultados[1], cuarto);            // Segunda parte
+                    datosCombinados.set(resultados[2], 2 * cuarto);        // Tercera parte
+                    datosCombinados.set(resultados[3], 3 * cuarto);        // Cuarta parte
+
+                    datos.data.set(datosCombinados);
+                    contexto.putImageData(datos, 0, 0);  // Pega los datos procesados de nuevo en el canvas
+
+                    const tiempofinal = new Date();  // Se captura la fecha y hora actuales al final del proceso
+                    const epochfinal = tiempofinal.getTime();  // Se obtiene el tiempo en milisegundos desde el 1 de enero de 1970 (epoch) al final del proceso
+                    const resta = epochfinal - epochinicio;  // Se calcula la diferencia de tiempo entre el inicio y el final del procesamiento
+                    console.log("Esta operación tarda en hacerse", resta, "milisegundos");
+                }
+            }
+
+            // Manejo de mensajes de los Workers
+            trabajador1.onmessage = function(misdatos) {
+                recibirResultado(0, misdatos.data);
+            };
+            trabajador2.onmessage = function(misdatos) {
+                recibirResultado(1, misdatos.data);
+            };
+            trabajador3.onmessage = function(misdatos) {
+                recibirResultado(2, misdatos.data);
+            };
+            trabajador4.onmessage = function(misdatos) {
+                recibirResultado(3, misdatos.data);
+            };
+        }
+    </script>
+  </body>
+</html>

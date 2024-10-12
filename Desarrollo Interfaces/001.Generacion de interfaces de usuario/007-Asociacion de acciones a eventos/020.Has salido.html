@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+
+
+  <body>
+    <input>
+    <script>
+        const entrada = document.querySelector("input");
+        entrada.onblur = function(e){
+            console.log("Has salido")
+            console.log(e.key)
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,116 @@
+/* Estilo global */
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo general verde claro */
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/* Estilo del header */
+header {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  padding: 40px 0;
+  text-align: center;
+  font-size: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 5px solid #4D869C; /* Línea azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+/* Contenedor Principal (Main) */
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Barra lateral y contenido */
+  grid-gap: 20px;
+}
+
+/* Estilo del nav (barra lateral) */
+nav {
+  background-color: #EEF7FF; /* Fondo azul muy claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo de los items de la lista */
+nav ul {
+  padding: 0; /* Sin padding para la lista */
+}
+
+nav li {
+  list-style: none;
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #7AB2B2; /* Fondo verde azulado */
+  color: #EEF7FF; /* Texto azul claro */
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9; /* Opacidad inicial */
+}
+
+nav li:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Efecto hover */
+  background-color: #4D869C; /* Fondo azul más oscuro al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+}
+
+/* Estilo para la sección principal */
+section {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  font-size: 1.2rem;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo para celdas de encabezado y cuerpo */
+th, td {
+  padding: 15px; /* Aumentar el espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+  border-bottom: 1px solid #4D869C; /* Línea debajo de cada celda */
+  letter-spacing: 0.05rem; /* Espaciado entre letras */
+}
+
+/* Estilo específico para encabezados */
+th {
+  background-color: #7AB2B2; /* Fondo para encabezados */
+  color: #EEF7FF; /* Color de texto en encabezados */
+  font-weight: bold; /* Negrita en encabezados */
+  text-transform: uppercase; /* Mayúsculas */
+}
+
+/* Estilo para filas del cuerpo */
+tbody tr:hover {
+  background-color: #4D869C; /* Color de fondo al hacer hover en filas */
+  color: #EEF7FF; /* Color de texto al hacer hover */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #CDE8E5; /* Fondo alternativo para filas */
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 600px) {
+  main {
+    grid-template-columns: 1fr; /* Columna única en pantallas pequeñas */
+  }
+}

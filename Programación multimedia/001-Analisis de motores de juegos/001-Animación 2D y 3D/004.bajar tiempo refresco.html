@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas{border: 1px solid grey ;}
+        </style>
+    </head>
+    <body>
+        <canvas>
+
+        </canvas>
+        <script>
+            var x = 20;
+            var y = 20;
+            var lienzo = document.querySelector("canvas");
+            var contexto = lienzo.getContext("2d");
+            lienzo.width = 512;
+            lienzo.height = 512;
+            
+            var temporizador = setTimeout("bucle()",1000);
+            function bucle(){
+                //para borrar el rastro del rectangulo 
+                contexto.clearRect(0,0,512,512);
+                ///AQUI LO QUE ESTAMOS HACIENDO ES PINTAR UN RECTANGULO 
+                x += 1;
+                //para cambiar el tamaño a 1 px
+                contexto.fillRect(x,y,30,30);
+                console.log("esto es un bucle");
+                clearTimeout(temporizador);
+                temporizador= setTimeout("bucle()",30);
+                //Aqui tendremos que cambiar los segundo para que vaya mas rápido
+            }
+        </script>
+    </body>
+</html>

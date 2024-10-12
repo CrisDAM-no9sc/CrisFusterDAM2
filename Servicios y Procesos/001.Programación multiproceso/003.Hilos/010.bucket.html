@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <body>
+    
+    <canvas id="lienzo1"></canvas>
+    
+    <script>
+        // Declaración de variables 
+        var x;         
+        var y;         
+        var bucket;    
+
+        const lienzo = document.querySelector("#lienzo1");
+        lienzo.width = 1024;    
+        lienzo.height = 1024;   
+
+        const contexto = lienzo.getContext("2d");
+
+        var imagen = new Image();
+        imagen.src = "mariposa.jpg";  
+
+        // Función que se ejecuta cuando la imagen ha terminado de cargar
+        imagen.onload = function() {
+            // Dibujamos la imagen en el canvas en la posición (0, 0)
+            contexto.drawImage(imagen, 0, 0);
+
+            // Inicializamos el tamaño y las coordenadas
+            bucket = 64;  
+            x = 0;        
+            y = 0;        
+
+            // Llamamos a la función que comenzará a procesar la imagen
+            mistrabajadores();
+        }
+
+        // Función que maneja el procesamiento de la imagen
+        function mistrabajadores() {
+            // Obtenemos los datos de la imagen en el área definida por las coordenadas x, y y el tamaño del "bucket"
+            datos1 = contexto.getImageData(x, y, bucket, bucket);
+            
+            // Creamos un nuevo trabajador (Web Worker) para procesar los datos de la imagen en un hilo separado
+            var trabajador = new Worker("010.worker.js");
+            // Enviamos los datos de la imagen al trabajador para su procesamiento
+            trabajador.postMessage(datos1.data);
+            
+            // Definimos la función que se ejecutará cuando el trabajador envíe de vuelta los datos procesados
+            trabajador.onmessage = function(misdatos) {
+                // Actualizamos los datos de la imagen con los datos devueltos por el trabajador
+                for (let i = 0; i < datos1.data.length; i++) {
+                    datos1.data[i] = misdatos.data[i];
+                }
+                // Colocamos la imagen procesada en el canvas
+                contexto.putImageData(datos1, x-64, 0);
+            }
+
+            // Incrementamos la coordenada X para movernos a la derecha
+            x += bucket;
+
+
+            // Usamos setTimeout para llamar a la función nuevamente después de un segundo
+            setTimeout(function() {
+                // Llamamos a la función para continuar el procesamiento
+                mistrabajadores();
+            }, 1000);
+        }
+    </script>
+  </body>
+</html>

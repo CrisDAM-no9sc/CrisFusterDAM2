@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      canvas{border:1px solid grey;position:absolute;top:0px;left:0px;}
+    </style>
+  </head>
+  <body>
+    <canvas id="lienzofondo"></canvas>
+    <canvas id="lienzoplataformas"></canvas>
+    <canvas id="lienzo1"></canvas>
+    <canvas id="lienzo2"></canvas>
+    
+    
+    <script>
+      //Declaramos las variables globales en uso de todo el juego 
+      var gravedad = 0.3;
+      var salto = -8;
+
+      /* CARGAMOS IMÁGENES */
+      var imagenbueno = new Image();
+      imagenbueno.src = "img/cara_a_b.png";
+
+      var imagenmalo = new Image();
+      imagenmalo.src = "img/malo_1.png";
+
+      var imagenplataformas = new Image();
+      imagenplataformas.src = "img/plataforma.png";
+      imagenplataformas.onload = function(){
+        contextoplataformas.drawImage(imagenplataformas,0,0)
+      }
+
+      var imagenfondo = new Image();
+      imagenfondo.src= "img/fondo_plataforma.png";
+      imagenfondo.onload = function(){
+        contextofondo.drawImage(imagenfondo,0,0)
+      }
+
+      /* DEFINIMOS LA CLASE DEL JUGADOR */
+      class Jugador{
+        constructor(){
+          this.x = 10;
+          this.y = 10;
+          this.vy = 0;
+          this.cayendo = true;
+          this.direccion = "izquierda";
+        }
+
+        dibuja(){
+          if(this.direccion == "izquierda"){
+            contexto.drawImage(imagenbueno,0,0,35,35,this.x,this.y,35,35);
+          } else {
+            contexto.drawImage(imagenbueno,35,0,35,35,this.x,this.y,35,35);
+          }
+        }
+
+        mueve(){
+          if(this.cayendo == true){
+            jugador.vy += gravedad;
+            jugador.y += jugador.vy;
+          }
+
+          this.muere();
+          this.colisionPlataformas();
+        }
+
+        muere(){
+          if(this.y > 600){  // Actualiza la altura
+            window.location = window.location;
+          }
+        }
+
+        colisionPlataformas(){
+          let pixel = contextoplataformas.getImageData(this.x, this.y+35,1,1);
+          if(pixel.data[3] > 0){
+            this.cayendo = false;
+          }else{
+            this.cayendo = true;
+          }
+        }
+      }
+
+      /* DEFINIMOS LA CLASE DEL NPC */
+      class Npc{
+        constructor(x,y){
+          this.x = x;
+          this.y = y;
+          this.vx = 2;
+          this.vy = 1;
+          this.limiteIzq = this.x - 50;
+          this.limiteDer = this.x + 50;
+          this.direccionX = 1;
+          this.direccionY = 1;
+        }
+
+        mueve(){
+          this.x += this.vx * this.direccionX;
+          if (this.x >= this.limiteDer) {
+            this.direccionX = -1;
+          }
+          if (this.x <= this.limiteIzq) {
+            this.direccionX = 1;
+          }
+        }
+
+        dibuja(){
+          contexto.drawImage(imagenmalo, this.x, this.y);
+        }
+      }
+
+      /* INSTANCIACIÓN DEL JUGADOR Y LOS NPCs */
+      var jugador = new Jugador();
+      var misnpcs = [];
+      var numeronpc = 5;
+
+      var posiciones = [
+        { x: 300, y: 100 },
+        { x: 300, y: 250 },
+        { x: 500, y: 350 },
+        { x: 650, y: 450 },
+        { x: 850, y: 100 }
+      ];
+
+      for (let i = 0; i < numeronpc; i++) {
+        let pos = posiciones[i];
+        misnpcs[i] = new Npc(pos.x, pos.y);
+      }
+
+      /* LIENZOS Y TAMAÑOS */
+      var lienzo = document.querySelector("#lienzo1");
+      var contexto = lienzo.getContext("2d");
+      lienzo.width = 1200; // Ancho actualizado
+      lienzo.height = 600; // Alto actualizado
+
+      var lienzo2 = document.querySelector("#lienzo2");
+      var contexto2 = lienzo2.getContext("2d");
+      lienzo2.width = 1200; // Ancho actualizado
+      lienzo2.height = 600; // Alto actualizado
+
+      var lienzoplataformas = document.querySelector("#lienzoplataformas");
+      var contextoplataformas = lienzoplataformas.getContext("2d");
+      lienzoplataformas.width = 1200; // Ancho actualizado
+      lienzoplataformas.height = 600; // Alto actualizado
+
+      var lienzofondo = document.querySelector("#lienzofondo");
+      var contextofondo = lienzofondo.getContext("2d");
+      lienzofondo.width = 1200; // Ancho actualizado
+      lienzofondo.height = 600; // Alto actualizado
+
+      /* CONTROLES DEL JUGADOR */
+      document.onkeydown = function(e){
+        if(e.key == "ArrowUp" && jugador.cayendo == false){
+          jugador.y -= 15;
+          jugador.vy = salto;
+        }
+        if(e.key == "ArrowDown"){jugador.y += 15}
+        if(e.key == "ArrowLeft"){jugador.x -= 15;jugador.direccion = "izquierda"}
+        if(e.key == "ArrowRight"){jugador.x += 15;jugador.direccion = "derecha"}
+      }
+
+      /* BUCLE PRINCIPAL */
+      var temporizador = setTimeout("bucle()",100);
+      function bucle(){
+        contexto.clearRect(0, 0, 1200, 600);
+        contexto2.clearRect(0, 0, 1200, 600);
+
+        for(let i = 0; i < numeronpc; i++){
+          misnpcs[i].mueve();
+          misnpcs[i].dibuja();
+        }
+
+        jugador.mueve();
+        jugador.dibuja();
+
+        var datos = contexto.getImageData(jugador.x, jugador.y, 1, 1).data;
+        var alpha = datos[3];
+        if(alpha == 255){
+          window.location = window.location;
+        }
+
+        clearTimeout(temporizador);
+        temporizador = setTimeout("bucle()",30);
+      }
+    </script>
+  </body>
+</html>

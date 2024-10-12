@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas { border: 1px solid grey; }
+        </style>
+    </head>
+    <body>
+        <canvas></canvas>
+        <script>
+            // Función que se utiliza cuando se instancia el objeto
+            class Npc {
+                constructor() {
+                    this.x = Math.random() * 512; // Se le da una posición entre 0 a 512 en x
+                    this.y = Math.random() * 512; // Se le da una posición entre 0 a 512 en y
+                    // Se le da un ángulo completo, de 0 a 2*PI radianes
+                    this.angulo = Math.random() * Math.PI * 2;
+                }
+                
+                // Este es un método para detectar las paredes y hacer que rebote
+                rebote() {
+                    // En el caso que la posición del objeto esté fuera de los límites
+                    if (this.x < 0) { 
+                        this.x = 0; 
+                        this.angulo = Math.PI - this.angulo; // Rebota hacia la dirección opuesta
+                    }
+                    if (this.x > 482) { // Resta el ancho del rectángulo
+                        this.x = 482; 
+                        this.angulo = Math.PI - this.angulo;
+                    }
+                    if (this.y < 0) { 
+                        this.y = 0; 
+                        this.angulo = -this.angulo; // Rebota hacia la dirección opuesta
+                    }
+                    if (this.y > 482) { // Resta la altura del rectángulo
+                        this.y = 482; 
+                        this.angulo = -this.angulo;
+                    }
+                }
+                //Aqui con este metodo vamos a definir el mobimiento de la caja 
+                mueve(){
+                    this.x += Math.cos(this.angulo);
+                    this.y += Math.sin(this.angulo);
+                }
+                //este metodo es el que va a dibujar el npc
+                dibuja(){
+                    contexto.fillRect(this.x, this.y, 30, 30);
+                }
+            }
+
+            var mispcs = [];
+            var numeronpc = 10;//aqui podemos modificar el numero de npc 
+
+            for(let i = 0; i < numeronpc; i++){
+                mispcs[i] = new Npc();
+            }
+
+            
+            
+
+            var lienzo = document.querySelector("canvas");
+            var contexto = lienzo.getContext("2d");
+            lienzo.width = 512;
+            lienzo.height = 512;
+            
+            function bucle() {
+                // Para borrar el rastro del rectángulo
+                contexto.clearRect(0, 0, 512, 512);
+                for(let i = 0; i < numeronpc; i++){
+                    mispcs[i].mueve();
+                    mispcs[i].rebote();
+                    mispcs[i].dibuja();
+                }
+
+                requestAnimationFrame(bucle);
+            }
+
+            // Iniciar el bucle de animación
+            bucle();
+        </script>
+    </body>
+</html>

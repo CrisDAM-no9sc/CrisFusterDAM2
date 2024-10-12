@@ -1,0 +1,13 @@
+{
+    "nombre": "Cristina",
+    "apellidos": "Fuster Garc\u00eda",
+    "email": {
+        "personal": [
+            "cris@gmail.com"
+        ],
+        "profesional": [
+            "cristinafuster@gmail.com",
+            "garciacris@gmail.com"
+        ]
+    }
+}
