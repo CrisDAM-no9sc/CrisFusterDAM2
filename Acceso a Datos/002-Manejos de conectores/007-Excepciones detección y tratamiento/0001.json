@@ -1,0 +1,13 @@
+{
+    "nombre": "Manuel",
+    "apellidos": "Gorrion Garc\u00eda",
+    "email": {
+        "personal": [
+            "manuelgorrion@gmail.com"
+        ],
+        "profesional": [
+            "Manuelempresa@gmail.com",
+            "empresa2@gmail.com"
+        ]
+    }
+}
