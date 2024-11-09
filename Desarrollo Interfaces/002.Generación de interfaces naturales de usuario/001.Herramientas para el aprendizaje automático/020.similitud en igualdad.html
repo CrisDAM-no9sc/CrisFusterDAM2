@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        canvas, video{
+            width: 300px;
+        }
+        #canvas4{
+            width:512px;
+            height:512px;
+            border:1px solid grey; 
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="cajaentrenamiento">
+    <button id="procesa">Procesa!</button><br>
+    <video id="webcam" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <canvas id="canvas2"></canvas>
+    <canvas id="canvas3"></canvas>
+    <canvas id="canvas4"></canvas>
+    <h1>Esto es...<span id="resultado"></span></h1>
+    <script>
+        ///////////////////////////////////////////// DECLARACIÓN DE VARIABLES GLOBALES //////////////////////////////////////////////////////
+        //creamos una memoria vacia 
+        var memoria = [];                                                              
+        var neuronas = []; 
+        //creamos una cadena donde se guardara el patron actual de pixeles en binario                                                           
+        var cadenamemoria = "";
+        //definimos el tamaño de os pixeles
+        var anchura = 3;
+        // Definimos la cantidad de combinaciones binarias para esa memoria                                                                
+        var combinaciones = Math.pow(2,anchura*anchura);                                   
+        console.log("Las combinaciones son: ", combinaciones);
+        
+         ///////////////////////////////////////////// LIENZOS Y CONTEXTOS //////////////////////////////////////////////////////
+         
+        const video = document.getElementById('webcam');                                    
+        const canvas = document.getElementById('canvas');                               
+        const contexto = canvas.getContext('2d');                                         
+        
+        const canvas2 = document.getElementById('canvas2');                            
+        const contexto2 = canvas2.getContext('2d');                                         
+        
+        const canvas3 = document.getElementById('canvas3');                                
+        const contexto3 = canvas3.getContext('2d');                                        
+        
+        const canvas4 = document.getElementById('canvas4');                         
+        const contexto4 = canvas4.getContext('2d');                                        
+       
+        ///////////////////////////////////////////// STREAM DE CAMARA //////////////////////////////////////////////////////
+        //esta funcion se encarga de buscar camaras diposnivlees 
+        async function getSecondWebcam() {
+            //recuperamos una lista de todos los dispositivos de entrada 
+            const devices = await navigator.mediaDevices.enumerateDevices();     
+            //filtra la llsta y guarda solo los tipo videoinput represenatn las camaras           
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');   
+            //comprobaos si hay alguna cmara disponible y guarda el id  del segundo dispositivo
+            if (videoDevices.length > 1) {
+                const secondWebcamId = videoDevices[1].deviceId;                        
+                //para solicitar el acceso de la segunda camara 
+                navigator.mediaDevices.getUserMedia({ video: { deviceId: secondWebcamId } }) 
+                    .then((stream) => {  
+                        //asigna el steam de la segunda al elemneto video                                                  
+                        video.srcObject = stream; 
+                        //una vez que carag los metadatos es cuando se configura el tamaño de los lienzos                                         
+                        video.addEventListener('loadedmetadata', () => {                  
+                            canvas.width = video.videoWidth;                               
+                            canvas.height = video.videoHeight;                             
+                            
+                            canvas2.width = video.videoWidth;                              
+                            canvas2.height = video.videoHeight;                         
+                            
+                            canvas3.width = video.videoWidth;                          
+                            canvas3.height = video.videoHeight;                            
+                            
+                            canvas4.width = 24;                                           
+                            canvas4.height = 24;                                           
+                            
+                             ///////////////////////////////////////////// FUNCIOŃ DE DIBUJO //////////////////////////////////////////////////////
+                             
+                            function draw() {                                              
+                            
+                                ///////////////////////////////////////////// HALLAR BORDES //////////////////////////////////////////////////////
+                                
+                                contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                //obtenemos los datos de los pixeles de canvas
+                                var datos = contexto.getImageData(0, 0, canvas.width, canvas.height); 
+                                //valor de diferendcia minima para los bordes, detectar bordes
+                                let umbral = 5;
+                                //recorremos cada pixel para aplicar la deteccion de bordes
+                                for (let i = 0; i < datos.data.length; i += 4) {        
+                                    if (
+                                        
+                                        Math.abs(datos.data[i] - datos.data[i + 4]) > umbral
+                                        ||
+                                        Math.abs(datos.data[i] - datos.data[i + canvas.width * 4]) > umbral
+                                    ) {                                                      
+                                        datos.data[i] = 0;                                
+                                        datos.data[i + 1] = 0;
+                                        datos.data[i + 2] = 0;
+                                    } else {
+                                        datos.data[i] = 255;                             
+                                        datos.data[i + 1] = 255;
+                                        datos.data[i + 2] = 255;
+                                    }
+                                }
+                                contexto2.putImageData(datos, 0, 0);                        
+                                
+                                ///////////////////////////////// CREACIÓN DE PATRONES 2X2 Y ALMACENAMIENTO EN NEURONAS //////////////////////////////////////
+                                
+                                neuronas = [];
+                                // Divide la imagen en bloques de "anchura" píxeles y evalúa patrones en cada bloque
+                                for (let x = 0; x < video.videoWidth; x += anchura) {   
+                                         
+                                    for (let y = 0; y < video.videoHeight; y += anchura) {  
+                                        let bloque = contexto2.getImageData(x, y, anchura, anchura); 
+                                        let cadena = "";          
+                                        // Convierte cada bloque a una cadena binaria (1 = blanco, 0 = negro)                           
+                                        for (let i = 0; i < bloque.data.length; i += 4) {   
+                                            if (bloque.data[i] == 255) {                  
+                                                cadena += "1";                              
+                                            } else {                                    
+                                                cadena += "0";                              
+                                            }
+                                        }
+                                        if (neuronas[cadena] == undefined) {                
+                                            neuronas[cadena] = 1;                           
+                                        } else {                                        
+                                            neuronas[cadena]++;                            
+                                        }
+                                    }
+                                }
+                                //console.log(neuronas);
+                                
+                                ///////////////////////////////////////////// PINTAR LAS NEURONAS EN UN MAPA /////////////////////////////////////////
+                                // Limpia el cuarto canvas antes de pintar el nuevo estado
+                                contexto4.clearRect(0, 0, 24, 24);  
+                                // Reinicia la cadena binaria de memoria                        
+                                cadenamemoria = "";
+                                // preparamos el contexto para pintar los pixeles 
+                                var datos = contexto4.getImageData(0, 0, 24, 24); 
+                                ///recorremos las combinaciones para pintar cada neurona  segun su valor en el array         
+                                for (let i = 0; i < combinaciones; i++) {                    
+                                    if (neuronas[decimalToBinary(i)] > 1) {                   
+                                        cadenamemoria += "1"
+                                        datos.data[i * 4] = 0;
+                                        datos.data[i * 4 + 1] = 0;
+                                        datos.data[i * 4 + 2] = 0;
+                                        datos.data[i * 4 + 3] = 0;
+                                    } else {
+                                        cadenamemoria += "0"
+                                        datos.data[i * 4] = 255;
+                                        datos.data[i * 4 + 1] = 255;
+                                        datos.data[i * 4 + 2] = 255;
+                                        datos.data[i * 4 + 3] = 255;
+                                    }
+                                }
+                                //colocamos la imagen procesada en el canvas
+                                contexto4.putImageData(datos, 0, 0);
+                                
+                                ///////////////////////////////////////////// REPASAR SI YA LO TENÍA EN MEMORIA //////////////////////////////////////////////////////
+                                document.querySelector("#resultado").innerHTML = ""
+                                for (let i = 0; i < memoria.length; i++) {                
+                                    let similitud = 0;
+                                    for(let j; j<cadenamemoria.length;j++){
+                                        if(memoria[i].datos[j] == cadenamemoria[j]){
+                                            similitud++;
+                                        }
+                                    }
+                                    console.log(similitud)
+                                    if(similitud > 500){
+                                        document.querySelector("#resultado").innerHTML = memoria[i].identificador;
+                                    }
+                                    
+                                }
+                                
+                                requestAnimationFrame(draw);                                
+                            }
+                            
+                            draw();                                                         
+                        });
+                    })
+                    .catch((err) => {                                                      
+                        console.error('Error accessing the second webcam:', err);           
+                    });
+            } else {
+                console.error("Only one webcam available or no webcams found.");
+            }
+        }
+
+        getSecondWebcam();    
+
+        //////////////////////////// GUARDAR EN MEMORIA LOS PATRONES //////////////////////////////////
+        // Función para el botón "Procesa!"
+        document.querySelector("button").onclick = function(){                              
+            memoria.push({
+                "identificador": document.querySelector("input").value,
+                "datos": cadenamemoria
+            });                                                                             
+            console.log(memoria);
+        }
+        
+        ////////////////////////// FUNCIÓN PARA COMPARAR ARRAYS ///////////////////////////////////////
+        // Función para comparar dos arreglos
+        function arraysEqual(arr1, arr2) {
+            if (arr1.length !== arr2.length) return false;
+            
+            for (let i = 0; i < arr1.length; i++) {
+                if (arr1[i] !== arr2[i]) return false;
+            }
+            
+            return true;
+        }
+
+        ////////////////////////// FUNCIÓN PARA CONVERTIR DECIMAL A BINARIO //////////////////////////////
+        function decimalToBinary(decimal) {
+            return decimal.toString(2).padStart(anchura * anchura, '0');
+        }
+    </script>
+</body>
+</html>

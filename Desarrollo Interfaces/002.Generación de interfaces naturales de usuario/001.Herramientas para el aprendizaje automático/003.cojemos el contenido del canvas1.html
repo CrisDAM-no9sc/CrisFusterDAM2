@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <video id="webcam" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <canvas id="canvas2"></canvas>
+    <script>
+        const video = document.getElementById('webcam');                                       
+        const canvas = document.getElementById('canvas');                                
+        const contexto = canvas.getContext('2d');                                       
+        
+        const canvas2 = document.getElementById('canvas2');                                
+        const contexto2 = canvas2.getContext('2d');                                       
+
+        navigator.mediaDevices.getUserMedia({ video: true })                              
+            .then((stream) => {                                                  
+                video.srcObject = stream;                                                  
+                video.addEventListener('loadedmetadata', () => {                   
+                    canvas.width = video.videoWidth;                                        
+                    canvas.height = video.videoHeight;                                      
+                    
+                    canvas2.width = video.videoWidth;                                        
+                    canvas2.height = video.videoHeight;                                      
+                    
+                    function draw() {                                                      
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);     
+                        var datos = contexto.getImageData(0,0,canvas.width, canvas.height)  
+                        //los procesamos pixel a pixel
+                        //comvertimos la imgagen n blanco y negro
+                        for(let i = 0;i<datos.data.length;i+=4){    
+                        // Si el valor del rojo del pixel es menor que 12                       
+                          if(datos.data[i] < 127){                                        
+                            datos.data[i] = 0                                         
+                            datos.data[i+1] = 0
+                            datos.data[i+2] = 0
+                          }else{
+                            // Si el valor es mayor o igual a 127, establece el pixel a blanco
+                            datos.data[i] = 255                                           
+                            datos.data[i+1] = 255
+                            datos.data[i+2] = 255
+                          }
+                        }
+                        contexto2.putImageData(datos,0,0)
+                        requestAnimationFrame(draw);                                      
+                    }
+                    draw();                                                             
+                });
+            })
+            .catch((err) => {                                                               
+                console.error('Error accessing the webcam:', err);                        
+            });
+    </script>
+</body>
+</html>

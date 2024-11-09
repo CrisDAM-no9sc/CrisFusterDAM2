@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">  
+</head>
+<body>
+    <video id="webcam" autoplay></video>  
+    <canvas id="canvas"></canvas> 
+    <canvas id="canvas2"></canvas> 
+    <script>
+        const video = document.getElementById('webcam');  
+        const canvas = document.getElementById('canvas');
+        const contexto = canvas.getContext('2d');  
+        
+        const canvas2 = document.getElementById('canvas2'); 
+        const contexto2 = canvas2.getContext('2d'); 
+
+        // Solicito acceso a la cámara del usuario
+        navigator.mediaDevices.getUserMedia({ video: true })  
+            // Si se concede el acceso
+            .then((stream) => {  
+                // El contenido del video es el flujo de la cámara
+                video.srcObject = stream; 
+                // Cuando los metadatos del video han cargado 
+                video.addEventListener('loadedmetadata', () => {  
+                    canvas.width = video.videoWidth;  
+                    canvas.height = video.videoHeight;  
+                    
+                    canvas2.width = video.videoWidth;  
+                    canvas2.height = video.videoHeight; 
+                    
+                    // Función para dibujar en el canvas
+                    function draw() {  
+                        // Dibujo el contenido del video en el primer canvas
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);  
+                        // Obtengo los datos de la imagen del primer canvas
+                        var datos = contexto.getImageData(0, 0, canvas.width, canvas.height);  
+                        // Defino un umbral para detectar cambios significativos entre píxeles
+                        let umbral = 25;  
+                        
+                        // Proceso cada pixel del canvas
+                        for (let i = 0; i < datos.data.length; i += 4) {  
+                            // Compruebo si hay un cambio significativo entre píxeles adyacentes
+                            if (
+                                // Comparo con el píxel de la derecha
+                                Math.abs(datos.data[i] - datos.data[i + 4]) > umbral ||  
+                                // Comparo con el píxel de abajo
+                                Math.abs(datos.data[i] - datos.data[i + canvas.width * 4]) > umbral  
+                            ) {  
+                                datos.data[i] = 0;  // Pinto el píxel de negro si hay un cambio significativo
+                                datos.data[i + 1] = 0;  // Pinto el componente verde de negro
+                                datos.data[i + 2] = 0;  // Pinto el componente azul de negro
+                            } else {
+                                datos.data[i] = 255;  // Pinto el píxel de blanco si no hay cambio significativo
+                                datos.data[i + 1] = 255;  // Pinto el componente verde de blanco
+                                datos.data[i + 2] = 255;  // Pinto el componente azul de blanco
+                            }
+                        }
+                        // Pongo la imagen procesada en el segundo canvas
+                        contexto2.putImageData(datos, 0, 0);  
+                        // Obtengo un bloque de 2x2 del segundo canvas
+                        let bloque = contexto2.getImageData(0, 0, 2, 2);  
+                        console.log(bloque.data); 
+                        
+                        // Genero una cadena de 1s y 0s basada en el color de los píxeles
+                        let cadena = "";  
+                        //recorremos el bloque por 4 
+                        for (let i = 0; i < bloque.data.length; i += 4) { 
+                            // Si el componente rojo es 255 (blanco) 
+                            if (bloque.data[i] == 255) {  
+                                // Agrego '1' a la cadena
+                                cadena += "1";  
+                            } else {
+                                // Agrego '0' si el píxel es negro
+                                cadena += "0";  
+                            }
+                        }
+                        // Muestro la cadena en la consola
+                        console.log(cadena);  
+                        // Forma parar la ejecución
+                        caca;  
+                        // Llama a la función de dibujo nuevamente para continuar el bucle
+                        requestAnimationFrame(draw);  
+                    }
+                    // Llamo a la función de dibujo por primera vez
+                    draw();  
+                });
+            })
+            // Manejo de errores si no se puede acceder a la cámara
+            .catch((err) => {  
+                console.error('Error accessing the webcam:', err); 
+            });
+    </script>
+</body>
+</html>

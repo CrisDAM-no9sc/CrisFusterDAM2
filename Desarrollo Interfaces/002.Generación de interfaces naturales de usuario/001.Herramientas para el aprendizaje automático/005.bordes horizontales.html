@@ -1,0 +1,87 @@
+<!DOCTYPE html>  <!-- Define el tipo de documento como HTML5 -->
+<html lang="en"> <!-- Inicia el documento HTML y especifica que el idioma es inglés -->
+<head>
+    <meta charset="UTF-8"> <!-- Establece la codificación de caracteres a UTF-8 para manejar caracteres especiales -->
+</head>
+<body>
+    <!-- Crea un elemento de video para mostrar la transmisión de la cámara web, configurado para reproducirse automáticamente -->
+    <video id="webcam" autoplay></video>
+    <!-- Crea un lienzo donde se dibujará la imagen de la cámara -->
+    <canvas id="canvas"></canvas>
+    <!-- Crea un segundo lienzo para mostrar la imagen procesada -->
+    <canvas id="canvas2"></canvas>
+    <script>
+        // Selecciono el video en el HTML
+        const video = document.getElementById('webcam');                                   
+        // Ahora selecciono el lienzo para la imagen original
+        const canvas = document.getElementById('canvas');                                   
+        // Creo un contexto 2D para el lienzo
+        const contexto = canvas.getContext('2d');                                          
+        
+        // Ahora selecciono el segundo lienzo para la imagen procesada
+        const canvas2 = document.getElementById('canvas2');                                  
+        // Creo un contexto 2D para el segundo lienzo
+        const contexto2 = canvas2.getContext('2d');                                          
+        
+        // Del navegador, atrapo el feed de la cámara
+        navigator.mediaDevices.getUserMedia({ video: true })                                
+            // Si se concede el acceso a la cámara, se ejecuta esta función con el flujo de la cámara
+            .then((stream) => {                                                            
+                // El contenido del video es el feed de la cámara
+                video.srcObject = stream;                                                  
+
+                // Cuando el video ha cargado, se ejecuta la siguiente función
+                video.addEventListener('loadedmetadata', () => {                            
+                    // Ajusto la anchura del canvas a la anchura del video
+                    canvas.width = video.videoWidth;                                       
+                    // Ajusto la altura del canvas a la altura del video
+                    canvas.height = video.videoHeight;                                     
+                    
+                    // Ajusto la anchura del segundo canvas a la anchura del video
+                    canvas2.width = video.videoWidth;                                       
+                    // Ajusto la altura del segundo canvas a la altura del video
+                    canvas2.height = video.videoHeight;                                     
+                    
+                    // Creo una función de dibujo que se ejecutará continuamente
+                    function draw() {                                                       
+                        // Pinta el contenido del video en el primer lienzo
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);       
+                        // Carga en memoria todos los datos del primer canvas
+                        var datos = contexto.getImageData(0, 0, canvas.width, canvas.height)  
+                        let umbral = 15; // Define un umbral para la comparación de píxeles
+                        
+                        // Proceso cada píxel de la imagen
+                        for (let i = 0; i < datos.data.length; i += 4) {                            
+                            // Comprueba la diferencia entre el componente rojo de un píxel y el de otro píxel adyacente
+                            if (
+                                Math.abs(datos.data[i] - datos.data[i + 4]) > umbral ||
+                                Math.abs(datos.data[i] - datos.data[i + canvas.width * 4]) > umbral
+                            ) {                                                               
+                                // Si la diferencia es mayor al umbral, pinto el píxel de negro
+                                datos.data[i] = 0;                                              
+                                datos.data[i + 1] = 0;
+                                datos.data[i + 2] = 0;
+                            } else {
+                                // Si la diferencia es menor o igual al umbral, pinto el píxel de blanco
+                                datos.data[i] = 255;                                            
+                                datos.data[i + 1] = 255;
+                                datos.data[i + 2] = 255;
+                            }
+                        }
+                        // Coloca los datos procesados en el segundo lienzo
+                        contexto2.putImageData(datos, 0, 0);
+                        // Llama a la función de dibujo nuevamente para crear un bucle de animación
+                        requestAnimationFrame(draw);                                        
+                    }
+                    // Llamo a la función de dibujo por primera vez
+                    draw();                                                                 
+                });
+            })
+            // En caso de que el navegador me dé algún tipo de error
+            .catch((err) => {                                                              
+                // Muestra el error en la consola
+                console.error('Error accessing the webcam:', err);                          
+            });
+    </script>
+</body>
+</html>

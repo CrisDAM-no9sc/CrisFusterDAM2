@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Configuración de los metadatos del documento y el idioma-->
+    <meta charset="UTF-8">
+    <style>
+      /* configurando su tamaño y un borde */
+      #canvas4 {
+        width: 512px;
+        height: 512px;
+        border: 1px solid grey;
+      }
+    </style>
+</head>
+<body>
+    <!-- Elementos HTML para la interacción de usuario -->
+    <input type="text" id="cajaentrenamiento">
+    <button id="procesa">Procesa!</button><br>
+    <video id="webcam" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <canvas id="canvas2"></canvas>
+    <canvas id="canvas3"></canvas>
+    <canvas id="canvas4"></canvas>
+    <h1>Esto es...<span id="resultado"></span></h1>
+
+    <script>
+        // guardamos los patrones de imagen detectados con su identificador unico
+        var memoria = [];
+        //guarda los patrones que obtiene de cada cuadro video
+        var neuronas = [];
+        
+        /////////////////////////////////////// ELEMENTOS Y CONTEXTOS CANVAS ///////////////////////////////////
+        //vemos el video original
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const contexto = canvas.getContext('2d');
+        // aqui es para la imagen en vlanco y negro con la deteccion de bordes 
+        const canvas2 = document.getElementById('canvas2');
+        const contexto2 = canvas2.getContext('2d');
+        //representamos la grafica de los patrones de neuronas
+        const canvas3 = document.getElementById('canvas3');
+        const contexto3 = canvas3.getContext('2d');
+        //para patrones de menor resolución
+        const canvas4 = document.getElementById('canvas4');
+        const contexto4 = canvas4.getContext('2d');
+
+        //////////////////////////////////////// ACCESO A LA CAMARA ////////////////////////////////////////
+        // para solicitar acceso a la camara
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                // si se concede el acceso : stream asigna como fuente del elemento video para mostrar por pantalla
+                video.srcObject = stream;
+
+                //////////////////////////// CONFIGURACION DE LAS DIMENSIONES  //////////////////////
+                // una vez que el video carga sus metadatos
+                video.addEventListener('loadedmetadata', () => {
+                    //// se ajusta las dimensiones del video.
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+
+                    canvas2.width = video.videoWidth;
+                    canvas2.height = video.videoHeight;
+
+                    canvas3.width = video.videoWidth;
+                    canvas3.height = video.videoHeight;
+                    /// le decimos qel tamaño 
+                    canvas4.width = 4;
+                    canvas4.height = 4;
+
+                    //////////////////////////// DETECCION DE BORDES BLANCOS Y NEGROS /////////////////////////////
+                    // Función para el procesamiento de cada frame del video
+                    function draw() {
+                        // copia el video en el primer canvas 
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                        //extrae los datos de la imagen, que incluyen información de color en cada píxel
+                        var datos = contexto.getImageData(0, 0, canvas.width, canvas.height);
+                        //compara los valores entre pixeles y detcta los cambios
+                        /*Este umbral determina la sensibilidad en la detección de bordes: 
+                        un valor más bajo detectaría más bordes (ruido), mientras que un valor más alto los reduce.*/
+                        let umbral = 25; 
+                        
+                        // Procesa cada píxel para generar un borde binario (blanco y negro)
+                        //aqui vamos a recorrer datos.data que es el que tinee los valores de color de cada pixel 
+                        //i+=4 se utiliza para avanzar de un pixel al siguiente dado que cada pixel tiene 4 valores (rojo,verde,azul y alpha) 
+                        for(let i = 0; i < datos.data.length; i += 4) {
+                            if(
+                                //aqui comparamos el valor rojo del pixel actual, con el otro del pixel horizontal
+                                //si la diferencia es mayor que el umbral = a que hay un borde
+                                Math.abs(datos.data[i] - datos.data[i + 4]) > umbral ||
+                                //compara tambien el valor del rojo directamente con el de abajo y si la diferencia es mayor tambien la consideramos un borde
+                                Math.abs(datos.data[i] - datos.data[i + canvas.width * 4]) > umbral
+                            ) {
+                                // color negro (borde)  
+                                //si detecta un borde el valor rojo,verde y azul se establecera en 0
+                                datos.data[i] = 0;
+                                datos.data[i + 1] = 0;
+                                datos.data[i + 2] = 0;
+                            } else {
+                                // Color blanco (fondo)
+                                //si no hya borde se establecera en blanco
+                                datos.data[i] = 255;
+                                datos.data[i + 1] = 255;
+                                datos.data[i + 2] = 255;
+                            }
+                        }
+
+                        // collocamos la imagen procesada , mostrando la imagen en blanco y negro con los bordes detectados
+                        contexto2.putImageData(datos, 0, 0);
+
+                        //////////////////// CREAMOS PATRONES 2X2 Y LO GUARDAMOS EN NEURONAS ///////////////////////
+
+                        // Aqui iniciamos un array para guaradar los patrones de borde detactado en la imagen.
+                        neuronas = [];
+
+                        // aqui hacemos un ciclo doble para recorrer bloques de 2x2
+                        // x e y se incrementan de os en dos para saltar  acdaa nuevo bloque
+                        for(let x = 0; x < video.videoWidth; x += 2) {
+                            for(let y = 0; y < video.videoHeight; y += 2) {
+                                //ontenemos los datos d l bloque 2x2 desde el canvas 2
+                                let bloque = contexto2.getImageData(x, y, 2, 2);
+                                //iniciamos una variable como una cadena de texto vacia 
+                                let cadena = "";
+
+                                // Convierte cada bloque en una cadena binaria según el color
+                                for(let i = 0; i < bloque.data.length; i += 4) {
+                                    //recorremos cada pixel, si es del color blanco se le asignara 1 a la cadena 
+                                    //si es negro se le agregara un 0
+                                    cadena += (bloque.data[i] == 255) ? "1" : "0";
+                                }
+
+                                // utilizamos cadea para el array de neuronas, si el patron ya existe en neuronas le 
+                                // incrementaremos su valor en 1, y si no lo inicamos con 1
+                                neuronas[cadena] = (neuronas[cadena] || 0) + 1;
+                            }
+                        }
+
+                        ///////////////////////// COMPARACIÓN y GRAFICA ////////////////////////////////////////
+
+
+                        // iteramos sobre cada patron guardado en memoria
+                        for(let i = 0; i < memoria.length; i++) {
+                            //utilizamos arraysEquals para comparar 
+                            if(arraysEqual(neuronas, memoria[i].datos)) {
+                                //si conincide el identificador se muestra en resultado
+                                document.querySelector("#resultado").textContent = memoria[i].identificador;
+                            } else {
+                                /// y si no limpiamos el texto
+                                document.querySelector("#resultado").textContent = "";
+                            }
+                        }
+
+                        // Borramos cualquier contenido en canvas 3
+                        contexto3.clearRect(0, 0, video.videoWidth, video.videoHeight);
+                        ///Aqui recorremos los 16 patrones posibles de 2x2(4bits) de 0000 al 1111
+                        for (let i = 0; i < 16; i++) {
+                            //convertimos el valor i a su representacion bunaria de 4 digitos
+                            let binary = i.toString(2).padStart(4, '0');
+                            //dibujamos un rectangulo para cada patron donde la altura depende de su frecuencia
+                            contexto3.fillRect(0, i * 16, neuronas[binary], 14);
+                        }
+
+                        //en esta linea hacemos que se ejecute de nuevo en elsiguiente cuadro, asegurandonos que se mantenga 
+                        //el ciclo mientras se use la camara
+                        requestAnimationFrame(draw);
+                    }
+
+                    // Inicia la función de dibujo en bucle
+                    draw();
+                });
+            })
+            .catch((err) => {
+                // Muestra un mensaje de error si falla la cámara
+                console.error('Error accessing the webcam:', err);
+            });
+        
+        //////////////////////////// GUARADAR EN MEMORIA LOS PATRONES //////////////////////////////////
+
+        // Función para el botón "Procesa!"
+        document.querySelector("button").onclick = function() {
+            // Añadimos un nuevo objeto al array de memoria , que contiene dos propiedades
+            memoria.push({
+                //el texto que ingresamos sirve para etiquetar al patron
+                "identificador": document.querySelector("input").value,
+                //y el array neuronas que es el que contiene el patron actual
+                "datos": neuronas
+            });
+            console.log(memoria);
+        }
+        ////////////////////////// FUNCIONPARA COMPARRA ARRAYS ///////////////////////////////////////
+
+        // Función para comparar dos arreglos
+        //Esta funcion comparar los dos arreglos para verificar si son identicos en longitud y contenido
+        function arraysEqual(arr1, arr2) {
+            //si tiene diferente longitud nos devolvera false 
+            if (arr1.length !== arr2.length) return false;
+            //aqui comparamos cada elemento 
+            //recorremos cada elementos de los dos arreglos 
+            for (let i = 0; i < arr1.length; i++) {
+                //si encunetra un elemento diferente nos devovera false
+                if (arr1[i] !== arr2[i]) return false;
+            }
+            //si finaliza y no encunetra diferencias nos devolvera true 
+            return true;
+        }
+    </script>
+</body>
+</html>

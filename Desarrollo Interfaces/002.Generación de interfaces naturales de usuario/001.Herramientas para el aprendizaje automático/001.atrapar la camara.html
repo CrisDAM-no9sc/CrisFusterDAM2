@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <video id="webcam" autoplay></video>
+    <canvas id="canvas"></canvas>
+    <script>º
+        //seleccionamos el video en el html
+        const video = document.getElementById('webcam');   
+        //seleccionamos el lienzo                                    
+        const canvas = document.getElementById('canvas');    
+        //creamos un contexto                              
+        const contexto = canvas.getContext('2d');                                         
+
+        //del navegador atrapamos el feel de la camara 
+        navigator.mediaDevices.getUserMedia({ video: true })                               
+            .then((stream) => {   
+                //el contenido del video pasa del feed.la informacion pasa del video a la etiqueta de html                                                      
+                video.srcObject = stream;                                                   
+                video.addEventListener('loadedmetadata', () => {  
+                    //ajustamos la altura y anchura del canvas al video                        
+                    canvas.width = video.videoWidth;                                       
+                    canvas.height = video.videoHeight;     
+                    //creamos la funcion donde vamos a pintar el contennido del canvas y una vez 
+                    //que lo a echo se llama a si mismo (un bucle)                               
+                    function draw() {                                                       
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);       
+                        requestAnimationFrame(draw);                                        
+                    }
+                    //llamamos ala funcion de pintar
+                    draw();                                                                 
+                });
+            })
+            .catch((err) => {                                                               
+                console.error('Error accessing the webcam:', err);                         
+            });
+    </script>
+</body>
+</html>

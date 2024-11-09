@@ -1,0 +1,77 @@
+<!DOCTYPE html>  <!-- Define el tipo de documento como HTML5 -->
+<html lang="en"> <!-- Inicia el documento HTML y especifica que el idioma es inglés -->
+<head>
+    <meta charset="UTF-8"> <!-- Establece la codificación de caracteres a UTF-8 para manejar caracteres especiales -->
+</head>
+<body>
+    <!-- Crea un elemento de video para mostrar la transmisión de la cámara web, configurado para reproducirse automáticamente -->
+    <video id="webcam" autoplay></video> 
+    <!-- Crea un lienzo donde se dibujará la imagen de la cámara -->
+    <canvas id="canvas"></canvas> 
+    <!-- Crea un segundo lienzo para mostrar la imagen procesada -->
+    <canvas id="canvas2"></canvas> 
+    <script>
+        // Obtiene el elemento de video y los dos lienzos por su ID
+        const video = document.getElementById('webcam');                                       
+        const canvas = document.getElementById('canvas');                                 
+        // Obtiene el contexto 2D del primer lienzo para poder dibujar en él
+        const contexto = canvas.getContext('2d');                                   
+        
+        const canvas2 = document.getElementById('canvas2');                                 
+        // Obtiene el contexto 2D del segundo lienzo
+        const contexto2 = canvas2.getContext('2d');                                  
+        
+        // Solicita acceso a la cámara web del usuario
+        navigator.mediaDevices.getUserMedia({ video: true })  
+            // Si se concede el acceso, se ejecuta esta función con el flujo de la cámara                         
+            .then((stream) => {       
+                // Establece la fuente del video como el flujo de la cámara                                                      
+                video.srcObject = stream;  
+                // Espera a que se carguen los metadatos del video                                                 
+                video.addEventListener('loadedmetadata', () => {                      
+                    // Establece el ancho y alto del lienzo a las dimensiones del video
+                    canvas.width = video.videoWidth;                                       
+                    canvas.height = video.videoHeight;                                     
+                    
+                    // Establece el ancho y alto del segundo lienzo a las dimensiones del video
+                    canvas2.width = video.videoWidth;                                       
+                    canvas2.height = video.videoHeight;                                     
+                    
+                    // Función para dibujar la imagen de la cámara en el lienzo
+                    function draw() { 
+                        // Dibuja la imagen del video en el primer lienzo                                                     
+                        contexto.drawImage(video, 0, 0, canvas.width, canvas.height); 
+                        // Obtiene los datos de la imagen del lienzo      
+                        var datos = contexto.getImageData(0, 0, canvas.width, canvas.height); 
+                        
+                        // Recorre cada píxel de la imagen
+                        for(let i = 0; i < datos.data.length; i += 4) {                    
+                            // Comprueba la diferencia entre el componente rojo de un píxel y el de otro píxel adyacente
+                            if(Math.abs(datos.data[i] - datos.data[i + 4]) > 20) { 
+                                // Si la diferencia es mayor a 20, establece el pixel a negro
+                                datos.data[i] = 0;  // Establece el componente rojo a 0
+                                datos.data[i + 1] = 0;  // Establece el componente verde a 0
+                                datos.data[i + 2] = 0;  // Establece el componente azul a 0
+                            } else {
+                                // Si la diferencia es menor o igual a 20, establece el pixel a blanco
+                                datos.data[i] = 255;  // Establece el componente rojo a 255
+                                datos.data[i + 1] = 255;  // Establece el componente verde a 255
+                                datos.data[i + 2] = 255;  // Establece el componente azul a 255
+                            }
+                        }
+
+                        // Pone los datos procesados en el segundo lienzo
+                        contexto2.putImageData(datos, 0, 0); 
+                        // Solicita el próximo cuadro para seguir dibujando
+                        requestAnimationFrame(draw);                                       
+                    }
+                    draw();  // Llama a la función draw para iniciar el proceso de dibujo
+                });
+            })
+            .catch((err) => {  // Si hay un error al acceder a la cámara
+                // Muestra el error en la consola
+                console.error('Error accessing the webcam:', err);                         
+            });
+    </script>
+</body>
+</html>
