@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de WebSocket</title>
+    <script>
+        window.onload = function(){
+            // Creo una nueva conexión de sockets
+            const socket = new WebSocket("ws://localhost:3000");      
+            
+            // Cuando la conexión se abre
+            socket.addEventListener("open", (event) => {                
+                console.log("Se ha abierto una conexión");               
+            });
+
+            // En el caso de que haya un error
+            socket.addEventListener("error", (event) => {              
+                console.error("WebSocket error:", event);                 
+            });
+
+            // Cuando el servidor envíe un mensaje
+            socket.addEventListener("message", (event) => {  
+                // Parseamos los datos como JSON                        
+                let datos = JSON.parse(event.data);                       
+                console.log(datos);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Prueba de WebSocket en Local</h1>
+</body>
+</html>

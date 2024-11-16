@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="Stylesheet" href="estilo.css">
+
+  </head>
+  <body>
+    <select id="seleccionajugador">
+        <option>Selecciona un Rol:</option>
+        <option value="p1">Soy el jugador 1</option>
+        <option value="p2">Soy el jugador 2</option>
+        <option value="p0">Soy un espectador</option>
+    </select>
+    <div id="tablero">
+    </div>
+    <script>
+
+        var jugador = "";
+        var coleccionfichas = [];
+
+        let selector = document.querySelector("#seleccionajugador")
+        selector.onchange = function(){
+          jugador = this.value;
+        }
+
+        //creamos una variable representando la ficha que movemos
+        var fichaseleccionada="";
+        // Selecciono el tablero
+        let tablero = document.querySelector("#tablero")  
+        // Para cada una de las 64 celdas de un tablero de damas
+        for(let i = 0;i<64;i++){   
+            // Creo un elemento que es la celda del tablero                                             
+           let elemento = document.createElement("div")  
+           // En el caso de que le toque celda blanca                        
+           
+           if((i+Math.floor(i/8))%2 == 0){  
+                // Añadele la clase css de celda blanca                                     
+                elemento.classList.add("celdablanca")                               
+           }else{  
+                // Añadele la clase css de celda negra                                                            
+                elemento.classList.add("celdanegra")                                
+           }
+           // Cuando sobre una celda haga click
+           elemento.onclick = function(e){   
+                console.log("Has hecho click en una celda");
+                // Demuestrame que conoces las coordenadas x y de la celda                         
+                console.log(e.pageX,e.pageY);
+                //si tenemos una ficha seleccionada
+                if(fichaseleccionada != ""){
+                    //solo se puede soltar la ficha si la celda esta vacia 
+                    if(elemento.innerHTML == ""){
+                        //solo si muevs la ficha a una cleda blanca 
+                        if(elemento.classList.contains('celdablanca')){
+                            //en la celda que hemos echo el click dejamos la ficha
+                            elemento.appendChild(fichaseleccionada); 
+                            //vaciamos la mano 
+                            fichaseleccionada = ""; 
+                        }
+                    }    
+                }                                
+           }
+
+           // Si se cumplen tres condiciones
+           if((i < 24 || i >= 40) && (i+Math.floor(i/8))%2 == 0){  
+             // Creo una etiqueta articulo             
+             let ficha = document.createElement("article");
+             // Cuando haga click en la ficha                      
+             ficha.onclick = function(e){ 
+                // Si hago click en la ficha ya no hago click en la celda                                      
+                e.stopPropagation();                                               
+                console.log("Has hecho click en la ficha");  
+                //para poner la ficha cuando hacemos click  
+                if(fichaseleccionada == ""){
+                    fichaseleccionada = ficha;    
+                    //para vaciar la celda de donde la hemos movido
+                    this.remove();  
+                }
+             
+             }
+             if(i < 24){ficha.classList.add("fichablanca")}
+             if(i >= 40){ficha.classList.add("fichanegra")}
+             // Añado la ficha al elemento
+             elemento.appendChild(ficha)                                        
+           }
+           // Añado la casilla al tablero
+           tablero.appendChild(elemento)                                        
+           
+        }
+        //Ejecutamos el bucle dentro de un segundo
+        var temporizador = setTimeout("bucle()",1000);
+        function bucle(){
+            let fichas = document.querySelectorAll("article");
+            //console.log(fichas);
+            let mensaje = [];
+            for(let i =0;i <fichas.length;i++){
+                mensaje.push({"clase" :fichas[i].classList[0]})
+            }
+            console.log(mensaje);
+
+
+            if(jugador == "p0"){
+                console.log("Soy espectador");
+                //cojemos el html de tablero
+                let tablero = document.querySelector("#tablero").innerHTML;
+                //y lo enviamos al servidor
+                fetch("tablero.html")
+
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(datos){
+                    document.querySelector("#tablero").innerHTML = datos;
+                })
+            }
+            if(jugador == "p1" || jugador == "p2"){
+                console.log("No soy espectador");
+                let tablero = document.querySelector("#tablero").innerHTML;
+                //y lo enviamos al servidor
+                fetch("guarda.php?datos="+encodeURI(tablero))
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(datos){
+                    console.log(datos);
+                })
+            }
+            
+            
+            //limpiamos el temporizador
+            clearTimeout(temporizador);
+            //y volvemos a ejecutar el bucle 
+            temporizador = setTimeout("bucle()",1000);
+        }
+        
+    </script>
+  </body>
+</html>

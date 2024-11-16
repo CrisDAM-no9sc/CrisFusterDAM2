@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="Stylesheet" href="estilo.css">
+
+  </head>
+  <body>
+    <select id="seleccionajugador">
+        <option>Selecciona un rol</option>
+        <option value="p1">Soy el jugador 1 (negras)</option>
+        <option value="p2">Soy el jugador 2 (blancas)</option>
+        <option value="p0">Soy un espectador</option>
+      </select>
+      <div id="tablero"></div>
+      <script>
+        var jugador = "";
+        let selector = document.querySelector("#seleccionajugador");
+  
+        // Detecta el cambio en el select de jugador
+        selector.onchange = function() {
+          jugador = this.value;
+          console.log("Rol seleccionado: ", jugador);
+        };
+  
+        // Variable global para la ficha seleccionada
+        var fichaseleccionada = "";
+  
+        let tablero = document.querySelector("#tablero");
+        for (let i = 0; i < 64; i++) {
+          let elemento = document.createElement("div");
+          if ((i + Math.floor(i / 8)) % 2 == 0) {
+            elemento.classList.add("celdablanca");
+          } else {
+            elemento.classList.add("celdanegra");
+          }
+  
+          elemento.onclick = function(e) {
+            console.log("Has hecho click en una celda");
+            if (fichaseleccionada != "") {
+              if (elemento.innerHTML == "") {
+                if (elemento.classList.contains('celdablanca')) {
+                  elemento.appendChild(fichaseleccionada);
+                  fichaseleccionada = "";
+                }
+              }
+            }
+          };
+  
+          if ((i < 24 || i >= 40) && (i + Math.floor(i / 8)) % 2 == 0) {
+            let ficha = document.createElement("article");
+            ficha.onclick = function(e) {
+              e.stopPropagation();
+              console.log("Has hecho click en la ficha");
+              if (fichaseleccionada == "") {
+                fichaseleccionada = ficha;
+                this.remove();
+              }
+            };
+            if (i < 24) ficha.classList.add("fichablanca");
+            if (i >= 40) ficha.classList.add("fichanegra");
+            elemento.appendChild(ficha);
+          }
+  
+          tablero.appendChild(elemento);
+        }
+  
+        var temporizador = setTimeout(bucle, 1000);
+      
+      function bucle() {
+        if (jugador === "p0") {
+          console.log("Soy espectador");
+          fetch("tablero.html")
+            .then(function(response) {
+              return response.text();
+            })
+            .then(function(datos) {
+              document.querySelector("#tablero").innerHTML = datos;
+            })
+            .catch(error => console.log("Error al cargar tablero:", error));
+        } else if (jugador === "p1" || jugador === "p2") {
+          console.log("No soy espectador, soy jugador");
+          let tableroEstado = document.querySelector("#tablero").innerHTML;
+          fetch("guarda.php?datos=" + encodeURIComponent(tableroEstado))
+            .then(function(response) {
+              return response.text();
+            })
+            .then(function(datos) {
+              console.log("Tablero guardado:", datos);
+            })
+            .catch(error => console.log("Error al guardar tablero:", error));
+        }
+
+        // Reiniciamos el temporizador
+        clearTimeout(temporizador);
+        temporizador = setTimeout(bucle, 1000);
+      }
+      </script>
+  </body>
+</html>

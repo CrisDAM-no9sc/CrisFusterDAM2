@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="estilo.css">
+    <title>Multiplayer Checkers Game</title>
+  </head>
+  <body>
+    <!-- Selección de rol (jugador 1, jugador 2 o espectador) -->
+    <select id="seleccionajugador">
+      <option>Selecciona un rol</option>
+      <option value="p1">Soy el jugador 1 (negras)</option>
+      <option value="p2">Soy el jugador 2 (blancas)</option>
+      <option value="p0">Soy un espectador</option>
+    </select>
+
+    <!-- Div que representa el tablero -->
+    <div id="tablero"></div>
+
+    <script>
+      // Variables globales para almacenar el rol del jugador y la ficha seleccionada
+      var jugador = "";
+      var fichaseleccionada = null; // Ficha actualmente seleccionada
+      var temporizador = null;      // Temporizador para el bucle de actualización
+
+      // Evento que define el rol del jugador cuando se selecciona una opción en el dropdown
+      let selector = document.querySelector("#seleccionajugador");
+      selector.onchange = function () {
+        jugador = this.value;
+      };
+
+      // Inicialización del tablero creando 64 celdas
+      let tablero = document.querySelector("#tablero");
+      for (let i = 0; i < 64; i++) {
+        let elemento = document.createElement("div");
+        elemento.setAttribute("id", "celda" + i); // Asigna un id único a cada celda
+
+        // Alterna colores entre blanco y negro para las celdas del tablero
+        if ((i + Math.floor(i / 8)) % 2 == 0) {
+          elemento.classList.add("celdablanca");
+        } else {
+          elemento.classList.add("celdanegra");
+        }
+
+        // Evento de clic en cada celda para permitir mover fichas
+        elemento.onclick = function (e) {
+          if (fichaseleccionada != null) {
+            if (elemento.innerHTML == "") {
+              // Solo permite mover a celdas blancas
+              if (elemento.classList.contains("celdablanca")) {
+                elemento.appendChild(fichaseleccionada); // Mueve la ficha a la nueva celda
+                fichaseleccionada = null; // Des-selecciona la ficha
+                enviarEstadoJuego(); // Envía el estado actualizado al servidor
+              }
+            }
+          }
+        };
+
+        // Creación de fichas blancas y negras en sus posiciones iniciales
+        if ((i < 24 || i >= 40) && (i + Math.floor(i / 8)) % 2 == 0) {
+          let ficha = document.createElement("article");
+          ficha.onclick = function (e) {
+            e.stopPropagation();
+            if (fichaseleccionada == null) {
+              // Solo permite seleccionar la ficha si es del jugador correcto o espectador
+              if (
+                (jugador === "p1" && ficha.classList.contains("fichanegra")) ||
+                (jugador === "p2" && ficha.classList.contains("fichablanca")) ||
+                jugador === "p0"
+              ) {
+                fichaseleccionada = ficha;
+                this.parentElement.removeChild(this); // Remueve la ficha de la celda actual
+              } else {
+                alert("No es tu turno o no puedes mover esta ficha.");
+              }
+            }
+          };
+          // Define el color de las fichas según su posición
+          if (i < 24) {
+            ficha.classList.add("fichablanca");
+          }
+          if (i >= 40) {
+            ficha.classList.add("fichanegra");
+          }
+          elemento.appendChild(ficha); // Añade la ficha a la celda
+        }
+        tablero.appendChild(elemento); // Añade la celda al tablero
+      }
+
+      /////////////////////////////////////////////////  MOVER LA FICHA ///////////////////////////////////////////
+
+      // Función para mover la ficha (envía el movimiento al servidor)
+      function moverFicha(origenId, destinoId) {
+        if (fichaseleccionada) {
+          // Enviar el movimiento al servidor (origen y destino)
+          let movimiento = {
+            jugador: jugador,  // El jugador actual
+            origen: origenId,  // ID de la celda origen
+            destino: destinoId, // ID de la celda destino
+          };
+
+          fetch("http://localhost:5000/move", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(movimiento),
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === "success") {
+                // Si el movimiento fue exitoso, actualiza el tablero con el nuevo estado
+                actualizarEstadoJuego(data.board);
+              } else {
+                alert("Movimiento no válido");
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+            });
+
+          // Limpiar la selección de la ficha
+          fichaseleccionada = null;
+        }
+      }
+
+      /////////////////////////////////////// ACTUALIZAR ESTADO DEL JUEGO  ///////////////////////////////////////////
+      // Actualiza el estado del juego local en función de 'mensaje' recibido del servidor
+      function actualizarEstadoJuego(mensaje) {
+            // Verifica si el mensaje contiene el array 'tablero'
+          if (!mensaje || !Array.isArray(mensaje.tablero)) {
+              console.error("Error: El mensaje no tiene un formato válido.");
+              return;
+          }
+
+          // Limpia el tablero
+          let celdas = document.querySelectorAll("#tablero div");
+          celdas.forEach((celda) => {
+              celda.innerHTML = ""; // Limpia todas las fichas del tablero
+          });
+
+          // Coloca las fichas en las celdas correspondientes
+          mensaje.tablero.forEach((item) => {
+              let ficha = document.createElement("article");
+              ficha.classList.add(item.clase);
+              ficha.onclick = function (e) {
+                  e.stopPropagation();
+                  if (fichaseleccionada == null) {
+                      if (
+                          (jugador === "p1" && ficha.classList.contains("fichanegra")) ||
+                          (jugador === "p2" && ficha.classList.contains("fichablanca")) ||
+                          jugador === "p0"
+                      ) {
+                          fichaseleccionada = ficha;
+                          this.parentElement.removeChild(this);
+                      } else {
+                          alert("No es tu turno o no puedes mover esta ficha.");
+                      }
+                  }
+              };
+              document.getElementById(item.celda).appendChild(ficha);
+          });
+      }
+
+      ///////////////////////////////////////////////// ENVIAR ESTADO DEL JUEGO  ///////////////////////////////////////////
+      // Envía el estado actual del juego al servidor
+      function enviarEstadoJuego() {
+        if (jugador === "p1" || jugador === "p2") {
+          let mensaje = obtenerEstadoJuego();
+          fetch("http://localhost:5000/update_board", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mensaje: mensaje,  // Estado del tablero
+              player: jugador,   // Jugador que envía el estado
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data.message); // Muestra mensaje en la consola del servidor
+            })
+            .catch((error) => {
+              console.error("Error updating board:", error); // En caso de error
+            });
+        }
+      }
+
+      ////////////////////////////////////////////OBTENEMOS ESTADO DEL SERVIDOR  ///////////////////////////////////////////
+      // Obtiene el estado del juego del servidor y lo compara con el local
+      function obtenerEstadoDelServidor() {
+          fetch("http://localhost:5000/get_board")
+              .then((response) => response.json())
+              .then((data) => {
+                  let mensajeServidor = data.mensaje || []; // Si 'mensaje' no está definido, usa un array vacío
+                  let estadoLocal = obtenerEstadoJuego();
+
+                  // Solo actualiza si hay diferencias entre el servidor y el estado local
+                  if (JSON.stringify(estadoLocal) !== JSON.stringify(mensajeServidor)) {
+                      actualizarEstadoJuego(mensajeServidor);
+                  }
+              })
+              .catch((error) => {
+                  console.error("Error fetching board state:", error); // En caso de error al obtener el estado del servidor
+              });
+      }
+
+      // Bucle principal para actualizar el estado del juego cada segundo
+      function bucle() {
+        obtenerEstadoDelServidor(); // Consulta el servidor para obtener el estado más reciente
+        temporizador = setTimeout(bucle, 1000); // Repite el bucle cada segundo
+      }
+
+      // Inicia el bucle principal al seleccionar un rol de jugador
+      selector.onchange = function () {
+        jugador = this.value;
+        if (temporizador === null) {
+          bucle(); // Llama al bucle si no está en ejecución
+        }
+      };
+    </script>
+  </body>
+</html>

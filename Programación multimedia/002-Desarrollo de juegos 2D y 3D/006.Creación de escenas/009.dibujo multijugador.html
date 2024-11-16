@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de WebSocket</title>
+</head>
+<body>
+    <h1>Prueba de WebSocket en Local</h1>
+    <input id="nombre" placeholder="Introduce nombre">
+    <input id="color" type="color">
+    <canvas></canvas>
+
+    <script>
+        //////////////////////////////////   Variables globales     ////////////////////////////
+
+        //definimos el jugador inicial como objeto
+        let jugador = {
+            posx: 256,
+            posy: 256,
+            color: "blue"
+        };
+        //para definir el paso de la velocidad
+        const paso = 2;
+        //selecionamos el lienzo en e que vamos a dibujar 
+        const lienzo = document.querySelector("canvas");
+        const contexto = lienzo.getContext("2d");
+        //creamos una conexion de sockets
+        const socket = new WebSocket("ws://localhost:3000");
+
+        /////////////////////////    Definir el tamaño del canvas   ////////////////////////////
+
+        lienzo.width = 1024;
+        lienzo.height = 1024;
+
+        /////////////////////////////////////    Funciones      ///////////////////////////////
+
+        function inicializarSocket() {
+            socket.addEventListener("open", () => {
+                console.log("Se ha abierto una conexión");
+                socket.send(JSON.stringify({ mensaje: "hola" }));
+            });
+
+            socket.addEventListener("error", (event) => {
+                console.error("WebSocket error:", event);
+            });
+
+            socket.addEventListener("message", (event) => {
+                let datos = JSON.parse(event.data);
+                console.log("El servidor dice:", datos);
+                dibujaJugador(datos.posx, datos.posy, datos.color);
+            });
+        }
+        //Funcion para dibujar a los personajes 
+        function dibujaJugador(x, y, color) {
+            //aqui definimos el color del borrado 
+            contexto.fillStyle = "rgba(255,255,255,0.05)";
+            //borramos difuminadamente el color del trazo
+            contexto.fillRect(0, 0, lienzo.width, lienzo.height);
+            //para configurar el color de la brocha
+            contexto.fillStyle = color;
+            ///para empezar a dibujar 
+            contexto.beginPath();
+            //para dibujar un circulo y rellenarlo con fill()
+            contexto.arc(x, y, 3, 0, Math.PI * 2);
+            contexto.fill();
+        }
+        ///////////////// FUNCION DE CONTROLES DE TECLADO /////////////////
+        function moverJugador(event) {
+            //en cada caso lo que estamos haciendo es actulizar la posicion del personaje
+            switch (event.key) {
+                case 'w': case 'W': jugador.posy -= paso; break;
+                case 'a': case 'A': jugador.posx -= paso; break;
+                case 's': case 'S': jugador.posy += paso; break;
+                case 'd': case 'D': jugador.posx += paso; break;
+            }
+            //aqui dibujamos al personaje con la posiocion actualizada
+            dibujaJugador(jugador.posx, jugador.posy, jugador.color);
+            //enviamo la posicion y el color al retso de los jugadores
+            socket.send(JSON.stringify(jugador));
+        }
+
+        function cambiarColor() {
+            jugador.color = this.value;
+        }
+
+        ////////////////////////////    Eventos    //////////////////////////////////////////
+
+        document.addEventListener('keydown', moverJugador);
+        document.querySelector("#color").onchange = cambiarColor;
+
+        // Inicializar WebSocket
+        inicializarSocket();
+
+        // Dibuja el jugador inicialmente
+        dibujaJugador(jugador.posx, jugador.posy, jugador.color);
+    </script>
+</body>
+</html>

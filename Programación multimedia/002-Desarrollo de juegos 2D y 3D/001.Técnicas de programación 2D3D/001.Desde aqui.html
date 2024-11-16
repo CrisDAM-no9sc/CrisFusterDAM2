@@ -1,0 +1,96 @@
+<!-- AQUI ES DONDE LO DEJEMOS EN COMPORTAMIENTOS CON DEL RATÓN EN JUEGO 3D CON LA LIBRERIA THREE.JS -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js Simple Example</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      // En primer lugar creo una escena 3D
+      const escena = new THREE.Scene();
+
+      // Cámara, 75 grados, proporción como la pantalla, recorte cercano 0.1, lejano 1000
+      const camara = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );
+
+      // Creo un renderizador que usa WebGL(aceleracion grafica que existe )
+      const representador = new THREE.WebGLRenderer();
+
+      // Establezco el tamaño del renderizador
+      representador.setSize(
+        window.innerWidth, 
+        window.innerHeight
+      );
+    //////////////////////////////////////////  CREAMOS OBJETOS EN PANTALLA //////////////////////////////////////////////////////////////
+      // Y lo añado al body
+      document.body.appendChild(representador.domElement);
+
+      ///////////////////////////////////////////   CREAMOS EL CUBO  ////////////////////////////////////////////////////////////////////
+      // Instancio una geometría vacía
+      const geometria = new THREE.BoxGeometry(); 
+      // Creo un nuevo material                          
+      const material = new THREE.MeshPhongMaterial({ color: 0xff0000 }); 
+      // Creo un nuevo cubo uniendo la geometría con el material 
+      const cubo = new THREE.Mesh(geometria, material);                    
+      escena.add(cubo);
+    ///////////////////////////////////////////   CREAMOS EL CUBO  ////////////////////////////////////////////////////////////////////    
+    /////////////////////////////////////////   CREAMOS LA ESFERA  ///////////////////////////////////////////////////////////////////
+      const geometriaesfera = new THREE.SphereGeometry(0.5, 32, 16);
+      const materialesfera = new THREE.MeshPhongMaterial({ color: 0x00ff00 }); 
+      const esfera = new THREE.Mesh(geometriaesfera,materialesfera)
+      esfera.position.x = 2
+      escena.add(esfera); 
+    /////////////////////////////////////////   CREAMOS LA ESFERA  ///////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////// CREAMOS LA LUZ ///////////////////////////////////////////////////////////
+      const pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
+      //LA LUZ ESTA ORIENTADA VERTICALMENTE
+      pointLight.position.set( 0, 5, 0 );
+      escena.add( pointLight );
+
+      const light = new THREE.AmbientLight( 0x404040 ); 
+      escena.add( light );
+    //////////////////////////////////////////////////////// CREAMOS LA LUZ ///////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////// COMPORTAMIENTO DE RATÓN ///////////////////////////////////////////////////////////////
+    x = 1;
+    y = 0;
+    document.onkeydown = function(e){
+        
+        if(e.key == "ArrowUp"){y+= 0.1}
+        if(e.key == "ArrowDown"){y-= 0.1}
+        if(e.key == "ArrowLeft"){x-= 0.1} 
+        if(e.key == "ArrowRight"){x+= 0.1}
+      }
+
+    ////////////////////////////////////////// COMPORTAMIENTO DE RATÓN ///////////////////////////////////////////////////////////////
+    //movemos la camara hacia atras 
+      camara.position.z = 5;
+   
+        function animar() {
+            esfera.position.x = x;
+            esfera.position.y = y;
+            // Llama a la función de animación en el siguiente frame
+            requestAnimationFrame(animar); 
+            // Renderizar la escena desde la perspectiva de la cámara
+            representador.render(escena, camara);
+        }
+      // Llamamos a la funcion para iniciarla
+      animar();
+    </script>
+  </body>
+</html>

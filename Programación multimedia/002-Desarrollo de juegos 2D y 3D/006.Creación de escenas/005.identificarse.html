@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de WebSocket</title>
+    <script>
+        window.onload = function(){
+            // Creo una nueva conexión de sockets
+            const socket = new WebSocket("ws://localhost:3000");      
+            
+            // Cuando la conexión se abre
+            socket.addEventListener("open", (event) => {                
+                console.log("Se ha abierto una conexión"); 
+                socket.send(JSON.stringify({"mensaje": "hola"}));              
+            });
+
+            // En el caso de que haya un error
+            socket.addEventListener("error", (event) => {              
+                console.error("WebSocket error:", event);                 
+            });
+
+            // Cuando el servidor envíe un mensaje
+            socket.addEventListener("message", (event) => {  
+                // Parseamos los datos como JSON                       
+                let datos = JSON.parse(event.data); 
+                console.log("El servidor dice:");                      
+                console.log(datos);
+            });
+            document.querySelector("button").onclick = function(){
+                //obtenemos el valor del campo de texto nombre
+                let usuraio = document.querySelector("#nombre").value;
+                // y el del mensaje 
+                let mensaje = document.querySelector("#mensaje").value;
+                //se crea un objeto de java script con dos propiedades 
+                let objeto = {
+                    "mensaje" : mensaje,
+                    "nombre" : usuraio
+                }
+                //enviamos el objeto en formsao json, y lo convierte en una cadena antes de enviarlo 
+                socket.send(JSON.stringify(objeto));
+                //y se vacia el campo de entrada del mensaje
+                document.querySelector("#mensaje").value = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Prueba de WebSocket en Local</h1>
+    <input id="nombre" placeholder="Introduce nombre">
+    <input id="mensaje" placeholder="Introduce el mensaje">
+    <button>Enviar</button>
+</body>
+</html>

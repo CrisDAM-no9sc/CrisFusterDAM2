@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de WebSocket</title>
+    <script>
+        window.onload = function(){
+            // Creo una nueva conexión de sockets
+            const socket = new WebSocket("ws://localhost:3000");      
+            
+            // Cuando la conexión se abre
+            socket.addEventListener("open", (event) => {                
+                console.log("Se ha abierto una conexión"); 
+                //el mensaje es un objeto de javascript que se convierte en una cadena JSON
+                socket.send(JSON.stringify({"mensaje": "hola"}));              
+            });
+
+            // En el caso de que haya un error
+            socket.addEventListener("error", (event) => {              
+                console.error("WebSocket error:", event);                 
+            });
+
+            // Cuando el servidor envíe un mensaje
+            socket.addEventListener("message", (event) => {  
+                // convierte el menajse en un objeto                     
+                let datos = JSON.parse(event.data); 
+                console.log("El servidor dice:");                      
+                console.log(datos);
+            });
+            //aqui es donde vamos a enviar los mensajes a traves de un input y un boton
+            // establecemos un manejo de eventos , cuando el ususario haga clic se ejecutara la funcion
+            document.querySelector("button").onclick = function(){
+                //obtenemos el valor del campo (el mensaje que el usuario haya escrito)
+                let mensaje = document.querySelector("input").value;
+                //enviamos el mensaje al servidor 
+                socket.send(JSON.stringify({"mensaje": mensaje}));
+                //y despues de enviar el mensaje el campo de entrada se borra
+                document.querySelector("input").value = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Prueba de WebSocket en Local</h1>
+    <input>
+    <button>Enviar</button>
+</body>
+</html>

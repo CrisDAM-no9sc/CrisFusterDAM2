@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba de WebSocket</title>
+    <script>
+        let jugador = {
+            "posx": 256,
+            "posy": 256,
+            "color": "blue"
+        };
+
+        window.onload = function() {
+            // Creo una nueva conexión de sockets
+            const socket = new WebSocket("ws://localhost:3000");      
+            
+            // Cuando la conexión se abre
+            socket.addEventListener("open", (event) => {                
+                console.log("Se ha abierto una conexión"); 
+                socket.send(JSON.stringify({"mensaje": "hola"}));              
+            });
+
+            // En el caso de que haya un error
+            socket.addEventListener("error", (event) => {              
+                console.error("WebSocket error:", event);                 
+            });
+
+            // Cuando el servidor envíe un mensaje
+            socket.addEventListener("message", (event) => {  
+                // Parseamos los datos como JSON                       
+                let datos = JSON.parse(event.data); 
+                console.log("El servidor dice:");                      
+                console.log(datos);
+            });
+            // Seleccionar el canvas y el contexto 2D después de que se cargue la página
+            const lienzo = document.querySelector("canvas");
+            const contexto = lienzo.getContext("2d");
+
+            // Definir el tamaño del canvas
+            lienzo.width = 1024;
+            lienzo.height = 1024;
+
+            // Dibuja al jugador en la posición inicial
+            dibujaJugador();
+
+            // Función para dibujar al jugador en el canvas
+            function dibujaJugador() {
+                // Dibujar el jugador en su posición actual, sin limpiar el lienzo para crear el rastro
+                contexto.fillStyle = jugador.color;
+                contexto.beginPath();
+                contexto.arc(jugador.posx, jugador.posy, 20, 0, Math.PI * 2);
+                contexto.fill();
+            }
+
+            // Evento para mover al jugador con las teclas
+            document.addEventListener('keydown', function(event) {
+                switch (event.key) {
+                    case 'w':
+                    case 'W':
+                        jugador.posy -= 10;
+                        break;
+                    case 'a':
+                    case 'A':
+                        jugador.posx -= 10;
+                        break;
+                    case 's':
+                    case 'S':
+                        jugador.posy += 10;
+                        break;
+                    case 'd':
+                    case 'D':
+                        jugador.posx += 10;
+                        break;
+                }
+                dibujaJugador();
+            });
+        };
+
+    </script>
+</head>
+<body>
+    <h1>Prueba de WebSocket en Local</h1>
+    <input id="nombre" placeholder="Introduce nombre">
+    <input id="color" type="color">
+    <canvas></canvas>
+</body>
+</html>

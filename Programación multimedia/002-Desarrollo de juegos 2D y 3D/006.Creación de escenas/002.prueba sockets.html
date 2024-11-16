@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+
+                window.onload = function(){
+                    // Creo una nueva conexión de sockets
+                    const socket = new WebSocket("wss://jotauve.es:3000");      
+                    // Cuando alguien me abre una conexion
+                    socket.addEventListener("open", (event) => {                
+                    console.log("Se ha abierto una conexion");               
+                    });
+                    // en el caso de que haya un error
+                    socket.addEventListener("error", (event) => {   
+                    // intenta decirme donde esta el error            
+                    console.error("WebSocket error:", event);                 
+                    });
+                    // Cuando el servidor envíe un mensjae 
+                    socket.addEventListener("message", (event) => {  
+                    // Datos es lo que me envie el servidor, pero pasalo a json                        
+                    let  datos = JSON.parse(event.data)                       
+                    console.log(datos)
+                    });
+                }
+
+         </script>
+    </head>
+    <body></body>
+</html>

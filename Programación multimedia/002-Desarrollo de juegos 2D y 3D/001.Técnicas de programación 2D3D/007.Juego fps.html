@@ -1,0 +1,131 @@
+<!-- AQUI ES DONDE LO DEJEMOS EN COMPORTAMIENTOS CON DEL RATÓN EN JUEGO 3D CON LA LIBRERIA THREE.JS -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js Simple Example</title>
+    <style>
+      body, html {
+        margin: 0;padding:0px;overflow:hidden;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      ///////////////////////////////// En primer lugar creo una escena 3D  //////////////////////////////////////////////
+      const escena = new THREE.Scene();
+      escena.background = new THREE.Color(0xd5e9f1);
+
+
+      // Cámara, 75 grados, proporción como la pantalla, recorte cercano 0.1, lejano 1000
+      const camara = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+      );
+
+      // Creo un renderizador que usa WebGL(aceleracion grafica que existe )
+      const representador = new THREE.WebGLRenderer();
+
+      // Establezco el tamaño del renderizador
+      representador.setSize(
+        window.innerWidth, 
+        window.innerHeight
+      );
+
+    /////////////////////////////////////////////    CREAMOS TEXTURAS   /////////////////////////////////////////////////////
+      const cargaTextura = new THREE.TextureLoader();
+      const texturasuelo = cargaTextura.load('suelo.jpg');
+
+
+      const cargaTexturaEsfera = new THREE.TextureLoader();
+      const texturaesfera = cargaTexturaEsfera.load('fondo.jpg');
+
+    /////////////////////////////////////////////    CREAMOS TEXTURAS   /////////////////////////////////////////////////////
+    //////////////////////////////////////////  CREAMOS OBJETOS EN PANTALLA /////////////////////////////////////////////////
+      // Y lo añado al body
+      document.body.appendChild(representador.domElement);
+    //********************/      CREAMOS EL PLANO      /*************************// 
+      //instanciamos una geometria de plano
+      const geometriaplano = new THREE.PlaneGeometry(5,5); //para que sea mas grande añadimos el 2,2
+      //creamos un nuevo material que va a aser de color verde            
+      const materialplano = new THREE.MeshPhongMaterial({ map: texturasuelo }); 
+       // Creo un nuevo cubo uniendo la geometría con el material 
+      const plano = new THREE.Mesh(geometriaplano, materialplano);  
+      //en la escena añadimos el plano                  
+      escena.add(plano);
+      //Rotamos el pnao para que se vea -90 grados
+      plano.rotation.x = -Math.PI/2
+
+    //********************/      CREAMOS EL PLANO      /*************************// 
+    //********************/      CREAMOS UN CUBO      /*************************//
+      
+      const geometria = new THREE.BoxGeometry();                        
+      const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+      const cubo = new THREE.Mesh(geometria, material);                    
+      escena.add(cubo);
+      cubo.position.y = 0.5;
+    //********************/      CREAMOS EL CUBO      /*************************//
+    //********************/      CREAMOS LA ESFERA   /*************************//
+
+      const geometriaesfera = new THREE.SphereGeometry(0.5, 32, 16);
+      const materialesfera = new THREE.MeshPhongMaterial({ color: 0x00ff00 }); 
+      const esfera = new THREE.Mesh(geometriaesfera,materialesfera)
+      esfera.position.x = 2;
+      escena.add(esfera); 
+
+    //********************/      CREAMOS LA ESFERA   /*************************//
+    //********************/      ENTORNO ESFERICO   /*************************// 
+
+    const entornoesferico = new THREE.SphereGeometry(30, 32, 16);
+    const materialesfericoentorno = new THREE.MeshBasicMaterial({ map: texturaesfera, side: THREE.BackSide });
+    const esferaentorno = new THREE.Mesh(entornoesferico, materialesfericoentorno);
+    escena.add(esferaentorno); 
+
+    //////////////////////////////////////////  CREAMOS OBJETOS EN PANTALLA //////////////////////////////////////////////////
+    //////////////////////////////////////////////////////// CREAMOS LA LUZ //////////////////////////////////////////////////
+      const pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
+      //LA LUZ ESTA ORIENTADA VERTICALMENTE
+      pointLight.position.set( 0, 5, 0 );
+      escena.add( pointLight );
+
+      const light = new THREE.AmbientLight( 0x404040 ); 
+      escena.add( light );
+    //////////////////////////////////////////////////////// CREAMOS LA LUZ ///////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////// COMPORTAMIENTO DE RATÓN ///////////////////////////////////////////////////////////////
+    x = 1;
+    y = 0;
+    document.onkeydown = function(e){
+        
+        if(e.key == "ArrowUp"){y -= 0.1}
+        if(e.key == "ArrowDown"){y+= 0.1}
+        if(e.key == "ArrowLeft"){x-= 0.1} 
+        if(e.key == "ArrowRight"){x+= 0.1}
+      }
+
+    ////////////////////////////////////////// COMPORTAMIENTO DE RATÓN ///////////////////////////////////////////////////////////////
+    //movemos la camara hacia atras 
+      camara.position.z = 5;
+      //añadimos el enfoque un poco mas hacia arriba
+      camara.position.y = 2;
+   
+        function animar() {
+            camara.position.x = x;
+            camara.position.z = y;
+            // Llama a la función de animación en el siguiente frame
+            requestAnimationFrame(animar); 
+            // Renderizar la escena desde la perspectiva de la cámara
+            representador.render(escena, camara);
+        }
+      // Llamamos a la funcion para iniciarla
+      animar();
+    </script>
+  </body>
+</html>

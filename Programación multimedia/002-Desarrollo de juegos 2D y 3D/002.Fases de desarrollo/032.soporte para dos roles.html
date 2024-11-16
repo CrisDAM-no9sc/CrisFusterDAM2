@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="Stylesheet" href="estilo.css">
+  </head>
+  <body>
+   <!-- Desplegable para seleccionar el rol del jugador (Jugador 1, Jugador 2 o Espectador) -->
+   <select id="seleccionajugador">
+    <option>Selecciona un rol</option>
+    <option value="p1">Soy el jugador 1 (negras)</option>
+    <option value="p2">Soy el jugador 2 (blancas)</option>
+    <option value="p0">Soy un espectador</option>
+   </select>
+
+   <!-- Contenedor donde se generará el tablero -->
+    <div id="tablero">
+    </div>
+
+    <script>
+        // Almacena el rol seleccionado (Jugador 1, Jugador 2 o Espectador)
+        var jugador = "";               
+        // Por defecto, el Jugador 1 (negras) comienza el juego
+        var turnoActual = "p1";         
+        
+        // Selecciona el elemento del desplegable para elegir el rol
+        let selector = document.querySelector("#seleccionajugador");
+        selector.onchange = function() {
+          // Actualiza la variable 'jugador' con el rol seleccionado
+          jugador = this.value;         
+          // Inicia el bucle de juego después de seleccionar un rol
+          bucle();                      
+        };
+        // Variable que guarda la ficha seleccionada (si hay alguna)
+        var fichaseleccionada = "";     
+        let tablero = document.querySelector("#tablero");
+
+        // Función para crear el tablero e inicializarlo
+        function crearTablero() {
+             // Itera para cada celda en un tablero de 8x8
+            for(let i = 0; i < 64; i++) {   
+                // Crea cada celda del tablero
+                let elemento = document.createElement("div"); 
+
+                // Determina el color de la celda (blanca o negra) en función de su posición
+                if((i + Math.floor(i / 8)) % 2 == 0) {
+                    // Agrega la clase de celda blanca
+                    elemento.classList.add("celdablanca");  
+                } else {
+                     // Agrega la clase de celda negra
+                    elemento.classList.add("celdanegra");  
+                }
+
+                // Evento de clic en la celda: Mueve una ficha si es el turno del jugador
+                elemento.onclick = function(e) {
+                    // Solo mueve si es el turno del jugador
+                    if(fichaseleccionada != "" && turnoActual == jugador) {  
+                        // Verifica que la celda esté vacía
+                        if(elemento.innerHTML == "") {                        
+                            // Permite el movimiento solo a una celda blanca
+                            if(elemento.classList.contains('celdablanca')) {  
+                                // Coloca la ficha en la celda seleccionada
+                                elemento.appendChild(fichaseleccionada);     
+                                // Borra la ficha seleccionada
+                                fichaseleccionada = "";                      
+                                // Guarda el estado actualizado del tablero
+                                guardarTablero();                            
+                                // Cambia el turno tras el movimiento
+                                cambiarTurno();                              
+                            }
+                        }
+                    }
+                };
+
+                // Inicializa las fichas en el tablero
+                if((i < 24 || i >= 40) && (i + Math.floor(i / 8)) % 2 == 0) {
+                    // Crea una ficha
+                    let ficha = document.createElement("article");  
+                    // Evento de clic en la ficha
+                    ficha.onclick = function(e) {                  
+                        // Previene que el clic en la ficha active el clic en la celda
+                        e.stopPropagation();                       
+                        // Solo recoge la ficha si es el turno del jugador
+                        if(fichaseleccionada == "" && turnoActual == jugador) {  
+                            // Selecciona la ficha
+                            fichaseleccionada = ficha;             
+                            // Elimina la ficha de la celda original
+                            this.remove();                         
+                        }
+                    };
+                    // Asigna el color de la ficha en función de la fila de inicio
+                    if(i < 24) { ficha.classList.add("fichablanca"); }
+                    if(i >= 40) { ficha.classList.add("fichanegra"); }
+                    // Agrega la ficha a la celda
+                    elemento.appendChild(ficha);                    
+                }
+                // Agrega la celda al tablero
+                tablero.appendChild(elemento);                      
+            }
+        }
+
+        // Función para guardar el estado del tablero y el turno actual en el servidor
+        function guardarTablero() {
+            let tableroHTML = document.querySelector("#tablero").innerHTML;
+            fetch("guarda.php?datos=" + encodeURI(tableroHTML) + "&turno=" + turnoActual)
+            .then(response => response.text())
+            // Muestra un mensaje de éxito en la consola
+            .then(datos => console.log("Tablero guardado:", datos));  
+        }
+
+        // Función para cargar el estado del tablero desde el servidor
+        function cargarTablero() {
+            fetch("tablero.html")
+            .then(response => response.text())
+            .then(datos => {
+                // Separa el estado del tablero de la información del turno
+                let partes = datos.split("<!--TURN-->");  
+                // Carga el estado del tablero
+                document.querySelector("#tablero").innerHTML = partes[0];  
+                // Actualiza el turno actual
+                turnoActual = partes[1]; 
+                // Reasigna los eventos a las fichas cargadas                                 
+                asignarEventosFichas();  
+            });
+        }
+
+        // Función para reasignar los eventos de las fichas después de cargar el estado
+        function asignarEventosFichas() {
+            let fichas = document.querySelectorAll("#tablero article");
+            fichas.forEach(ficha => {
+                ficha.onclick = function(e) {
+                    e.stopPropagation();
+                    if(fichaseleccionada == "" && turnoActual == jugador) {
+                        fichaseleccionada = ficha;
+                        this.remove();
+                    }
+                };
+            });
+        }
+
+        // Función para alternar los turnos entre el Jugador 1 y el Jugador 2
+        function cambiarTurno() {
+            // Alterna los turnos
+            turnoActual = (turnoActual == "p1") ? "p2" : "p1";  
+        }
+
+        // Bucle principal del juego: actualiza continuamente el estado del tablero
+        var temporizador;
+        function bucle() {
+            // Carga el estado más reciente del tablero desde el servidor cada segundo
+            cargarTablero();            
+            // Si no es espectador, verifica de quién es el turno
+            if (jugador != "p0") {      
+                if (turnoActual != jugador) {
+                    // Muestra un mensaje si es el turno del otro jugador
+                    console.log("Es el turno del otro jugador.");  
+                }
+            }
+            clearTimeout(temporizador);
+            temporizador = setTimeout(bucle, 1000);  // Repite cada segundo
+        }
+
+        // Inicializa el tablero creando todas las celdas y fichas
+        crearTablero();
+    </script>
+  </body>
+</html>
