@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <main>
+      <section></section>
+      <input id="mensaje">
+    </main>
+    <script>
+      function bucle(){
+        fetch("http://127.0.0.1:5001/dame")  // Asegúrate de que este es el puerto correcto
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+
+            .then(function(datos) {
+                let seccion = document.querySelector("section");
+                seccion.innerHTML = "";
+                datos.forEach(function(dato) {
+                    seccion.innerHTML += dato.mensaje + "<br>";
+                });
+            })
+
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+            
+            clearTimeout(temporizador)
+            temporizador = setTimeout("bucle()",1000)
+        }
+      
+      var temporizador = setTimeout("bucle()",1000)
+    </script>
+  </body>
+</html>

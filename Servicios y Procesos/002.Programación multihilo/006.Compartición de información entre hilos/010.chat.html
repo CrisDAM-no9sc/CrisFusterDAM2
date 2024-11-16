@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <main>
+      <!-- Sección vacía donde se mostrarán los mensajes -->
+      <section></section>
+      <!-- Campo de entrada donde el usuario puede escribir un mensaje -->
+      <input id="mensaje">
+    </main>
+    <script>
+
+     ///////////////////////////////// BUCLE DE LECTURA ///////////////////////////////////////
+      function bucle(){
+        // Hacemos la peticion HTTP GET a la URL para obtener los datos
+        fetch("http://127.0.0.1:5001/dame")  
+            //Manejamos la respuesta del servidor
+            .then(function(response) {
+                //verifica si la respuesta es correcta y si no lo es manda un error
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // convierte la respuesta en JSON
+                return response.json();
+            })
+            //manejamos los datos recibidos 
+            .then(function(datos) {
+                let seccion = document.querySelector("section");
+                //se limpia el contenido de la seccion
+                seccion.innerHTML = "";
+                //iteramos sobre cada mensaje y se agrega al html
+                datos.forEach(function(dato) {
+                    // Agrega cada mensaje a la sección, separado por un salto de línea
+                    seccion.innerHTML += dato.mensaje + "<br>";
+                });
+            })
+            // Captura cualquier error que ocurra durante la solicitud
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+            
+            clearTimeout(temporizador)
+            temporizador = setTimeout("bucle()",1000)
+    /////////////////////////////////     ENVÍO DE MENSAJES      //////////////////////////////////////////////////
+            // Se selecciona el campo de entrada para enviar mensajes.
+            let entrada = document.querySelector("input")
+            // Definimos una funciona que se ejecuta cuando el campo de entrada cambia                                     
+            entrada.onchange = function(){     
+                //codificamos el texto para la url donde se envia el mensaje                                               
+                fetch("http://127.0.0.1:5001/toma?mensaje="+encodeURI(this.value))          
+            }
+        }
+      
+      var temporizador = setTimeout("bucle()",1000)
+    </script>
+  </body>
+</html>

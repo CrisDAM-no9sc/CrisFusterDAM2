@@ -1,0 +1,14 @@
+Al usuarioMarcos le ha tocado la tarea: Sacar la basura
+
+Al usuarioCarlos le ha tocado la tarea: Hacer la compra
+
+Al usuarioAntonio le ha tocado la tarea: Ordenar
+
+Al usuario le ha tocado la tarea: Lavar los platos
+
+Al usuariojuan le ha tocado la tarea: Limpiar la casa
+
+Al usuario Luis le ha tocado la tarea: Jugar
+
+Al usuario Masrcos le ha tocado la tarea: Pasear
+

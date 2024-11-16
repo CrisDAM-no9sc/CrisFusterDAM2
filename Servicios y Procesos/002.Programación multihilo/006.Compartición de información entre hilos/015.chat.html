@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      /* Estilo para la sección que mostrará los mensajes */
+      section {
+        width: 400px;
+        height: 800px;
+        border: 1px solid grey;
+        overflow-y: scroll; /* Permite el desplazamiento vertical si hay mucho contenido */
+      }
+      /* Estilo para cada mensaje */
+      article {
+        box-sizing: border-box;
+        padding: 20px;
+        background: lightgreen;
+        border-radius: 0px 10px 10px 10px;
+        margin: 10px;
+        width: 80%;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Campo de entrada para el usuario -->
+      <input id="usuario" placeholder="Introduce tu usuario">
+      <!-- Sección vacía donde se mostrarán los mensajes -->
+      <section></section>
+      <!-- Campo de entrada donde el usuario puede escribir un mensaje -->
+      <input id="mensaje" placeholder="Escribe tu mensaje aquí">
+    </main>
+    <script>
+      ///////////////////////////////// BUCLE DE LECTURA ///////////////////////////////////////
+      // Defino una función llamada "bucle" para leer mensajes de forma continua
+      function bucle() { 
+        // Realizo una petición HTTP GET a la URL para obtener los mensajes
+        fetch("http://127.0.0.1:5001/dame")
+          // Manejo la respuesta de la petición
+          .then(function(response) {
+            // Convierto la respuesta a formato JSON
+            return response.json();
+          })
+          // Cuando recibo los datos en formato JSON
+          .then(function(datos) {
+            console.log(datos)
+            // Selecciono el contenedor de destino donde se mostrarán los mensajes
+            let seccion = document.querySelector("section");
+            // Vacío el contenido del contenedor antes de agregar nuevos mensajes
+            seccion.innerHTML = "";
+            // Para cada uno de los datos recibidos
+            datos.forEach(function(dato) {
+              // Creo un nuevo elemento <article> para cada mensaje
+              let bloque = document.createElement("article");
+              // Creo un encabezado para mostrar el nombre del usuario
+              let autor = document.createElement("h3");
+              autor.textContent = dato.usuario; // Establezco el nombre del usuario
+              // Creo un párrafo para mostrar el mensaje
+              let parrafo = document.createElement("p");
+              // Establezco el contenido del mensaje
+              parrafo.textContent = dato.mensaje; 
+              // Agrego el encabezado y el párrafo al bloque
+              bloque.appendChild(autor);
+              bloque.appendChild(parrafo);
+              // Agrego el bloque a la sección
+              seccion.appendChild(bloque);
+            });
+            // Desplaza el contenedor "seccion" hacia abajo para mostrar los mensajes más recientes
+            // Mejor práctica para desplazamiento
+            seccion.scrollTop = seccion.scrollHeight; 
+          });
+        // Detengo el temporizador anterior para evitar múltiples llamadas
+        clearTimeout(temporizador);
+        // Vuelvo a arrancar el bucle para ejecutarlo nuevamente después de un segundo
+        temporizador = setTimeout(bucle, 1000);
+      }
+  
+      ///////////////////////////////// ENVÍO DE MENSAJES ///////////////////////////////////////
+      // Selecciono el campo de entrada donde el usuario escribirá el mensaje
+      let entrada = document.querySelector("#mensaje");
+      // Selecciono el campo de entrada para el usuario
+      let usuario = document.querySelector("#usuario");
+      // Defino una función que se ejecuta cuando cambia el valor del campo de entrada
+      entrada.onchange = function() {
+        // Realizo una petición HTTP GET para enviar el mensaje escrito por el usuario
+        fetch("http://127.0.0.1:5001/toma?mensaje=" + encodeURI(this.value) + "&usuario=" + encodeURI(usuario.value));
+        // Vacío la entrada para que el usuario pueda seguir escribiendo
+        this.value = "";
+      };
+  
+      ///////////////////////////////// PONGO EL BUCLE EN MARCHA ///////////////////////////////////////
+      // Lanzo una primera ejecución del bucle después de un segundo
+      var temporizador = setTimeout(bucle, 1000);
+    </script>
+  </body>
+</html>
