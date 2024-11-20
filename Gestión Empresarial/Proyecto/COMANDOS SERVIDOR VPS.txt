@@ -1,0 +1,35 @@
+__________________________COMANDOS PARA LINUX____________________________________
+
+sudo apt update			--actualizar respositorio
+sudo apt upgrade
+sudo apt install apache2	--instalar apache
+sudo service apache2 start	--arrancar y parar el servidor
+sudo service apache2 stop
+cd..				--salir al reositorio  
+ls -l				--para ver un listadod e carpetas 
+sudo nano index.html		--creamos el archivo
+rm index.html			--eliminamos archivo
+sudo apt install python3	--instalar pyhton
+sudo apt install python3 -pip	--Instalar PIP
+sudo pip3 install Flask		--instalamos Flask encima de python
+sudo apt install nodejs		--instalamos Nodejs
+sudo apt install npm		--para instalar el gestor de paquetes de nodejs
+npm install express		--instalamos express
+sudo apt install php
+sudo apt install php-mysqli
+sudo apt install mysqli-server
+sudo mysql_secure_installation	--Ejecutar el instalador seguro
+
+sudo mysql -u root -p		--Conectar a MySQL
+
+------crear base de datos y usuarios-------
+CREATE DATABASE nombrebasedatos
+CREATE USER 'nombrebasedatos@localhost' IDENTIFIED BY 'nombrebasedatos'
+FLUSH PRIVILEGES
+-----------importar base de datos---------
+mysql -u root -p nombrebasedatos < basedatosexportada.sql	
+		 
+logout				--para salir de la maquina virtual
+
+
+

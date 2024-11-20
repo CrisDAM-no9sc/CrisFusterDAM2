@@ -1,0 +1,85 @@
+/* Estilo global */
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo general verde claro */
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/* Estilo del header */
+header {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  padding: 40px 0;
+  text-align: center;
+  font-size: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 5px solid #4D869C; /* Línea azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+/* Contenedor Principal (Main) */
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: calc(200px * 9 / 16); 
+  gap: 15px;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease;
+}
+
+/* Estilo para las Tarjetas (Aplicaciones) */
+.aplicacion {
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+  display: flex;
+  flex-direction: column; /* Para alinear imagen y texto */
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9; /* Mayor opacidad para mejor visibilidad */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px; /* Esquinas más redondeadas */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  padding: 20px; /* Espacio interno */
+}
+
+/* Efecto hover en las tarjetas */
+.aplicacion:hover {
+  opacity: 1; /* Total visibilidad al hacer hover */
+  transform: scale(1.05); /* Leve aumento al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  background-color: #4D869C; /* Cambia a azul oscuro en hover */
+}
+
+/* Estilo para la imagen dentro de las tarjetas */
+.aplicacion img {
+  width: 60px; /* Tamaño del icono */
+  height: auto;
+  margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+}
+
+/* Texto en las tarjetas */
+.aplicacion p {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 600px) {
+  main {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}

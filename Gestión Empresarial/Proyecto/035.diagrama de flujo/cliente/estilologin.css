@@ -1,0 +1,83 @@
+/* Estilo General del Cuerpo */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo verde claro suave */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Altura completa de la ventana */
+  margin: 0;
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/* Contenedor del Formulario de Login */
+#formlogin {
+  width: 320px;
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 12px; /* Esquinas redondeadas */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra para profundidad */
+  text-align: center;
+  position: relative;
+  color: #4D869C; /* Texto en azul oscuro */
+}
+
+/* Logo */
+#logo {
+  width: 60%;
+  margin-bottom: 20px;
+}
+
+/* Campos de Entrada y Botón */
+input, button {
+  width: 100%;
+  padding: 12px 0;
+  margin: 12px 0;
+  border: 1px solid #7AB2B2; /* Borde verde azulado medio */
+  border-radius: 8px; /* Esquinas redondeadas */
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* Campos de Entrada */
+input {
+  background-color: #FFFFFF; /* Fondo blanco para los inputs */
+  color: #4D869C; /* Texto azul oscuro */
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #4D869C; /* Borde azul oscuro al enfocar */
+  outline: none;
+}
+
+/* Estilo del Botón */
+button {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto blanco */
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4D869C; /* Color azul oscuro al pasar el cursor */
+}
+
+/* Mensaje de error o comentarios */
+#comentario {
+  color: red; /* Se puede modificar dependiendo del mensaje */
+  margin-top: 10px;
+}
+
+/* Responsividad para Dispositivos Móviles */
+@media (max-width: 400px) {
+  #formlogin {
+      width: 90%;
+      padding: 20px;
+  }
+
+  input, button {
+      font-size: 14px;
+  }
+}

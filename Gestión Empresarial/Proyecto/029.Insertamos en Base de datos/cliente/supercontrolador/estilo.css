@@ -1,0 +1,235 @@
+/* Estilo global */
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo general verde claro */
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/* Estilo del header */
+header {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  padding: 40px 0;
+  text-align: center;
+  font-size: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 5px solid #4D869C; /* Línea azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+/* Contenedor Principal (Main) */
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Barra lateral y contenido */
+  grid-gap: 20px;
+}
+
+/* Estilo del nav (barra lateral) */
+nav {
+  background-color: #EEF7FF; /* Fondo azul muy claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo de los items de la lista */
+nav ul {
+  padding: 0; /* Sin padding para la lista */
+}
+
+nav li {
+  list-style: none;
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #7AB2B2; /* Fondo verde azulado */
+  color: #EEF7FF; /* Texto azul claro */
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9; /* Opacidad inicial */
+}
+
+nav li:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Efecto hover */
+  background-color: #4D869C; /* Fondo azul más oscuro al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+}
+
+/* Estilo para la sección principal */
+section {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  font-size: 1.2rem;
+}
+
+/* Título de la sección */
+section h2 {
+  margin: 0 0 20px; /* Margen inferior */
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo para celdas de encabezado y cuerpo */
+th, td {
+  padding: 15px; /* Aumentar el espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+  border-bottom: 1px solid #4D869C; /* Línea debajo de cada celda */
+  letter-spacing: 0.05rem; /* Espaciado entre letras */
+}
+
+/* Estilo específico para encabezados */
+th {
+  background-color: #7AB2B2; /* Fondo para encabezados */
+  color: #EEF7FF; /* Color de texto en encabezados */
+  font-weight: bold; /* Negrita en encabezados */
+  text-transform: uppercase; /* Mayúsculas */
+}
+
+/* Estilo para filas del cuerpo */
+tbody tr:hover {
+  background-color: #4D869C; /* Color de fondo al hacer hover en filas */
+  color: #EEF7FF; /* Color de texto al hacer hover */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #CDE8E5; /* Fondo alternativo para filas */
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 600px) {
+  main {
+    grid-template-columns: 1fr; /* Columna única en pantallas pequeñas */
+  }
+}
+
+
+/******************************* BOTNON INSERTAR *******************/
+
+#insertar {
+  background-color: #7AB2B2; /* Mismo fondo verde azulado */
+  color: #EEF7FF; /* Texto en azul claro */
+  border: none; /* Sin bordes */
+  border-radius: 50%; /* Forma circular */
+  width: 35px; /* Ancho del botón */
+  height: 35px; /* Altura del botón */
+  font-size: 1.5rem; /* Tamaño de la fuente para el "+" */
+  font-weight: bold; /* Negrita para el "+" */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  display: flex; /* Flexbox para centrar el contenido */
+  justify-content: center; /* Centrar el "+" horizontalmente */
+  align-items: center; /* Centrar el "+" verticalmente */
+
+  
+}
+
+#insertar:hover {
+  background-color: #4D869C; /* Fondo más oscuro al hacer hover */
+  transform: scale(1.1); /* Efecto de agrandar al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+}
+
+
+/******************* ESTIO vENTANA eMERGENTE ************************/
+
+#modal {
+  display: none; /* Mantenerlo oculto inicialmente */
+  position: fixed; /* Fija en la pantalla */
+  top: 0; /* Alinea en la parte superior */
+  left: 0; /* Alinea a la izquierda */
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Altura completa */
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+  z-index: 1000; /* Por encima de otros elementos */
+  justify-content: center; /* Centra contenido horizontalmente */
+  align-items: center; /* Centra contenido verticalmente */
+}
+
+/* Estilo para el contenido de la modal */
+#contienemodal {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  width: 80%; /* Ancho del modal */
+  max-width: 600px; /* Ancho máximo del modal */
+  display: flex; 
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+  justify-content: space-between; /* Espacio entre elementos */
+  gap: 20px; /* Espacio entre los contenedores */
+}
+
+/* Contenedor para cada par de <p> e <input> */
+.input-container {
+  display: flex;
+  flex-direction: column; /* Coloca el <p> encima del <input> */
+  width: calc(50% - 10px); /* Cada par ocupa la mitad del ancho disponible menos el gap */
+  box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+/* Estilo para los párrafos */
+#contienemodal p {
+  margin: 0 0 10px; /* Margen inferior para separar del input */
+}
+#contenidomodal h1 {
+  text-align: center;
+  width: 100%; 
+  margin-bottom: 20px;
+}
+/* Estilo para los inputs */
+#contienemodal input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #4D869C;
+  border-radius: 8px;
+  background-color: #EEF7FF;
+  color: #4D869C;
+  outline: none; /* Sin contorno */
+  transition: border-color 0.3s ease; /* Transición suave para el borde */
+}
+
+/* Estilo para los inputs en focus */
+#contienemodal input:focus {
+  border-color: #7AB2B2; /* Cambia el borde al hacer foco */
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5); /* Sombra alrededor */
+}
+
+/* Estilo para el botón de enviar */
+#contienemodal button {
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #7AB2B2; /* Color de fondo */
+  color: #EEF7FF; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 8px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transición suave */
+  width: 200%; 
+  margin-top: 20px; /* Margen superior */
+}
+
+/* Efecto hover en el botón */
+#contienemodal button:hover {
+  background-color: #4D869C; /* Fondo más oscuro al hacer hover */
+  transform: scale(1.05); /* Aumentar ligeramente al hacer hover */
+}
