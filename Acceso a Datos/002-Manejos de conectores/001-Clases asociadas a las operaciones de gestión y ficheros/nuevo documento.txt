@@ -1,1 +1,0 @@
-Pues aqui estamos para probar este nuevo docuemnto desde el idle de python.
