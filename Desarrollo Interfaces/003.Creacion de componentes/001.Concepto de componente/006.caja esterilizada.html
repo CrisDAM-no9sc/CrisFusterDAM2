@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+    // Selecciono todos los selectores de la pagina
+      let selectores = document.querySelectorAll("select"); 
+      // Para cada uno de los selectores       
+      selectores.forEach(function(selector){    
+        // Creo un div                                
+        let contenedor = document.createElement("div")   
+        // Le pongo una clase         
+        contenedor.classList.add("selectjv")    
+        // En el body añado el contenedor                  
+        document.querySelector("body").appendChild(contenedor) 
+        // En el contenedor pongo el contenido del select   
+        contenedor.innerHTML = selector.outerHTML   
+        // Y elimino el select original              
+        selector.remove()       
+        
+        let caja = document.createElement("div")
+        caja.classList.add("caja")
+        caja.textContent = selector.querySelector("option:first-child").value
+        contenedor.appendChild(caja)
+      })
+    </script>
+  </body>
+</html>

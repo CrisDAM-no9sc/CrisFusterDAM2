@@ -1,0 +1,26 @@
+.selectjv{
+    width:200px;
+    margin:5px;
+  }
+  .selectjv .caja{
+    border:1px solid grey;
+    border-radius:10px;
+    display:inline-block;
+    min-width:200px;
+    padding:5px;
+    
+  }
+  .resultados{
+    display:inline-block;
+    border:1px solid lightgrey;
+    padding:5px;
+    min-width:200px;
+    min-height:300px;
+    border-radius:0px 0px 10px 10px;
+  }
+  .radio2{
+    border-radius:10px 10px 0px 0px !important;
+  }
+  .selectjv select{
+    display: none;
+  }

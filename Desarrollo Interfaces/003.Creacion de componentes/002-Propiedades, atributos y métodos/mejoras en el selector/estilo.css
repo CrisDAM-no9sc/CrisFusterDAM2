@@ -1,0 +1,108 @@
+/* Estilo para el contenedor principal */
+#contenedor {
+    background: #f4f4f4; /* Color de fondo claro */
+    border-radius: 10px;
+    width: 210px;
+    padding: 10px; /* Un poco de espacio interior para un mejor aspecto */
+}
+
+/* Estilo para el selector */
+select {
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    width: 200px;
+    color: black;
+    background: #ccc;
+    margin: 5px 0; /* Márgenes arriba y abajo */
+    padding: 5px; /* Un poco de espacio interior */
+}
+
+/* Estilo para las opciones dentro del selector */
+option {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Contenedor principal del selector personalizado */
+.selectjv {
+    position: relative;
+    width: 200px;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 5px 0;
+}
+
+/* Caja que muestra la opción seleccionada */
+.caja {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Caja activa cuando se hace clic en ella */
+.caja.radio2 {
+    border-color: #007bff; /* Color azul cuando está activa */
+    background-color: #e9f7ff; /* Fondo azul claro */
+}
+
+/* Contenedor de los resultados (opciones filtradas) */
+.resultados {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    z-index: 10;
+    border-radius: 5px;
+}
+
+/* Estilo para las opciones dentro de los resultados */
+.contieneresultados p {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover sobre las opciones */
+.contieneresultados p:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo para el campo de búsqueda */
+input[type="search"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px; /* Tamaño de fuente más suave */
+    font-family: 'Arial', sans-serif; /* Fuente más suave */
+    transition: border-color 0.3s ease;
+}
+
+/* Estilo del buscador cuando está enfocado */
+input[type="search"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Estilo para el botón */
+#button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover sobre el botón */
+#button:hover {
+    background-color: #0056b3;
+}

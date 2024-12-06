@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+
+      .selectjv .caja{
+        border:1px solid grey;
+        border-radius:10px; /* Modificado de 4px a 10px */
+        display:inline-block;
+        min-width:200px;
+        padding:5px;
+        cursor: pointer; /* Cambiado para indicar que es clicable */
+        background-color: #fff; /* Fondo blanco para mejor visibilidad */
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+        let selectores = document.querySelectorAll("select");
+        selectores.forEach(function(selector){
+            let contenedor = document.createElement("div") 
+            contenedor.classList.add("selectjv")
+            document.querySelector("body").appendChild(contenedor)
+            //contenedor.innerHTML = selector.outerHTML
+            selector.remove()
+            let caja = document.createElement("div")
+            caja.classList.add("caja")
+            caja.textContent = selector.querySelector("option:first-child").value
+            contenedor.appendChild(caja)
+            //agregamos la funcio de onclick
+            caja.onclick = function(){
+                console.log("Has hecho click en la caja")
+            }
+        })
+    </script>
+  </body>
+</html>

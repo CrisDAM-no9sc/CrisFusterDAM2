@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="selectjv.css">
+  </head>
+  <body>
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+    <script>
+      let contenedores = []
+      // Selecciono todos los selectores de la pagina
+      let selectores = document.querySelectorAll("select"); 
+      /////////////////////// Creacion del contenedor para cada select //////////////////////                    
+      selectores.forEach(function(selector){     
+        //para cada select creamos un contenedor div que reemplazara al select, y le añadimos la clase selectjv                                              
+        contenedores.push(document.createElement("div"));                      
+        contenedores[contenedores.length-1].classList.add("selectjv");  
+        //agragamos un manejador de eventos al contenedor para cuando se hace click en e l
+        contenedores[contenedores.length-1].onclick = function(e){
+          //para que el evento no se propage y afecte al cuerpo del documento
+          e.stopPropagation();
+        }                                 
+        document.querySelector("body").appendChild(contenedores[contenedores.length-1]);                  
+        //// Eliminacion del select original y creacion de la caja ///////////////////////
+        //eliminamos el select original                            
+        selector.remove();     
+        //creamos un nuevo div que actua como caja                                                 
+        let caja = document.createElement("div");                            
+        caja.classList.add("caja");
+        // Le pongo el texto del primero option                                           
+        caja.textContent = selector.querySelector("option:first-child").value;  
+        //agregamos la caja al contenedor 
+        contenedores[contenedores.length-1].appendChild(caja);   
+        ///// Definimos lo que queremos que haga cuando apretemos en ella /////////////
+        caja.onclick = function(e){          
+          //se detiene la propagacion                                    
+          e.stopPropagation();
+          //agregamos la clase  y cremoas un div para las opciones filtradas 
+          caja.classList.add("radio2");                                       
+          let resultados = document.createElement("div");                        
+          resultados.classList.add("resultados");                              
+          contenedores[contenedores.length-1].appendChild(resultados);                                
+          
+          ///creamos el campo de busqueda con atributo search y un placeholder 
+          let buscador = document.createElement("input");                    
+          buscador.setAttribute("type","search");                            
+          buscador.setAttribute("placeholder","busca...");   
+          //lo agregamos al contenedor de resultados             
+          resultados.appendChild(buscador);
+          
+          ////////////////////////////  Filtrar las opciones de Busqueda ///////////////
+          //cada vez que se escribe en el campo de busqueda se eejecuta la funcion que filtra las opciones disponibles
+          buscador.onkeyup = function(){                                      
+            let busca = this.value;                                          
+            contieneresultados.innerHTML = "";  
+            //comparamos el valor de busca con el del select
+            opciones.forEach(function(opcion){ 
+              //y si una opcion tiene el texto de busqueda
+              if(opcion.value.includes(busca)){                                
+                let texto = document.createElement("p")                            
+                texto.textContent = opcion.value;                              
+                contieneresultados.appendChild(texto);                                    
+              }
+            })
+          }
+          /// mostrat las opciones 
+          let contieneresultados = document.createElement("div");            
+          let opciones = selector.querySelectorAll("option");     
+
+          opciones.forEach(function(opcion){                                  
+            let texto = document.createElement("p");                            
+            texto.textContent = opcion.value;                                  
+            contieneresultados.appendChild(texto);                                       
+          })
+          //las agregamos al contenedor de resultados
+          resultados.appendChild(contieneresultados);                           
+        }
+        
+      })
+
+      /////////////////// Cerrar el menu desplegable /////////////////////
+      document.onclick = function(){
+          console.log("ok body");
+          contenedores.forEach(function(contenedor){
+          console.log(contenedor);
+          try{
+            contenedor.querySelector(".resultados").remove();
+            contenedor.querySelector(".caja").classList.remove("radio2"); 
+          }catch(error){
+            console.log("error pero no pasa nada");
+          }
+            
+          })
+        } 
+    </script>
+  </body>
+</html>

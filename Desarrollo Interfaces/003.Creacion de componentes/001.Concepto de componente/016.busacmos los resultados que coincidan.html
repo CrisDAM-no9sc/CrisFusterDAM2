@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+
+        .selectjv{
+            width: 200px;
+            margin: 5px;
+        }
+
+      .selectjv .caja{
+        border:1px solid grey;
+        border-radius:10px; /* Modificado de 4px a 10px */
+        display:inline-block;
+        min-width:200px;
+        padding:5px;
+        cursor: pointer; /* Cambiado para indicar que es clicable */
+        background-color: #fff; /* Fondo blanco para mejor visibilidad */
+      }
+      .resultado{
+        display: inline-block;
+        border:1px solid lightblue;
+        padding: 5px;
+        min-width: 200px;
+        min-height: 300px;
+        border-radius: 0px 0px 10px 10px;
+      }
+      .radio2{
+        border-radius: 10px 10px 0px 0px !important;
+      }
+
+    </style>
+  </head>
+  <body>
+    
+    <select>
+      <option value="Juan">Juan</option>
+      <option value="Jorge">Jorge</option>
+      <option value="Javier">Javier</option>
+      <option value="Jose">Jose</option>
+      <option value="Julian">Julian</option>
+      <option value="Jaime">Jaime</option>
+    </select>
+
+    <select>
+        <option value="Juan">Juan</option>
+        <option value="Jorge">Jorge</option>
+        <option value="Javier">Javier</option>
+        <option value="Jose">Jose</option>
+        <option value="Julian">Julian</option>
+        <option value="Jaime">Jaime</option>
+      </select>
+
+    <script>
+        let selectores = document.querySelectorAll("select");
+        selectores.forEach(function(selector){
+            let contenedor = document.createElement("div"); 
+            contenedor.classList.add("selectjv");
+            document.querySelector("body").appendChild(contenedor);
+            //contenedor.innerHTML = selector.outerHTML
+            selector.remove();
+            //creeamos una caja 
+            let caja = document.createElement("div");
+            //le ponemos su clase 
+            caja.classList.add("caja");
+            //ponemos el texto del priemr option
+            caja.textContent = selector.querySelector("option:first-child").value;
+            //lo añadimos al contenedor
+            contenedor.appendChild(caja);
+            //CUANDO HAGAMOS CLICK EN LA CAJA
+            caja.onclick = function(){
+                //le cambiamos la clase 
+                caja.classList.add("radio2");
+                //creamos un  div de resultado 
+                let resultado = document.createElement("div");
+                //le poenmos la clase
+                resultado.classList.add("resultado");
+                //y lo añadimos al contenedor 
+                contenedor.appendChild(resultado);
+
+                ///CREAMOS UN CAMPO DE BUSQUEDA///
+                //creamos un campo de busqueda 
+                let buscador = document.createElement("input");
+                //le decimos de que tipo es 
+                buscador.setAttribute("type","search");
+                //le ponemos un placeholder
+                buscador.setAttribute("placeholder","Buscar...");
+                //lo añadimos al buscador
+                resultado.appendChild(buscador);
+
+                //Cuando pulsemos una tecla en el buscador 
+                buscador.onkeyup = function(){
+                    
+                    console.log(this.value);
+                    //ponemos el contenido en una variable
+                    let busca = this.value;
+                    //vaciamos el contenidos de los resultados 
+                    contieneresultado.innerHTML = "";
+                    //para cada una de las opciones
+                    opciones.forEach(function(option){
+                        console.log(option.value, busca);
+                        //si la opcion continen un valor que se esta buscando 
+                        if(option.value.includes(busca)){
+                            //creamos el elemento texto
+                            let texto = document.createElement("p");
+                            //les ponemos el texto 
+                            texto.textContent= option.value;
+                            //y las añadimos a los resultados 
+                            contieneresultado.appendChild(texto);
+                        }
+                    })
+                }
+
+
+                let contieneresultado = document.createElement("div");
+                //SEleccionar las todas opciones
+                let opciones = selector.querySelectorAll("option");
+                //para cada una de ellas               
+                opciones.forEach(function(opcion){    
+                    ///creamos un texto                               
+                    let texto = document.createElement("p");
+                    //añadimos el texto                    
+                    texto.textContent = opcion.value;  
+                    //lo añadimos a los resultados                              
+                    contieneresultado.appendChild(texto);                                       
+                })
+                // A los resultados les añado el contenedor intermedio
+                resultado.appendChild(contieneresultado);
+
+            }
+        })
+    </script>
+  </body>
+</html>
