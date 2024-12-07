@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        * { padding: 0px; margin: 0px; }
+        body, html {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+        body {
+            background: rgb(220,220,220);
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: stretch;
+            align-content: stretch;
+        }
+        nav {
+            width: 20%;
+            box-sizing: border-box;
+            padding: 20px;
+            background: white;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+        }
+        main {
+            width: 80%;
+        }
+        article {
+            background: white;
+            padding: 20px;
+            border: 1px solid grey;
+            border-radius: 2px;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+            margin: 2px;
+        }
+        #enviar {
+            display: none;
+            height: 100%;
+        }
+        #enviar article {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+        #enviar article * {
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 10px 0px;
+        }
+        #enviar article textarea {
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li id="nuevocorreo">Nuevo correo</li>
+            <li id="recibidos">Recibidos</li>
+            <li>Enviados</li>
+        </ul>
+    </nav>
+    <main>
+        <div id="enviar">
+            <article>
+                <h3>Asunto: <input type="text" id="asunto"></h3>
+                <h4>Para: <input type="text" id="para"></h4>
+                <p>Mensaje: <textarea id="mensaje"></textarea></p>
+                <button>Enviar</button>
+            </article>
+        </div>
+        <div id="bandeja"></div>
+    </main>
+    <template id="correo">
+        <article>
+            <h3>Asunto</h3>
+            <h4>De:</h4>
+            <p>Cuerpo del correo</p>
+        </article>
+    </template>
+    <script>
+        const plantilla = document.getElementById('correo');
+        const contenedor = document.querySelector('#bandeja');
+
+        // Cargar correos al iniciar
+        fetch("http://localhost:5000/recibir")
+            .then(response => response.json())
+            .then(datos => {
+                console.log(datos);
+                datos.emails.forEach(dato => {  // Cambié datos a datos.emails
+                    let tarjeta = plantilla.content.cloneNode(true);
+                    let article = tarjeta.querySelector("article");
+                    article.querySelector("h3").textContent = dato.Asunto;
+                    article.querySelector("h4").textContent = "De: " + dato.De;
+                    article.querySelector("p").textContent = dato.Cuerpo;
+
+                    // Agregar el mail_id como atributo de datos
+                    article.dataset.mailId = dato.mail_id;
+
+                    // Al hacer clic, obtener correo individual
+                    article.onclick = function() {
+                        fetch(`http://localhost:5000/recibir/${dato.mail_id}`)
+                            .then(response => response.json())
+                            .then(data => console.log(data))
+                            .catch(error => console.error("Error fetching email:", error));
+                    };
+
+                    contenedor.appendChild(tarjeta);
+                });
+            })
+
+        // Manejo del envío de correos
+        let boton = document.querySelector("button");
+        boton.onclick = function() {
+            const mensaje = {
+                "asunto": document.querySelector("#asunto").value,
+                "para": document.querySelector("#para").value,
+                "mensaje": document.querySelector("#mensaje").value,
+            };
+            fetch("http://localhost:5000/enviar", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(mensaje),
+            })
+            .then(response => response.text())
+            .then(datos => {
+                alert(datos); // Muestra un mensaje de éxito
+                // Limpiar campos después del envío
+                document.querySelector("#asunto").value = '';
+                document.querySelector("#para").value = '';
+                document.querySelector("#mensaje").value = '';
+                document.querySelector("#enviar").style.display = "none";
+                document.querySelector("#bandeja").style.display = "block";
+            })
+            .catch(error => {
+                console.error("Error al enviar correo:", error);
+                alert("Error al enviar correo. Intenta nuevamente.");
+            });
+        };
+
+        // Mostrar formulario de nuevo correo
+        let nuevocorreo = document.querySelector("#nuevocorreo");
+        nuevocorreo.onclick = function() {
+            document.querySelector("#enviar").style.display = "block";
+            document.querySelector("#bandeja").style.display = "none";
+        };
+
+        // Volver a la bandeja de entrada
+        let bandejaentrada = document.querySelector("#recibidos");
+        bandejaentrada.onclick = function() {
+            document.querySelector("#enviar").style.display = "none";
+            document.querySelector("#bandeja").style.display = "block";
+        };
+    </script>
+</body>
+</html>

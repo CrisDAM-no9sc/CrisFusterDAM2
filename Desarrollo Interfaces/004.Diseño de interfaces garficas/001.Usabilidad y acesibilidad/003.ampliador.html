@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            *{transition:all 1s;}
+        </style>
+        <script>
+            window.onload = function(){
+                let contenedor = document.createElement("div");
+                let aumentar = document.createElement("button");
+                aumentar.textContent = "+";
+                contenedor.appendChild(aumentar)
+                let disminuir = document.createElement("button");
+                disminuir.textContent = "-";
+                contenedor.appendChild(disminuir);
+                document.querySelector("body").appendChild(contenedor);
+                contenedor.style.position = "fixed";
+                contenedor.style.top= "10px";
+                contenedor.style.right = "10px";
+            }   
+        </script>
+    </head>
+    <body>
+        <h1>Web de prueba</h1>
+        <nav>
+            <ul>
+                <li>Inicio</li>
+                <li>Proyectos</li>
+                <li>Sobre nosotros</li>
+                <li>Contactos</li>
+            </ul>
+        </nav>
+    </body>
+</html>

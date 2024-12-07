@@ -1,0 +1,41 @@
+*{transition:all 1s;}
+/* Contenedor de los botones de ampliar/disminuir */
+.ampliador {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    /* Cambiado para que los botones estén alineados horizontalmente */
+    display: flex; 
+    /* Alinea los botones verticalmente */
+    align-items: center; 
+}
+
+/* Estilo de los botones */
+.ampliador button {
+    border: none;
+    margin: 0 1px; /* Espaciado entre los botones */
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto al pasar el mouse sobre los botones */
+.ampliador button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+}
+/* Efecto al hacer clic en los botones */
+.ampliador button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Estilo del texto de la página para que se vea el cambio de tamaño */
+h1, nav {
+    transition: font-size 0.5s ease;
+}

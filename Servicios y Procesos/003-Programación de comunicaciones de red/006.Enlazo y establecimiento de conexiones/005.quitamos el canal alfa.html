@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <canvas></canvas>
+        <script>
+            const memoriainicial = performance.memory.usedJSHeapSize;
+            const lienzo = document.querySelector("canvas"); // corregido aquí
+            const contexto = lienzo.getContext("2d");
+            lienzo.width = 369;
+            lienzo.height = 215;
+
+            let imagen = new Image();
+            imagen.src = "Captura1.png";
+            
+            imagen.onload = function() {
+                contexto.drawImage(imagen, 0, 0);
+                
+                const coleccion = contexto.getImageData(0, 0, 369, 215).data;
+                const memoriainicial = performance.memory.usedJSHeapSize;
+                const sintransparencia = [];
+
+                for (let i = 0; i < coleccion.length; i += 4) {
+                    sintransparencia.push(coleccion[i]);
+                    sintransparencia.push(coleccion[i + 1]);
+                    sintransparencia.push(coleccion[i + 2]);
+                }
+                
+                setTimeout(() => {
+                    const memoriafinal = performance.memory.usedJSHeapSize;
+                    let memoriautilizada = memoriafinal - memoriainicial;
+                    console.log(memoriautilizada);
+                    console.log(coleccion);
+                }, 100);
+            }
+        </script>
+    </body>
+</html>

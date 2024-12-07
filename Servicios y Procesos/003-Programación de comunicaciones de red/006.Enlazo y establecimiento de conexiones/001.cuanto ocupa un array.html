@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <script>
+            const memoriainicial = performance.memory.usedJSHeapSize;
+            let coleccion = [1,2,3,4,5,6,7,8];
+
+            setTimeout(() => {
+            const memoriafinal = performance.memory.usedJSHeapSize;
+            let memoriautilizada = memoriafinal-memoriainicial;
+            console.log(memoriautilizada);
+
+        },100);
+        </script>
+    </body>
+</html>

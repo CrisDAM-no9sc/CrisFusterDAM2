@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Servidor</title>
+</head>
+<body>
+    <h1>Vamos a enviar información comprimida a varios usuarios</h1>
+    <canvas></canvas>
+    <button>Pulsar</button>
+</body>
+<script>
+    let contexto;
+    const socket = new WebSocket("ws://localhost:3000");
+
+    // Abrimos conexión con WebSocket
+    socket.addEventListener("open", () => {
+        console.log("Se ha abierto una conexión");
+    });
+    socket.addEventListener("error", (event) => {
+        console.error("Error en WebSocket:", event);
+    });
+
+    // Función para capturar pantalla
+    async function captureScreen() {
+        try {
+            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            const video = document.createElement("video");
+            video.srcObject = stream;
+
+            let lienzo = document.createElement("canvas");
+            contexto = lienzo.getContext("2d");
+            lienzo.width = 1920;
+            lienzo.height = 1080;
+            document.body.appendChild(lienzo);
+
+            video.onloadedmetadata = function() {
+                video.play();
+            };
+
+            video.addEventListener("timeupdate", () => {
+                contexto.drawImage(video, 0, 0);
+            });
+
+        } catch (error) {
+            console.error("Error al capturar la pantalla:", error);
+        }
+    }
+
+    document.querySelector("button").onclick = function() {
+        if (contexto) {
+            let datos = contexto.getImageData(0, 0, 192, 108).data;
+            socket.send(JSON.stringify({ datos: Array.from(datos) }));  // Convertir a array
+            console.log("Datos enviados desde el botón:", datos);
+        } else {
+            console.error("El contexto no está disponible.");
+        }
+    };
+
+    captureScreen();
+</script>
+</html>

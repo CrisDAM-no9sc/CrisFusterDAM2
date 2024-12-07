@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            *{transition:all 1s;}
+            /* Contenedor de los botones de ampliar/disminuir */
+            .ampliador {
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                z-index: 1000;
+                /* Cambiado para que los botones estén alineados horizontalmente */
+                display: flex; 
+                /* Alinea los botones verticalmente */
+                align-items: center; 
+            }
+
+            /* Estilo de los botones */
+            .ampliador button {
+                border: none;
+                margin: 0 1px; /* Espaciado entre los botones */
+                padding: 10px 15px;
+                font-size: 18px;
+                background-color: #4CAF50;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: background-color 0.3s, transform 0.2s;
+            }
+
+            /* Efecto al pasar el mouse sobre los botones */
+            .ampliador button:hover {
+                background-color: #45a049;
+                transform: translateY(-3px);
+            }
+            /* Efecto al hacer clic en los botones */
+            .ampliador button:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            /* Estilo del texto de la página para que se vea el cambio de tamaño */
+            h1, nav {
+                transition: font-size 0.5s ease;
+            }
+        </style>
+        <script>
+            window.onload = function(){
+                let elemento = document.querySelector("body");
+                let tamanio = 1;
+                let contenedor = document.createElement("div");
+                contenedor.classList.add("ampliador");
+                let aumentar = document.createElement("button");
+                aumentar.textContent = "+";
+                contenedor.appendChild(aumentar)
+                ///para añadir el efecto de disminuir cuando le damos al bioton de +
+                aumentar.onclick = function(){
+                    tamanio *= 1.1;
+                    elemento.style.fontSize = tamanio+"em";
+                }
+
+                let disminuir = document.createElement("button");
+                disminuir.textContent = "-";
+                contenedor.appendChild(disminuir);
+                ///para añadir el efecto de disminuir cuando le damos al bioton de -
+                disminuir.onclick = function(){
+                    tamanio *= 0.9;
+                    elemento.style.fontSize = tamanio+"em";
+                }
+
+                document.querySelector("body").appendChild(contenedor);
+                contenedor.style.position = "fixed";
+                contenedor.style.top= "10px";
+                contenedor.style.right = "10px";
+                contenedor.style.fontSize = "1em";
+                // Al hacer clic en cualquier parte de la página, selecciona el elemento
+                document.onclick = function (event) {
+                    if (event.target !== aumentar && event.target !== disminuir) {
+                        elemento = event.target;
+                        console.log("Elemento seleccionado:", elemento);
+                        // Restablecemos el tamaño inicial para el nuevo elemento
+                        tamanio = 1;
+                    }
+                };
+            }   
+        </script>
+    </head>
+    <body>
+        <h1>Web de prueba</h1>
+        <nav>
+            <ul>
+                <li>Inicio</li>
+                <li>Proyectos</li>
+                <li>Sobre nosotros</li>
+                <li>Contactos</li>
+            </ul>
+        </nav>
+    </body>
+</html>

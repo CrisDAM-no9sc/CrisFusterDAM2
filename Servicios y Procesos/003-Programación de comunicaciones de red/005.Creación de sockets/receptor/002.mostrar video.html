@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+    <canvas id="lienzo" width="160" height="120"></canvas>
+    <script>
+
+        //////////////////////////////////  VARIABLES GLOBALES  ////////////////////////////////////////////
+
+        const lienzo = document.getElementById('lienzo');
+        const contexto = lienzo.getContext('2d');
+        let socket;
+        const datosimagen = contexto.createImageData(160, 120); // Creamos ImageData una vez
+
+        /////////////////////////////  ABRIMOS LA CONEXION A SOCKET  /////////////////////////////////////
+
+        function inicializarSocket() {
+            socket = new WebSocket("ws://localhost:3000");
+
+            socket.addEventListener("open", () => {
+                console.log("Se ha abierto una conexión");
+                socket.send(JSON.stringify({ mensaje: "hola" }));
+            });
+
+            socket.addEventListener("error", (event) => {
+                console.error("Error en WebSocket:", event);
+            });
+
+            socket.addEventListener("close", () => {
+                console.warn("Conexión cerrada, intentando reconectar...");
+                setTimeout(inicializarSocket, 1000); // Reintentar conexión después de 1 segundo
+            });
+
+            socket.addEventListener("message", (event) => {
+                // Solo realiza el parseo si se recibe un mensaje
+                const datos = JSON.parse(event.data);
+                //repasamos los datos de la imagen uno a uno
+                for (let i = 0; i < datosimagen.data.length; i++) {
+                    //igualamos los datos que vienen del socket
+                    datosimagen.data[i] = datos[i];
+                }
+                //ponemos los datos en el lienzo
+                contexto.putImageData(datosimagen, 0, 0);
+            });
+        }
+
+        // INICIALIZA EL SOCKET UNA VEZ
+        inicializarSocket();
+
+    </script>
+</body>
+</html>
