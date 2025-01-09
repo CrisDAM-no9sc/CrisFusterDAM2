@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+	<head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&display=swap" rel="stylesheet">
+		<style>
+			*{padding:0px;margin:0px;}
+			body,html{
+				height:100%;
+				margin:0px;
+				padding:0px;
+			}
+			body{
+				background:rgb(220,220,220);
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				justify-content: space-between;
+				align-items: stretch;
+				align-content: stretch;
+			}
+			nav{
+				width:20%;
+				box-sizing:border-box;
+				padding:20px;
+				background:white;
+			}
+			nav ul{
+				list-style-type:none;
+				padding:0px;
+				margin:0px;
+			}
+			
+			main{
+				width:80%;
+			}
+			article{
+				background:white;
+				padding:20px;
+				border:1px solid grey;
+				border-radius:2px;
+				box-shadow:0px 1px 2px rgba(0,0,0,0.1);
+				margin:2px;
+			}
+			#enviar{
+				display:none;
+				height:100%;
+				
+			}
+			#enviar article {
+			box-sizing:border-box;
+				padding:20px;
+			}
+			#enviar article>*>*{
+				width:100%;
+				margin-bottom:5px;
+				padding:10px 0px;
+			}
+			#enviar article textarea{
+				height:500px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li id="nuevocorreo">Nuevo correo</li>
+				<li id="recibidos">Recibidos</li>
+				<li id="enviados">Enviados</li>
+			</ul>
+		</nav>
+		<main>
+			<div id="enviar">
+				<article>
+					<h3>Asunto:<input type="text" id="asunto"></h3>
+					<h4>Para:<input type="text" id="para"></h4>
+					<p>Mensaje: <textarea id="mensaje"></textarea>
+					<button>Enviar</button>
+				</article>
+			</div>
+			<div id="bandeja">
+				
+			</div>
+		</main>
+		<template id="correo">
+			<article>
+				<h3>Asunto</h3>
+				<h4>De:</h4>
+				<p>Cuerpo del correo</p>
+			</article>
+		</template>
+		<script>
+			//este elemento tinee la estructura html para acda correo
+			const plantilla = document.getElementById('correo');
+			//usaremos este contenedor para agregar dinamicamente los correos cargados desde el servidor 
+			const contenedor = document.querySelector('#bandeja');
+
+			//////////////////////////////////// CARGA LOS CORREOS GET //////////////////////////////////
+			//carga inicial de correos donde hacemos una slicitud GET para obtener la lista de mensajes 
+			fetch("http://localhost:5000/recibir")
+			.then(function(response){
+				return response.json()
+			})
+			.then(function(datos) {
+				//verifica si la respueta contiene un objeto valido 
+				if (datos.status === "ok" && Array.isArray(datos.emails)) {
+					//itera sobre cada correo en el arreglo 
+					datos.emails.forEach(dato => { 
+					//creamos una copia del contenido y asegura que se copien todos los contenido hijos
+						let tarjeta = plantilla.content.cloneNode(true);
+						//busca el article dentro de template
+						let article = tarjeta.querySelector("article");
+						// Rellenar los datos del correo
+						article.querySelector("h3").textContent = dato.Asunto;
+						article.querySelector("h4").textContent = "De: " + dato.De;
+						article.querySelector("p").textContent = dato.Cuerpo;
+
+						//guarda el mail_id como atributo ene l article 
+						article.dataset.mailId = dato.mail_id; 
+						console.log("el id que voy a enviar es:", dato.mail_id);
+						//definimos lo que va a ocurrir cuando hagamos click en el correo 
+						article.onclick = function() {
+						const fecha = dato.Fecha;
+						console.log("Voy a buscar por fecha:", fecha);
+
+						// hace una solicitud al servidor con la fecha del correo y nos aseguramos que la fecha este bien formateada
+						fetch(`http://localhost:5000/recibir_por_fecha/${encodeURIComponent(fecha)}`)
+							.then(response => response.json())
+							.then(data => {
+							console.log("Email data:", data);
+							})
+							.catch(error => console.error("Error fetching email by date:", error));
+					};
+					contenedor.appendChild(tarjeta);
+				});
+				} else {
+				console.error("Error: la respuesta no contiene un array válido de emails");
+				}
+			})
+			.catch(error => console.error("Error fetching emails:", error));
+
+			//////////////////////////////////// ENVIAR EL CORREO POST ///////////////////////////////
+			let boton = document.querySelector("button")
+			boton.onclick = function(){
+				mensaje = {
+					"asunto":document.querySelector("#asunto").value,
+					"para":document.querySelector("#para").value,
+					"mensaje":document.querySelector("#mensaje").value,
+				}
+				fetch("http://localhost:5000/enviar",{
+				  method: 'POST',
+				  headers: {
+					 'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify(mensaje),
+				})
+				.then(function(response){
+					return response.text()
+				})
+				.then(function(datos){
+					document.querySelector("#enviar").style.display = "none"
+					document.querySelector("#bandeja").style.display = "block"
+				})
+			}
+			////////////////////  MOSTRAR REDACCION DEL CORREO Y BANDEJA ///////////////////
+			let nuevocorreo = document.querySelector("#nuevocorreo")
+			nuevocorreo.onclick = function(){
+				document.querySelector("#enviar").style.display = "block"
+				document.querySelector("#bandeja").style.display = "none"
+			}
+			
+			let bandejaentrada = document.querySelector("#bandeja")
+			bandejaentrada.onclick = function(){
+				document.querySelector("#enviar").style.display = "none"
+				document.querySelector("#bandeja").style.display = "block"
+			}
+		</script>
+        <script src="../public/lib/textEditor/TextEditor.js"></script>
+        <link rel="stylesheet" href="../public/lib/textEditor/TextEditor.css">
+	</body>
+</html>
