@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas></canvas>
+        <button id="play">Reproducir</button>
+        <button id="pausa">Pausar</button>
+        <script>
+
+            ///////////////////////////// CREAMOS EL CANVAS /////////////////////////
+            let lienzo = document.querySelector("canvas");
+            lienzo.width = 500;
+            lienzo.height = 500;
+            let contexto = lienzo.getContext("2d");
+
+
+            let contextoaudio;
+            let memoriaaudio;
+            let fuente;
+
+            window.onload = function(){
+                contextoaudio = new (window.AudioContext || window.webkitAudioContext)();
+                fetch('cancion prueba.mp3')
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer =>{
+                    return contextoaudio.decodeAudioData(arrayBuffer)
+                })
+                // ahora vamos a ver los datos 
+                .then(decodeData =>{
+                    memoriaaudio = decodeData;
+                    console.log("Audio Buffer Información: ");
+                    console.log("Duración en segundos:", memoriaaudio.duration);
+                    console.log("Frecuencia (hz): ", memoriaaudio.sampleRate);
+                    console.log("Numero de canales: ", memoriaaudio.numberOfChannels);
+                    console.log("Numero de muestras por canales: ", memoriaaudio.length);
+
+                    // solo queremos e primer canal 
+                    let datoscanal = memoriaaudio.getChannelData(0);
+                    let divisor = memoriaaudio.length / lienzo.width; 
+                    for (let i = 0; i < datoscanal.length; i += divisor) {
+                        contexto.fillRect(i / divisor, 50, 1, datoscanal[Math.floor(i)] * 50);
+                    }
+                    
+                })
+                .catch(error => {
+                    console.error("Error al cargar o decodificar el archivo de audio", error);
+                });
+            }
+            ////////// FUNCION PARA DE BOTON DE REPRODUCCIÓN ///////////////////
+            document.querySelector("#play").onclick = function(){
+                fuente = contextoaudio.createBufferSource();
+                fuente.buffer = memoriaaudio;
+                fuente.connect(contextoaudio.destination);
+                fuente.start(0);
+
+            }
+
+        </script>
+
+    </body>
+</html>

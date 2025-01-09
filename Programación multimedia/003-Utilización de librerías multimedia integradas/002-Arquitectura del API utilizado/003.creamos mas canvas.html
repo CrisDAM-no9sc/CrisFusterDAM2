@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            //convierte una función en asíncrona, lo que permite usar await dentro de ella
+            async function  capturaPantalla() {
+                try{
+                    //solicita al usuario permiso para hacer la captura de pantalla 
+                    //await hace que el codigo espere hasta que le hayan dado acceso 
+                    const stream = await navigator.mediaDevices.getDisplayMedia({ video : true});
+                    //se crea un nuevo elemento de video 
+                    const video = document.createElement("video");
+                    //el stream se asigna a la propiedad srcobject lo que permite que enseñe la pantalla compartida
+                    video.srcObject = stream;
+
+                    //////////////// CREAMOS ELEMENTOS DE CANVAS /////////////////
+                    let lienzo = document.createElement("canvas");
+                    let contexto = lienzo.getContext("2d");
+                    lienzo.width = 1366;
+                    lienzo.height = 728;
+                    //añade el canvas al DOM
+                    document.body.appendChild(lienzo);
+
+                    let lienzo2 = document.createElement("canvas");
+                    let contexto2 = lienzo.getContext("2d");
+                    lienzo2.width = 1366;
+                    lienzo2.height = 728;
+                    document.body.appendChild(lienzo2);
+
+                    let lienzo3 = document.createElement("canvas");
+                    let contexto3 = lienzo.getContext("2d");
+                    lienzo3.width = 1366;
+                    lienzo3.height = 728;
+                    document.body.appendChild(lienzo3);
+
+                    //se agrega el video al DOM
+                    document.body.appendChild(video);
+
+                    //cuando los metadatos del video estan cargados,se llama a video.play para empezar la reproduccion
+                    video.onloadedmetadata = function() {
+                        video.play();
+                    }
+                    
+                    /////////////// ACTUALIZACIÓN CONTINUA DE LA PANTALLA //////////////
+                    video.addEventListener('timeupdate', () =>{
+                        //dibuja la imagen del video ene l canvas 
+                        contexto.drawImage(video, 0, 0, lienzo.width, lienzo.height);
+                    });
+
+                }catch (error){
+                    //Si el usuario niega el permiso, se muestra el error en la consola.
+                    console.log("Error al capturar la pantalla: ",error)
+                }
+            }
+            capturaPantalla();
+        </script>
+    </body>
+</html>

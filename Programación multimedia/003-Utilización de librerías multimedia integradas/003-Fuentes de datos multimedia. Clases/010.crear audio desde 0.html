@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas></canvas>
+        <button id="arranca">Arranca</button>
+        <button id="play">Play</button>
+        <button id="pausa">Pausa</button>
+        <script>
+            let lienzo = document.querySelector("canvas");
+            lienzo.width = 1920;
+            lienzo.height = 100;
+            let contexto = lienzo.getContext("2d");
+
+            //////////////////////////// VARIABLES GLOBALES //////////////////////////
+            let contextoaudio;
+            let audioBuffer;
+            let fuente;
+            let tiempoinicio;
+            let tiempopausa;
+            let reproduciendo;
+
+            const escalaYo4 = [261.63, 329.63, 392.00, 440.00, 523.25];
+
+            document.querySelector("#arranca").onclick = function(){
+                contextoaudio = new (window.AudioContext || window.webkitAudioContext)();
+
+                //////////////////////////// PARAMETROS DE ONDA /////////////////////
+                let frecuencia = 220;
+                let muestreo =  contextoaudio.sampleRate;
+                let duracion = 10;
+
+                audioBuffer = contextoaudio.createBuffer(1, muestreo * duracion, muestreo);
+                let canaldata = audioBuffer.getChannelData(0);
+
+                nota = escalaYo4[0];
+
+                for (let i = 0; i < canaldata.length; i++) {
+                    if (i % 44800 === 0) { // Cambiar nota cada 44800 muestras
+                        frecuencia = escalaYo4[Math.floor(Math.random() * escalaYo4.length)];
+                    }
+                    canaldata[i] = Math.sin(2 * Math.PI * frecuencia * i / muestreo);
+                }
+
+                ///////////////////// DIBUJAR FORMA DE LA ONDA /////////////////////
+
+                contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+                for (let i = 0; i < canaldata.length; i++) {
+                    let x = i / (muestreo * duracion / lienzo.width);
+                    let y = 50 + canaldata[i] * 50; 
+                    contexto.fillRect(x, y, 1, 1);
+                }
+
+            }
+            /////////////////////// BOTON DE PLAY ////////////////////////////
+
+            document.querySelector("#play").onclick = function() {
+                if (!reproduciendo) {
+                    fuente = contextoaudio.createBufferSource();
+                    fuente.buffer = audioBuffer;
+                    fuente.connect(contextoaudio.destination);
+                    startTime = contextoaudio.currentTime - tiempopausa; 
+                    fuente.start(0, tiempopausa); 
+                    reproduciendo = true;
+
+                    fuente.onended = function() {
+                        reproduciendo = false;
+                        tiempopausa = 0; 
+                    }
+                }
+            }
+            /////////////////////// BOTON DE PAUSE ////////////////////////////
+
+            document.querySelector("#pausa").onclick = function() {
+                if (reproduciendo) {
+                    fuente.stop();
+                    tiempopausa = contextoaudio.currentTime - tiempoinicio; 
+                    reproduciendo = false;
+                }
+            }
+        </script>
+    </body>
+</html>

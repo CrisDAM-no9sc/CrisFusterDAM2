@@ -1,0 +1,102 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas id="musicCanvas" width="1024" height="1024"></canvas>
+
+        <script>
+            const lienzo = document.getElementById('musicCanvas');
+            const contexto = lienzo.getContext('2d');
+            ///////////////////////// NOTAS DE LA ESCALA CMAJ //////////////////////
+            const notacolores = {
+                C: '#FF6347', // DO
+                D: '#FFD700', // RE
+                E: '#ADFF2F', // MI
+                F: '#20B2AA', // FA
+                G: '#87CEFA', // SOL
+                A: '#9370DB', // LA
+                B: '#FF69B4'  // SI
+            }
+            ////////////////////// CENTRO Y RADIO DEL CIRCULO ////////////////////
+            const centrox = lienzo.width / 2;
+            const centroy = lienzo.height / 2;
+            const radio = 400;
+            //empieza en l aparte superior del circulo 
+            const anguloinicio = -Math.PI / 2;
+
+            function dibujarcirculoSegmentos(){
+                contexto.beginPath();
+                contexto.arc(centrox, centroy, radio, 0,2 * Math.PI);
+                contexto.strokeStyle = '#000000';
+                contexto.lineWidth = 3;
+                contexto.stroke();
+
+                const notas = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+                const incrementoangulo = (2 * Math.PI) / notas.length;
+
+                notas.forEach((nota, i) =>{
+                    const iniciosegmento = anguloinicio + i * incrementoangulo;
+                    const finalsegmento = iniciosegmento + incrementoangulo;
+
+                    contexto.beginPath();
+                    contexto.arc(centrox, centroy, radio, iniciosegmento,finalsegmento);
+                    contexto.strokeStyle = notacolores[nota];
+                    contexto.lineWidth = 10;
+                    contexto.stroke();
+
+                    //////////////////////////// etiquetamos cada segmento de la nota ////////////
+                    const labelangulo = iniciosegmento + incrementoangulo/2;
+                    const labelx = centrox + (radio +30) * Math.cos(labelangulo);
+                    const labely = centroy + (radio + 30) * Math.sin(labelangulo);
+            
+                    contexto.fillStyle = notacolores[nota];
+                    contexto.font = "24px Arial";
+                    contexto.textAlign = "center";
+                    contexto.textBaseline = "middle";
+                    contexto.fillText(nota, labelx, labely);
+                });
+
+            }
+            //////////////////////////////// CREAMOS LA CLASE ////////////////////////////////
+            class Particula {
+                constructor(x,y,direccionangulo, speed = 2){
+                    this.x = x;
+                    this.y = y;
+                    this.direccionangulo = direccionangulo;
+                    this.speed = speed;
+                    this.radio = 5;
+                    this.color = '#000000';
+                }
+                mueve(){
+                    this.x += this.speed * Math.cos(this.direccionangulo);
+                    this.y += this.speed * Math.sin(this.direccionangulo);
+                    const distanciacentro = Math.sqrt((this.x - centrox) ** 2 + (this.y - centroy) ** 2);
+                    if (distanciacentro >= radio){
+                        this.rebotar();
+                    }
+                }
+                rebotar() {
+                    const centroangulo = Math.atan2(this.y - centroy, this.x - centrox);
+                    this.direccionangulo = 2 * centroangulo - this.direccionangulo + Math.PI;
+                }
+                dibujar(){
+                    contexto.beginPath();
+                    contexto.arc(this.x, this.y, this.radio, 0, 2 * Math.PI);
+                    contexto.fillStyle = this.color;
+                    contexto.fill();
+                }
+            }
+            const particula = new Particula(centrox + 200, centroy, Math.PI/4);
+            function animar(){
+                contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+                dibujarcirculoSegmentos();
+                particula.mueve();
+                particula.dibujar();
+                requestAnimationFrame(animar);
+            }
+            animar();
+        </script>
+    </body>
+</html>

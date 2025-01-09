@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            .clipgo {
+                width: 600px;
+                height: 320px;
+                position: relative;
+            }
+
+            .clipgo .barracontrol {
+                position: absolute;
+                width: 500px;
+                height: 40px;
+                background-color: rgba(7, 7, 7, 0.6);
+                border-radius: 5px;
+                bottom: 10px;
+                left: 55px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+            .clipgo video {
+                width: 100%;
+                height: 100%;
+            }
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: rgba(58, 55, 55, 0.2);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            button img {
+                width: 60%;
+                height: auto;
+            }
+
+            button:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+                transform: scale(1.1);
+            }
+
+            .volumen-container {
+                display: flex;
+                align-items: center;
+                position: relative;
+            }
+
+            .volumen-barra {
+                bottom: 50px;
+                left: 0;
+                display: none;
+                width: 60px;
+                height: 6px;
+                background: #ddd;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            .volumen-barra .volumen-progreso {
+                height: 100%;
+                background: #4D869C;
+                width: 50%;
+                border-radius: 3px;
+            }
+
+            .volumen-barra:hover,
+            .volumen-barra.mostrar {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <video src="paisaje.mp4"></video>
+        <script>
+            window.onload = function () {
+                let videos = document.querySelectorAll("video");
+                //creamos contenedores dinamicos 
+                videos.forEach(function (video) {
+                    let etiquetavideo = video;
+
+                    ///////////////////////////// Crear contenedor principal //////////////////////////////////
+                    let contenedorvideo = document.createElement("div");
+                    contenedorvideo.classList.add("clipgo");
+                    etiquetavideo.replaceWith(contenedorvideo);
+                    contenedorvideo.appendChild(video);
+
+                    /////////////////////////////  Crear barra de controles //////////////////////////////////
+                    
+                    let barracontrol = document.createElement("div");
+                    barracontrol.classList.add("barracontrol");
+                    contenedorvideo.appendChild(barracontrol);
+
+                    /////////////////////////////  Botón de Play/Pausa /////////////////////////////////////
+                    let play = document.createElement("button");
+                    play.innerHTML = "<img src='play.png' alt='Play'>";
+                    barracontrol.appendChild(play);
+
+                    let estado = "pause";
+
+                    play.onclick = function () {
+                        if (estado === "pause") {
+                            etiquetavideo.play();
+                            play.innerHTML = "<img src='pause.png' alt='Pause'>";
+                            estado = "play";
+                        } else {
+                            etiquetavideo.pause();
+                            play.innerHTML = "<img src='play.png' alt='Play'>";
+                            estado = "pause";
+                        }
+                    };
+
+                    /////////////////////////////  CONTROL VOLLUMEN  /////////////////////////////////////
+                    //contenedor para el contol de volumen
+                    let contenedorvolumen = document.createElement("div");
+                    contenedorvolumen.classList.add("volumen-container");
+                    barracontrol.appendChild(contenedorvolumen);
+                    //boton con el icono de altavoz
+                    let volumenBoton = document.createElement("button");
+                    volumenBoton.innerHTML = "<img src='volumen.png' alt='Volume'>";
+                    contenedorvolumen.appendChild(volumenBoton);
+
+                    /////////////////////////////  BARRA DE VOLUMEN  /////////////////////////////////////
+                    //una barra de volumen que inicialmente la he puesto en oculto 
+                    let volumenBarra = document.createElement("div");
+                    volumenBarra.classList.add("volumen-barra");
+                    contenedorvolumen.appendChild(volumenBarra);
+                    //Aqui indicamos el nivel actual de volumen que tinee el video 
+                    let volumenProgreso = document.createElement("div");
+                    volumenProgreso.classList.add("volumen-progreso");
+                    volumenBarra.appendChild(volumenProgreso);
+
+                    // definimos la función del volumen
+                    volumenBoton.onclick = function () {
+                        //si el video esta en silencio 
+                        if (etiquetavideo.muted) {
+                            //restauramos el audio
+                            etiquetavideo.muted = false;
+                            //y cambiamos el icono 
+                            volumenBoton.innerHTML = "<img src='volumen.png' alt='Volume'>";
+                        //si no esta en silencio 
+                        } else {
+                            //activamos el silencio, y cambiamos el icono al de sin sonido
+                            etiquetavideo.muted = true;
+                            volumenBoton.innerHTML = "<img src='mute.png' alt='Mute'>";
+                        }
+                        //aqui controlamos la visibilidad de la barra 
+                        volumenBarra.classList.toggle("mostrar");
+                    };
+
+                    /////////////////////////////////// AJUSTE DE VOLUMEN //////////////////////////////
+                    //al hacer click en la barra de volumen
+                    volumenBarra.onclick = function (event) {
+                        //Obtenemos las dimensiones y posicion de la barra 
+                        let rect = volumenBarra.getBoundingClientRect();
+                        //calculamos la posicion del click 
+                        //offsetX es la posiocion relativa de la barra, rect.left: distancia desde el bore izquierdo de la pantalla 
+                        //event.clientX: posicion del click 
+                        let offsetX = event.clientX - rect.left;
+                        /*Convertimos la posición en un valor de volumen 
+                        dividimos la posicion por la anchura de la barra 
+                        nos aseguramos de que el valor este entre 0 y 1 */
+                        let newVolume = Math.max(0, Math.min(1, offsetX / rect.width));
+                        ///asignamos el nuevo volumen al video 
+                        etiquetavideo.volume = newVolume;
+                        //aseguramos de que el video no este en silencio
+                        etiquetavideo.muted = false;
+                        volumenBoton.innerHTML = "<img src='volumen.png' alt='Volume'>";
+                        //cambiamos el ancho para reflejar el nivel del volumen 
+                        volumenProgreso.style.width = `${newVolume * 100}%`;
+                    };
+                });
+            };
+        </script>
+    </body>
+</html>

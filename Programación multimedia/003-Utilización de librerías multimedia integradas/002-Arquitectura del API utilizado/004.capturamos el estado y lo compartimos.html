@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            //convierte una función en asíncrona, lo que permite usar await dentro de ella
+            async function  capturaPantalla() {
+                try{
+                    //solicita al usuario permiso para hacer la captura de pantalla 
+                    //await hace que el codigo espere hasta que le hayan dado acceso 
+                    const stream = await navigator.mediaDevices.getDisplayMedia({ video : true});
+                    //se crea un nuevo elemento de video 
+                    const video = document.createElement("video");
+                    //el stream se asigna a la propiedad srcobject lo que permite que enseñe la pantalla compartida
+                    video.srcObject = stream;
+
+                    //////////////// CREAMOS ELEMENTOS DE CANVAS /////////////////
+                    let lienzo = document.createElement("canvas");
+                    let contexto = lienzo.getContext("2d");
+                    lienzo.width = 1366;
+                    lienzo.height = 728;
+                    //añade el canvas al DOM
+                    document.body.appendChild(lienzo);
+
+                    let lienzo2 = document.createElement("canvas");
+                    let contexto2 = lienzo.getContext("2d");
+                    lienzo2.width = 1366;
+                    lienzo2.height = 728;
+                    document.body.appendChild(lienzo2);
+
+                    let lienzo3 = document.createElement("canvas");
+                    let contexto3 = lienzo.getContext("2d");
+                    lienzo3.width = 1366;
+                    lienzo3.height = 728;
+                    document.body.appendChild(lienzo3);
+
+                    //se agrega el video al DOM
+                    document.body.appendChild(video);
+
+                    //cuando los metadatos del video estan cargados,se llama a video.play para empezar la reproduccion
+                    video.onloadedmetadata = function() {
+                        video.play();
+                    }
+                    
+                    //ponemos el estado inicial de laimagen 
+                    let estado = contexto.getImageData(0, 0, lienzo.width, lienzo.height);
+
+                    /////////////// ACTUALIZACIÓN CONTINUA DE LA PANTALLA //////////////
+                    video.addEventListener('timeupdate', () =>{
+                        //refresca el canvas 
+                        contexto.drawImage(video, 0, 0);
+                        //capturamos los valores de todos los pixeles y los guardamos en el objeto
+                        let nuevoestado = contexto.getImageData(0, 0, lienzo.width, lienzo.height);
+                        //Obtiene los datos de todos los píxeles de contexto2,donde se van a dibujar las diferencias
+                        let diferencia = contexto2.getImageData(0, 0,lienzo.width, lienzo.height);
+
+                        //cmparamos el fotograma acual guardado nuevoestado con el anterio (estado)
+                        //se hace de 4 en 4 porque cada píxel tiene 4 componentes: rojo, verde, azul y alfa
+                        for(let i = 0; i < nuevoestado.data.length; i += 4){
+                            //si son iguales 
+                            if(nuevoestado.data[i] == estado.data[i]){
+                                //no ha cambiado, marcarlo en blanco
+                                diferencia.data[i] = 255;
+                                diferencia.data[i + 1] = 255;
+                                diferencia.data[i + 2] = 255;
+                                diferencia.data[i + 3] = 255;
+
+                            }else{
+                                // Si el píxel ha cambiado, marcarlo en negro
+                                diferencia.data[i] = 0;
+                                diferencia.data[i + 1] = 0;
+                                diferencia.data[i + 2] = 0;
+                                diferencia.data[i + 3] = 255;
+                            }
+                        }
+                        // Colocar la imagen de las diferencias en el segundo canvas
+                        contexto2.putImageData(diferencia, 0, 0);
+                        //actualizamos la variable estado para que en la siguiente iteración compare el fotogramas actual con el nuevo
+                        estado = nuevoestado;
+                    });
+
+                }catch (error){
+                    //Si el usuario niega el permiso, se muestra el error en la consola.
+                    console.log("Error al capturar la pantalla: ",error)
+                }
+            }
+            capturaPantalla();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Flauta o Violín</title>
+</head>
+<body>
+<canvas></canvas>
+<button id="arranca">Generar</button>
+<button id="play">Reproducir</button>
+<button id="pausa">Pausar</button>
+
+<script>
+    let lienzo = document.querySelector("canvas");
+    lienzo.width = 1920;
+    lienzo.height = 100;
+    let contexto = lienzo.getContext("2d");
+
+    let audioContext;
+    let audioBuffer;
+    let fuente;
+    let tiempoInicio = 0;
+    let tiempoPausa = 0;
+    let reproduciendo = false;
+
+    const escalaFlauta = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88]; // Escala de notas (C4 - B4)
+
+    function generarMelodia(audioContext, escala, duracionNota, duracionTotal, tipoInstrumento) {
+        let sampleRate = audioContext.sampleRate;
+        let buffer = audioContext.createBuffer(1, sampleRate * duracionTotal, sampleRate);
+        let canalData = buffer.getChannelData(0);
+
+        const ataque = 0.1;
+        const caida = 0.2;
+        const nivelSostenido = 0.5;
+        const liberacion = 0.3;
+
+        let longitudNota = sampleRate * duracionNota;
+
+        for (let inicioNota = 0; inicioNota < canalData.length; inicioNota += longitudNota) {
+            let frecuencia = escala[Math.floor(Math.random() * escala.length)];
+
+            // Armónicos para imitar flauta o violín
+            let armónicos = [1, 2, 3]; // Frecuencia base + armónicos de segundo y tercer orden
+            for (let i = 0; i < armónicos.length; i++) {
+                armónicos[i] *= frecuencia;
+            }
+
+            // Crear la onda de cada nota con armónicos (suma de varias ondas senoidales)
+            for (let i = 0; i < longitudNota && inicioNota + i < canalData.length; i++) {
+                let t = i / sampleRate;
+                let amplitud;
+
+                // ADSR
+                if (t < ataque) {
+                    amplitud = t / ataque;
+                } else if (t < ataque + caida) {
+                    amplitud = 1 - (1 - nivelSostenido) * (t - ataque) / caida;
+                } else if (t < duracionNota - liberacion) {
+                    amplitud = nivelSostenido;
+                } else {
+                    amplitud = nivelSostenido * (1 - (t - (duracionNota - liberacion)) / liberacion);
+                }
+
+                // Composición de la onda con armónicos
+                let onda = 0;
+                for (let j = 0; j < armónicos.length; j++) {
+                    onda += Math.sin(2 * Math.PI * armónicos[j] * (inicioNota + i) / sampleRate);
+                }
+
+                canalData[inicioNota + i] = amplitud * onda / armónicos.length; // Promediar la amplitud de los armónicos
+            }
+        }
+
+        return buffer;
+    }
+
+    document.querySelector("#arranca").onclick = function() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        let duracionNota = 0.5;  // Duración de cada nota en segundos
+        let duracionTotal = 10; // Duración total en segundos
+
+        // Generar la melodía usando la escala de la flauta
+        audioBuffer = generarMelodia(audioContext, escalaFlauta, duracionNota, duracionTotal, "flauta");
+
+        // Dibujar la forma de onda en el lienzo
+        let canalData = audioBuffer.getChannelData(0);
+        contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+        for (let i = 0; i < canalData.length; i++) {
+            let x = i / (audioContext.sampleRate * duracionTotal / lienzo.width);
+            let y = 50 + canalData[i] * 50; // Centrado en y=50
+            contexto.fillRect(x, y, 1, 1);
+        }
+    };
+
+    document.querySelector("#play").onclick = function() {
+        if (!reproduciendo) {
+            fuente = audioContext.createBufferSource();
+            fuente.buffer = audioBuffer;
+            fuente.connect(audioContext.destination);
+            tiempoInicio = audioContext.currentTime - tiempoPausa;
+            fuente.start(0, tiempoPausa);
+            reproduciendo = true;
+
+            fuente.onended = function() {
+                reproduciendo = false;
+                tiempoPausa = 0;
+            };
+        }
+    };
+
+    document.querySelector("#pausa").onclick = function() {
+        if (reproduciendo) {
+            fuente.stop();
+            tiempoPausa = audioContext.currentTime - tiempoInicio;
+            reproduciendo = false;
+        }
+    };
+</script>
+</body>
+</html>

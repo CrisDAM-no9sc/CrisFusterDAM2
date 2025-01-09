@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Musical Tones and Particle Sound</title>
+</head>
+<body>
+    <canvas id="musicCanvas" width="1024" height="1024"></canvas>
+    <button id="iniciosonido">Empezar</button>
+
+    <script>
+        const lienzo = document.getElementById("musicCanvas");
+        const contexto = lienzo.getContext("2d");
+
+        // Configuración del Audio
+        let contextoaudio;
+        document.getElementById('iniciosonido').onclick = () => {
+            contextoaudio = new (window.AudioContext || window.webkitAudioContext)();
+        };
+
+        // Frecuencias de la escala de C mayor
+        const frecuencias = {
+            C: 261.63,
+            D: 293.66,
+            E: 329.63,
+            F: 349.23,
+            G: 392.00,
+            A: 440.00,
+            B: 493.88
+        };
+
+        // Colores de las notas
+        const notacolores = {
+            C: '#FF0000', // Rojo
+            D: '#FF7F00', // Naranja
+            E: '#FFFF00', // Amarillo
+            F: '#00FF00', // Verde
+            G: '#0000FF', // Azul
+            A: '#4B0082', // Índigo
+            B: '#9400D3'  // Violeta
+        };
+
+        // Mapa de ganancia por nota
+        const gananciaNotas = {
+            C: 1.0,   // Volumen normal
+            D: 0.5,   // Volumen ligeramente más bajo
+            E: 0.7,   // Un poco más bajo
+            F: 0.6,   // Más bajo
+            G: 0.5,   // Volumen bajo
+            A: 0.4,   // Aún más bajo
+            B: 0.3    // Muy bajo
+        };
+
+        // Centro y radio del círculo
+        const centrox = lienzo.width / 2;
+        const centroy = lienzo.height / 2;
+        const radio = 400;
+        const anguloinicio = -Math.PI / 2; // Iniciar en la parte superior del círculo
+
+        // Función para dibujar el círculo y los segmentos
+        function dibujarcirculoSegmentos() {
+            contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+            contexto.beginPath();
+            contexto.arc(centrox, centroy, radio, 0, 2 * Math.PI);
+            contexto.strokeStyle = '#000000';
+            contexto.lineWidth = 3;
+            contexto.stroke();
+
+            const notas = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+            const incrementoangulo = (2 * Math.PI) / notas.length;
+
+            notas.forEach((nota, i) => {
+                const iniciosegmento = anguloinicio + i * incrementoangulo;
+                const finalsegmento = iniciosegmento + incrementoangulo;
+
+                contexto.beginPath();
+                contexto.arc(centrox, centroy, radio, iniciosegmento, finalsegmento);
+                contexto.strokeStyle = notacolores[nota];
+                contexto.lineWidth = 10;
+                contexto.stroke();
+
+                const labelangulo = iniciosegmento + incrementoangulo / 2;
+                const labelx = centrox + (radio + 30) * Math.cos(labelangulo);
+                const labely = centroy + (radio + 30) * Math.sin(labelangulo);
+
+                contexto.fillStyle = notacolores[nota];
+                contexto.font = "24px Arial";
+                contexto.textAlign = "center";
+                contexto.textBaseline = "middle";
+                contexto.fillText(nota, labelx, labely);
+            });
+        }
+
+        // Función para crear el sonido
+        function iniciarSonido(frecuencia, nota) {
+            if (!contextoaudio) return;
+
+            const oscilador = contextoaudio.createOscillator();
+            const gainNode = contextoaudio.createGain();
+
+            oscilador.frequency.value = frecuencia;
+            oscilador.type = 'sine';
+
+            // Ajustamos la ganancia de acuerdo con la nota
+            const volumen = gananciaNotas[nota] || 1.0; // Si la nota no está definida, se usa 1.0
+
+            // Parámetros del sobre ADSR
+            const tiempoAtaque = 0.1;       // tiempo en segundos para alcanzar el vo9lumen maximo inicial
+            const tiempoDecaimiento = 0.2;  // para reducir el volumen al nivel sostenido
+            const nivelSostenido = 0.5;     // volumen constante mantenido despues de la decaida 
+            const tiempoLiberacion = 0.5;   // tiempo en segundos para reducir el volumen a 0
+
+            //el objeto gainnode es el que va a controlar como el volumen (ganancia) evoluciona en el tiempo
+            //estabelece el tiempo actual ,y el volumen empieza en 0
+            gainNode.gain.setValueAtTime(0, contextoaudio.currentTime);
+            // la fase de atque donde aumentamos el volumen linealmente desde 0 hasta el 10% en un tiempo de ataque de 1 segundo
+            gainNode.gain.linearRampToValueAtTime(0.1 * volumen, contextoaudio.currentTime + tiempoAtaque);
+            //despues de alcanzar el volumen inicial, el volumen desciende al 50% en un tiempo de 2segundos
+            gainNode.gain.linearRampToValueAtTime(nivelSostenido * volumen, contextoaudio.currentTime + tiempoAtaque + tiempoDecaimiento);
+            // mantiene el volumen constante durante unbreve tiempo adicional de 0.1 segundos el volumen se mantendra en un nivel sostenido
+            gainNode.gain.setValueAtTime(nivelSostenido * volumen, contextoaudio.currentTime + tiempoAtaque + tiempoDecaimiento + 0.1);
+            //El volummen disminuye suavemente desde el nivel sostenido 0 durante la fase de libreracion que dura 0.5 segundos
+            gainNode.gain.linearRampToValueAtTime(0, contextoaudio.currentTime + tiempoAtaque + tiempoDecaimiento + 0.1 + tiempoLiberacion);
+
+            //conectamos el oscilador y el nodo de ganancia 
+            oscilador.connect(gainNode);                   //conectamos el oscilador al nodo de ganancia
+            gainNode.connect(contextoaudio.destination);   //El nodo de ganancia se conecta a la salida de audio
+            // Inicia el oscilador, comenzando a generar la onda sonora.
+            oscilador.start();
+            //Detiene la generación de sonido por el oscilador.
+
+            oscilador.stop(contextoaudio.currentTime + tiempoAtaque + tiempoDecaimiento + 0.1 + tiempoLiberacion);
+        }
+
+        // Clase Particula
+        class Particula {
+            
+            constructor(x, y, direccionangulo, speed = 5) {
+                this.x = x;                                 // son las coordenadas inicales de las particulas 
+                this.y = y;
+                this.direccionangulo = direccionangulo;     // es el angulo en movimeinto de la particula en radiantes
+                this.speed = speed;                         // marcamos la velocidad en la que se va a mover la particula 
+                this.radio = 5;                             // este es el radio de la paticula 
+                this.color = '#000000';                     // y el color 
+            }
+
+            mueve() {
+                //calculamos el desplazamineto en las coordenadas 
+                this.x += this.speed * Math.cos(this.direccionangulo);  //define eldesplazamiento horizontal
+                this.y += this.speed * Math.sin(this.direccionangulo);  // y el vertical
+
+                // Calculamos la distancia desde el centro para verificar la colisión con el borde
+                const distanciacentro = Math.sqrt((this.x - centrox) ** 2 + (this.y - centroy) ** 2);
+                //si la distancia es mayor o iguall al radio la particula colisionara con el borde 
+                if (distanciacentro >= radio) {
+                    this.rebotar(); //si hya una colision llamamos al metodo rebota 
+                }
+            }
+
+            rebotar() {
+                // Rebotar según el ángulo de colisión con el borde circular
+                const centroangulo = Math.atan2(this.y - centroy, this.x - centrox);
+                this.direccionangulo = 2 * centroangulo - this.direccionangulo + Math.PI;
+
+                // Detectar en qué segmento de la circunferencia ocurrió la colisión
+                const angulocolision = (centroangulo + 2 * Math.PI) % (2 * Math.PI);
+                const notas = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+                const angulosegmento = (2 * Math.PI) / notas.length;
+                const indicesegmento = Math.floor(angulocolision / angulosegmento);
+                const nota = notas[indicesegmento];
+
+                // Reproducir la nota correspondiente
+                console.log('Nota tocada:', nota, 'Frecuencia:', frecuencias[nota]);
+                iniciarSonido(frecuencias[nota], nota);
+            }
+
+            dibujar() {
+                contexto.beginPath();
+                contexto.arc(this.x, this.y, this.radio, 0, 2 * Math.PI);
+                contexto.fillStyle = this.color;
+                contexto.fill();
+            }
+        }
+
+        let particulas = [];
+        let numeroparticulas = 10;
+        for (let i = 0; i < numeroparticulas; i++) {
+            particulas.push(new Particula(centrox + 200, centroy, Math.random() * Math.PI * 2));
+        }
+
+        // Bucle de animación
+        function animar() {
+            dibujarcirculoSegmentos();
+            particulas.forEach(function (particula) {
+                particula.mueve();
+                particula.dibujar();
+            });
+
+            requestAnimationFrame(animar);
+        }
+
+        animar();
+    </script>
+</body>
+</html>

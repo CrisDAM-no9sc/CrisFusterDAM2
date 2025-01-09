@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 60px;
+                height: 60px;
+                padding: 10px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: #7AB2B2; 
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+            button img {
+                width: 50%;
+                height: auto;
+            }
+            button:hover {
+                background-color: #4D869C; 
+                transform: scale(1.1); 
+            }
+        </style>
+    </head>
+    <body>
+        <video src="paisaje.mp4"></video>
+        <button id="play"><img src="play.png"></button>
+        <button id="pausa"><img src="pause.png"></button>
+        <script>
+            let video = document.querySelector("video");
+            let play = document.querySelector("#play");
+            let pausa = document.querySelector("#pausa");
+
+            play.onclick = function(){
+                video.play();
+            }
+
+            pausa.onclick = function(){
+                video.pause();
+            }
+        </script>
+    </body>
+</html>

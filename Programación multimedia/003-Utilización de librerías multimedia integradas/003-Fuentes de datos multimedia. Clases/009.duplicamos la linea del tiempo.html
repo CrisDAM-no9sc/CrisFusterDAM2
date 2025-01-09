@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas></canvas>
+        <button id="play">Reproducir</button>
+        <button id="pausa">Pausar</button>
+        <script>
+
+            //////////////////////////////////////// CREAMOS EL CANVAS ////////////////////////////////////
+            let lienzo = document.querySelector("canvas");
+            lienzo.width = 1500;
+            lienzo.height = 500;
+            let contexto = lienzo.getContext("2d");
+            /////////////////////////////////// VARIABLE GLOBALES ////////////////////////////////////////
+
+            let contextoaudio;              //es un objeto de la api , sera el contexto para manejar el audio
+            let memoriaaudio;               //aqui guardaremos los datos del archivo despues de descodificarlo
+            let fuente;                     // es la fuente que reproducira el audio
+            let tiempoinicio = 0;           //para guaradar tanto el tiempo de inicio como el de pausa para reanudar la reproduccion
+            let tiempopausa = 0;
+            let reproduciendo = false;      //indica si el audio esta reproduciendose o no 
+
+            window.onload = function() {
+                //creamos un contexto de audio 
+                contextoaudio = new (window.AudioContext || window.webkitAudioContext)();
+                fetch('cancion prueba.mp3')
+                //convierte el archivo en bytes
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer => {
+                    //descodificamos el array de bytes a formato de audio
+                    return contextoaudio.decodeAudioData(arrayBuffer);
+                })
+                .then(descodificadatos => {
+                    //guardamos los datos desofificados en la variable memoriaaudio
+                    memoriaaudio = descodificadatos;
+                    //imprimimos la informacion del archivo
+                    console.log("Audio Buffer Información: ");
+                    console.log("Duración en segundos:", memoriaaudio.duration);
+                    console.log("Frecuencia (hz): ", memoriaaudio.sampleRate);
+                    console.log("Numero de canales: ", memoriaaudio.numberOfChannels);
+                    console.log("Numero de muestras por canales: ", memoriaaudio.length);
+
+                    //------ PROCESAMOD Y DIBUJAMOS LA ONDA DEL PRIMER CANAL -------//
+                    //obtenemos los datos del primer canal (el izquierdo)
+                    const datoscanal = memoriaaudio.getChannelData(0);
+                    let duplicado = datoscanal;
+                    for (let i = 0;i < datoscanal.length; i++){
+                        if(i > memoriaaudio.sampleRate){
+                            datoscanal[i] = duplicado[i - memoriaaudio.sampleRate];
+                        }
+                    }
+                    //procesamos esos datos para adaptarlos al tamaño del canvas 
+                    const amplitudes = procesardatos(datoscanal); 
+                    //dibujamos la onda en el canvas 
+                    dibujarondas(amplitudes);
+                })
+                .catch(error => {
+                    console.error("Error al cargar o decodificar el archivo de audio", error);
+                });
+            }
+
+            //////////////// FUNCIÓN PARA PRCESAR LOS DATOS ///////////////////////
+            function procesardatos (datoscanal){
+                //dividimos la longitud por el ancho para indicar cuantos datos deben agruparse en cada pixel del canvas 
+                const divisor = Math.floor(datoscanal.length / lienzo.width);
+                const amplitudes = [];
+                
+                for (let i = 0; i < datoscanal.length; i += divisor) {
+                    //añadimos un valor de amplitd por cada grupo de datos 
+                    amplitudes.push(datoscanal[i]);
+                }
+                //devolvemos el array con los datos procesados
+                return amplitudes;
+
+            }
+
+            ///////////////////////// FUNCIÓN DIBUJAR ONDAS EN EL CANVAS ////////////////////////////
+            function dibujarondas(amplitudes) {
+                //cojemos el medio del canvas 
+                const centroy = lienzo.height / 2;
+                // para definir la amplitud de la onda 
+                const escala = 75;
+                // limpiamos el canvas antes de dibujar en el 
+                contexto.clearRect(0, 0, lienzo.width, lienzo.height);
+                contexto.strokeStyle = "blue";
+                //definimos el grosor de la linea 
+                contexto.lineWidth = 1;
+                //inicia el camino para dibujar la linea 
+                contexto.beginPath();
+                //recorremos todos los puntos de amplitud calculando 
+                amplitudes.forEach((amplitud, x) => {
+                    // Calculamos la posición vertical de la onda
+                    const y = centroy - amplitud * escala;
+                    // Dibujamos una línea hasta el punto (x, y)
+                    contexto.lineTo(x, y);
+                });
+                //dibuja la linea en el canvas 
+                contexto.stroke();
+            }
+
+            ///////////////////// FUNCION PARA BOTON DE REPRODUCCIÓN ////////////////////////////
+            document.querySelector("#play").onclick = function() {
+                if(!reproduciendo){
+                    // Creamos la fuente de audio
+                    fuente = contextoaudio.createBufferSource();
+                    // Asignamos el buffer de audio descodificado 
+                    fuente.buffer = memoriaaudio;
+                    
+                    // Creamos el nodo de retardo (eco)
+                    let delay = contextoaudio.createDelay();
+                    delay.delayTime.value = 0.5; // Tiempo de retardo (medio segundo)
+                    
+                    // Creamos el nodo de ganancia (para controlar el volumen del eco)
+                    let gainNode = contextoaudio.createGain();
+                    gainNode.gain.value = 0.5; // Volumen del eco (50% de la señal original)
+
+                    // Conectamos la fuente de audio al delay y luego al gainNode
+                    fuente.connect(delay);
+                    delay.connect(gainNode);
+                    gainNode.connect(contextoaudio.destination);
+                    
+                    // Conectamos la fuente al destino (los altavoces) directamente también
+                    fuente.connect(contextoaudio.destination);
+
+                    // Iniciamos la reproducción del audio
+                    fuente.start(0, tiempopausa); // Reproduce desde donde se pausó
+                    // Calculamos el inicio del audio una vez ha sido pausado 
+                    tiempoinicio = contextoaudio.currentTime - tiempopausa;
+                    reproduciendo = true;
+                }
+                fuente.onended = function(){
+                    reproduciendo = false;
+                    tiempopausa = 0;
+                }
+                
+            }
+
+            ////////////////////// FUNCION PARA BOTON DE PAUSAR /////////////////////////////
+            document.querySelector("#pausa").onclick = function() {
+                if (reproduciendo) {
+                    // Detener la reproducción
+                    fuente.stop(); 
+                    //calcula el tiempo exacto cuando se pauso
+                    tiempopausa = contextoaudio.currentTime - tiempoinicio; 
+                    reproduciendo = false;
+                }
+            }
+        </script>
+    </body>
+</html>

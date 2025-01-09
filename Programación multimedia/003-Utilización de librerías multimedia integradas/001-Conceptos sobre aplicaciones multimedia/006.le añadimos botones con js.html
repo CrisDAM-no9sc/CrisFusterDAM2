@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 60px;
+                height: 60px;
+                padding: 10px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: #7AB2B2; 
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+            button img {
+                width: 50%;
+                height: auto;
+            }
+            button:hover {
+                background-color: #4D869C; 
+                transform: scale(1.1); 
+            }
+        </style>
+    </head>
+    <body>
+        <video src="paisaje.mp4"></video>
+        <script>
+            window.onload = function(){
+                let videos = document.querySelectorAll("video");
+                //para cada uno de los vido que nos encontremos 
+                videos.forEach(function(video){
+                    //lo guardamos en la memoria y lo borramos
+                    let etiquetavideo = video;
+                
+                    ///////////////////// LO CEREAMOS AQUI ////////////////
+                    let contenedorvideo = document.createElement("div");
+                    contenedorvideo.classList.add("clipgo");
+                    //reemplazamos el video conn el contenedor 
+                    etiquetavideo.replaceWith(contenedorvideo);
+                    //añaidmos el contenedor del video al dom
+                    contenedorvideo.appendChild(etiquetavideo);
+
+                    ///////////////////// CREAMOS BOTONES ////////////////
+                    let play = document.createElement("button");
+                    play.innerHTML = "<img src='play.png' alt='Play'>";
+                    contenedorvideo.appendChild(play);
+                    let estado = "pause";
+
+                    /////////// AHORA VAMOS AL COMPORTAMIENTO /////////////
+                    play.onclick = function(){
+                        if(estado === "pause"){
+                            etiquetavideo.play();
+                            play.innerHTML = "<img src='pause.png' alt='Pause'>";
+                            estado = "play";
+                        //en caso contrario si esta en play le cambiamos la imagen y lo pinemos en play
+                        }else{
+                            etiquetavideo.pause();
+                            play.innerHTML = "<img src='play.png' alt='Play'>";
+                            estado = "pause";
+                        }
+                    }
+                })
+
+            }
+           
+        </script>
+    </body>
+</html>

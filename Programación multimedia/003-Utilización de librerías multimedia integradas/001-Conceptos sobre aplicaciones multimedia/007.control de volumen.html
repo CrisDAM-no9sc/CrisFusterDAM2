@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+
+            .clipgo {
+                width: 600px;
+                height: 320px;
+                position: relative;
+            }
+
+            .clipgo .barracontrol {
+                position: absolute;
+                width: 400px;
+                height: 30px;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                bottom: 10px;
+                left: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: nowrap;
+            }
+
+            .clipgo video {
+                width: 100%;
+                height: 100%;
+            }
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                padding: 5px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                background-color: #7AB2B2; 
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            button img {
+                width: 100%;
+                height: auto;
+            }
+
+            button:hover {
+                background-color: #4D869C; 
+                transform: scale(1.1); 
+            }
+
+            input[type="range"] {
+                display: none; /* Ocultar la barra de volumen inicialmente */
+                width: 100px;
+                position: absolute;
+            }
+
+            .mostrar-volumen input[type="range"] {
+                display: block; /* Mostrar cuando se activa la clase */
+            }
+        </style>
+    </head>
+    <body>
+        <video src="paisaje.mp4"></video>
+        <script>
+            window.onload = function(){
+                let videos = document.querySelectorAll("video");
+                //para cada uno de los vido que nos encontremos 
+                videos.forEach(function(video){
+                    //lo guardamos en la memoria y lo borramos
+                    let etiquetavideo = video;
+                    //let volumen = 1.0;
+                    ///////////////////// LO CEREAMOS AQUI ////////////////
+                    let contenedorvideo = document.createElement("div");
+                    contenedorvideo.classList.add("clipgo");
+                    //reemplazamos el video conn el contenedor 
+                    etiquetavideo.replaceWith(contenedorvideo);
+                    //añaidmos el contenedor del video al dom
+                    contenedorvideo.appendChild(etiquetavideo);
+
+
+                    ////////////////////////// CREAR LA BARRA DE CONTROLES ///////////////
+                    let barracontrol = document.createElement("div");
+                    barracontrol.classList.add("barracontrol");
+                    //reemplazamos el video con el contenedor 
+                    contenedorvideo.appendChild(barracontrol);
+
+
+                    ///////////////////////////// CREAMOS BOTONE PLAY ////////////////////
+                    let play = document.createElement("button");
+                    play.innerHTML = "<img src='play.png' alt='Play'>";
+                    barracontrol.appendChild(play);
+                    let estado = "pause";
+
+                    //--------- COMPORTAMIENTO DEL BOTON PLAY ----------//
+                    play.onclick = function(){
+                        if(estado === "pause"){
+                            etiquetavideo.play();
+                            play.innerHTML = "<img src='pause.png' alt='Pause'>";
+                            estado = "play";
+                        //en caso contrario si esta en play le cambiamos la imagen y lo pinemos en play
+                        }else{
+                            etiquetavideo.pause();
+                            play.innerHTML = "<img src='play.png' alt='Play'>";
+                            estado = "pause";
+                        }
+                    }
+                    ///////////////////////////// CREAMOS BOTON VOLUMEN+ ////////////////////
+
+                    let subirv = document.createElement("button");
+                    subirv.innerHTML = "<img src='subirv.png' alt='Subir Volumen'>";
+                    barracontrol.appendChild(subirv);
+
+                    // Barra de volumen (oculta por defecto)
+                    subirv.onclick = function(){
+                        if(etiquetavideo.volume <1.0){
+                            etiquetavideo.volume = Math.min(1.0, etiquetavideo.volume + 0.1);
+                        }
+                    }
+                    
+                    ///////////////////////////// boton volumen- ////////////////
+
+                    let bajarv = document.createElement("button");
+                    bajarv.innerHTML = "<img src='bajarv.png' alt='Bajar Volumen'>";
+                    barracontrol.appendChild(bajarv)
+
+                    bajarv.onclick = function() {
+                        if(etiquetavideo.volume > 0.0){
+                            etiquetavideo.volume = Math.max(0.0, etiquetavideo.volume - 0.1);
+                        }
+                    };
+
+                    ///////////////////////////// BARRA DE VOLUMEN ///////////////////
+                    
+                    let controlv = document.createElement("input");
+                    controlv.setAttribute("type", "range");
+                    controlv.setAttribute("min", "0");
+                    controlv.setAttribute("max", "100");
+                    controlv.setAttribute("step", "1");
+                    controlv.value = etiquetavideo.volume * 100;
+                    contenedorvideo.appendChild(controlv);
+
+                    //------------------ Mostrar/ocultar-------------------//
+                    let mostrarBarraVolumen = false;
+                    subirv.onclick = function() {
+                        mostrarBarraVolumen = !mostrarBarraVolumen;
+                        if (mostrarBarraVolumen) {
+                            controlv.style.display = "block";
+                        } else {
+                            controlv.style.display = "none";
+                        }
+                    };
+
+                    // Sincronizar volumen del video con la barra de rango
+                    controlv.oninput = function() {
+                        etiquetavideo.volume = controlv.value / 100;
+                    };
+                    
+                })
+
+            }
+           
+        </script>
+    </body>
+</html>

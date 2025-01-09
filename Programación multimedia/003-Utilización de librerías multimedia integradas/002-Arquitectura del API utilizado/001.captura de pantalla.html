@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            async function  capturaPantalla() {
+                try{
+                    //se solicita el permiso para capturar la pantalla al usuario
+                    const stream = await navigator.mediaDevices.getDisplayMedia({ video : true});
+                    //se crea un video con la pnatalla compartida
+                    const video = document.createElement("video");
+                    video.srcObject = stream;
+                    //una vex cargados todos los datos empieza a reproducirse automaticamente 
+                    video.onloadedmetadata = () => video.play();
+                    document.body.appendChild(video);
+                }catch (error){
+                    //solo saltara el erro si el usuario por ejemplo deniega el permiso 
+                    console.log("Error al capturar la pantalla: ",error)
+                }
+            }
+            capturaPantalla();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script>
+            let contextoaudio;
+            let memoriaaudio;
+
+            window.onload = function(){
+                contextoaudio = new (window.AudioContext || window.webkitAudioContext)();
+                fetch('cancion prueba.mp3')
+                .then(response => response.arrayBuffer())
+                .then(arrayBuffer =>{
+                    return contextoaudio.decodeAudioData(arrayBuffer)
+                })
+                .then(decodeData =>{
+                    memoriaaudio = decodeData;
+                    console.log(memoriaaudio);
+                })
+                .catch(error => {
+                    console.error("Error al cargar o decodificar el archivo de audio", error);
+                });
+            }
+        </script>
+
+    </body>
+</html>
