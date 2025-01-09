@@ -31,16 +31,17 @@
                 console.warn("Conexión cerrada, intentando reconectar...");
                 setTimeout(inicializarSocket, 1000); // Reintentar conexión después de 1 segundo
             });
+            //////////////////// PROCESAOS LOS DATOS RECIBIDOS /////////////////////////
 
             socket.addEventListener("message", (event) => {
-                // Solo realiza el parseo si se recibe un mensaje
+                // deserializamos el mensaje json recibido para convertirlo en un array de piexeles
                 const datos = JSON.parse(event.data);
-                //repasamos los datos de la imagen uno a uno
+                //recorremos cada valr 
                 for (let i = 0; i < datosimagen.data.length; i++) {
                     //igualamos los datos que vienen del socket
                     datosimagen.data[i] = datos[i];
                 }
-                //ponemos los datos en el lienzo
+                //dibujamos los datos en el lienzo 
                 contexto.putImageData(datosimagen, 0, 0);
             });
         }

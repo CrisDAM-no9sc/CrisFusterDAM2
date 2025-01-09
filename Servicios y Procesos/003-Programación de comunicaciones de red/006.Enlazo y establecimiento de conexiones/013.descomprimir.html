@@ -48,10 +48,10 @@
             compresion.push([arr[arr.length - 1], contador]); 
             return compresion;
         }
-
+        /////////////////////////////////// DESCOMPRIMIR CON RLE /////////////////////
         function rleDecompressionArray(comprimido) {
             const descomprimido = [];
-
+            //
             for (let i = 0; i < comprimido.length; i++) {
                 const [valor, contador] = comprimido[i]; 
                 for (let j = 0; j < contador; j++) {
@@ -61,7 +61,8 @@
 
             return descomprimido;
         }
-
+        /////////////////////////////////// INSERTAR CANAL ALFA DEVUELTA /////////////////////
+        //se usa para insertar la transparencia (alfa) en los datos descmprimidos justo despues de los valores RGB
         function insertar(arr, elemento){
             for(let i =3;i< arr.length; i +=4){
                 arr.splice(i,0,elemento);
@@ -69,23 +70,30 @@
             }
             return arr;
         }
-
+        /////////////////////////////////// CARGAMOS LA IMAGEN Y OBTENEMOS LOS DATOS ///////////////////////
         const lienzo = document.querySelector("canvas");
         const contexto = lienzo.getContext("2d");
         lienzo.width = 369;
         lienzo.height = 215;
-
+        //creamos un objeto y establecemos su fuente 
         let imagen = new Image();
         imagen.src = "Captura1.png";
+        //una vez la imagen este cargada 
         imagen.onload = function(){
-            contexto.drawImage(imagen, 0, 0);    
+            //se dibuja en el canvas 
+            contexto.drawImage(imagen, 0, 0);   
+            //despues de dibujarala obtenemos la informacion de los pixeles 
+            //nos devolvera un arreglo plano de los datos  
             const coleccion = contexto.getImageData(0, 0, 369, 215).data;
             console.log("array original: ");
+            // imprimimos los datos originales de la imagen en pixeles
             console.log(coleccion);
             console.log("array comprimido: ");
+            //lo comprimimos 
             let comprimido = comprimir(coleccion);
             console.log(comprimido);
             console.log("Array descomprimido: ")
+            //y devuelta lo descomprimimos y imprimmimos el resultado 
             let descomprimido = descomprimir(comprimido);
             console.log(descomprimido);
         }

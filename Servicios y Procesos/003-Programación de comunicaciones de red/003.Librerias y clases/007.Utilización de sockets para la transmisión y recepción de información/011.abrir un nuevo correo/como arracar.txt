@@ -1,2 +1,0 @@
-hay que arrancar primero el servidor desde el cdm con python servidor.py
-y despues ir a la direccion de http://127.0.0.1:5000/ que nos marca el servidor cunado lo arrancamos 

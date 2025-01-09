@@ -36,7 +36,7 @@ def enviar_email():
     
     try:
         # Llamamos a la función de envío con tus credenciales y los datos del mensaje
-        respuesta = enviar("dam@jocarsa.com", para, asunto, mensaje)
+        respuesta = enviar("dam2pruebasp@gmail.com", para, asunto, mensaje)
         return jsonify({"status": "ok", "message": "Correo enviado correctamente"}), 200
     except Exception as e:
         # Manejo de errores en el envío

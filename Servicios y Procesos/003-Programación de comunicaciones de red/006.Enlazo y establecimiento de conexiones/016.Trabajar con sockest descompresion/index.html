@@ -18,14 +18,28 @@
         console.error("Error en WebSocket:", event);
     });
 
-    // Recibimos mensajes del socket
     socket.addEventListener("message", (event) => {
-        let datos = JSON.parse(event.data);
-        console.log("Datos recibidos:", datos);
-        // Muestra los datos en la consola
-        if (datos.datos) {
-            console.log("Array de datos:", datos.datos);
-        }
+    let datos = JSON.parse(event.data);
+    console.log("Datos recibidos:", datos);
+    
+    if (datos.datos) {
+        // Crear un canvas para mostrar la imagen
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        
+        // Establecer las dimensiones del canvas (192x108)
+        canvas.width = 192;  // Ancho de la imagen
+        canvas.height = 108; // Alto de la imagen
+        document.body.appendChild(canvas);  // Añadir el canvas al body
+
+        // Crear un objeto ImageData a partir de los datos
+        let imageData = new ImageData(new Uint8ClampedArray(datos.datos), canvas.width, canvas.height);
+
+        // Poner los datos de la imagen en el canvas
+        ctx.putImageData(imageData, 0, 0);
+    } else {
+        console.log("No se han recibido datos correctamente.");
+    }
     });
 </script>
 </html>

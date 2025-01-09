@@ -1,19 +1,26 @@
-import imaplib
-import email
-from email.header import decode_header
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+import imaplib                                          ## cONECTARSE AL SERVIDOR imap para acceder a correos electronicos desde el buzon
+import email                                            ## PManeja los mensajes y decodifica su contenido 
+from email.header import decode_header                  ## Decodificar encabezados como "Asunto" o "Remitente".
+import smtplib                                          ## Enviar correos electrónicos (SMTP).
+from email.mime.multipart import MIMEMultipart          ## Construir correos con varias partes (texto + adjuntos).
+from email.mime.text import MIMEText                    ## Crear contenido textual (texto plano o HTML) para los correos.
 
-# Configuración de la cuenta
-username = "dam2pruebasp@gmail.com"  # Tu correo
-password = "kitj wvum xpwt kzod"  # Contraseña de aplicación de Gmail
-imap_server = "imap.gmail.com"  # Servidor IMAP de Gmail
-smtp_server = "smtp.gmail.com"  # Servidor SMTP de Gmail
-smtp_port = 587  # Puerto para SMTP con TLS
+################# CONFIGURACION DE PARAMETROS PRINCIPALES ##################
+
+username = "dam2pruebasp@gmail.com"
+password = "kitj wvum xpwt kzod"
+imap_server = "imap.gmail.com"                   ## Utilizado para recibir correos electrónicos.
+imap_port = 993  # IMAP SSL
+smtp_server = "smtp.gmail.com"                   ## Utilizado para enviar correos electrónicos.
+smtp_port = 587  # SMTP STARTTLS
+smtp_ssl_port = 465  # SMTP SSL
+#993 = recepcion de correos
+#587 = envio de correo (STARTTLS) 
+
+############################### FUNCIÓN PARA ENVIAR CORREOS ####################
 
 def enviar(desde, para, asunto, mensaje):
-    # Crear el mensaje
+    # nos va a permitir combinar varias partes, como texto y adjuntos 
     msg = MIMEMultipart()
     msg['From'] = desde
     msg['To'] = para
@@ -22,13 +29,13 @@ def enviar(desde, para, asunto, mensaje):
     body = mensaje
     msg.attach(MIMEText(body, "plain"))
 
-    # Enviar el mensaje
+    ##### CONEXION Y ENVIO #####
     try:
-        # Conectar al servidor SMTP
+        # conexion al servidor SMTP
         server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()  # Iniciar la conexión segura
-        server.login(username, password)
-
+        server.starttls()                   ## Iniciar la conexión segura
+        server.login(username, password)    ## inicia sesion con credenciales 
+        
         # Enviar el correo
         server.sendmail(msg['From'], msg['To'], msg.as_string())
         return {"mensaje": "Correo enviado correctamente"}
@@ -37,143 +44,127 @@ def enviar(desde, para, asunto, mensaje):
     finally:
         server.quit()  # Cerrar la conexión
 
-def recibir(mail_id=None, limite=50):
-    try:
-        # Conectar al servidor IMAP
-        mail = imaplib.IMAP4_SSL(imap_server)
-        mail.login(username, password)
+############################### FUNCIÓN PARA ENVIAR CORREOS ####################
+def recibir():
+    # Conectar al servidor IMAP usando SSL.
+    mail = imaplib.IMAP4_SSL(imap_server,993)
+    mail.login(username, password)
+    ## seleccionamos el buzon de entrada 
+    mail.select("inbox")
 
-        # Seleccionar el buzón (INBOX por defecto)
-        mail.select("inbox")
+    ## Busca todos los correos.
+    status, messages = mail.search(None, "ALL")
 
-        if mail_id:
-            print(f"Buscando correo con ID: {mail_id}")  # Agregar más depuración
-            status, msg_data = mail.fetch(mail_id, "(RFC822)")
-            if status != "OK":
-                print(f"Error al buscar correo con ID: {mail_id}")
-                return {"status": "error", "message": f"No se pudo recuperar el correo con ID {mail_id}"}
-            
-            mensajes = []
-            for response_part in msg_data:
-                if isinstance(response_part, tuple):
-                    msg = email.message_from_bytes(response_part[1])
-                    mensaje = {"mail_id": mail_id}
+    ## Obtiene una lista de IDs de los correos.
+    mail_ids = messages[0].split()
 
-                    # Decodificar asunto
-                    subject, encoding = decode_header(msg.get("Subject"))[0]
-                    if isinstance(subject, bytes):
-                        subject = subject.decode(encoding if encoding else "utf-8", errors="replace")
-                    mensaje["Asunto"] = subject or "(Sin asunto)"
+    mensajes = []
 
-                    # Decodificar remitente
-                    from_ = msg.get("From")
-                    mensaje["De"] = from_ or "(Sin remitente)"
-
-                    # Decodificar fecha
-                    mensaje["Fecha"] = msg.get("Date")
-
-                    # Decodificar cuerpo
-                    cuerpo = ""
-                    if msg.is_multipart():
-                        for part in msg.walk():
-                            if part.get_content_type() == "text/plain" and "attachment" not in str(part.get("Content-Disposition", "")):
-                                cuerpo = part.get_payload(decode=True).decode("utf-8", errors="replace")
-                                break
-                    else:
-                        cuerpo = msg.get_payload(decode=True).decode("utf-8", errors="replace")
-                    mensaje["Cuerpo"] = cuerpo or "(Sin contenido)"
-
-                    mensajes.append(mensaje)
-            return mensajes
-        else:
-            # Si no se pasa mail_id, obtener todos los correos
-            print("No se pasó mail_id, obteniendo todos los correos.")  # Agregar más depuración
-            status, messages = mail.search(None, "ALL")
-            if status != "OK":
-                return {"status": "error", "message": "No se pudieron recuperar los correos"}
-
-            mail_ids = messages[0].split()[-limite:]
-            mensajes = []
-            for mail_id in mail_ids:
-                status, msg_data = mail.fetch(mail_id, "(RFC822)")
-                if status != "OK":
-                    continue
-
-                for response_part in msg_data:
-                    if isinstance(response_part, tuple):
-                        msg = email.message_from_bytes(response_part[1])
-                        mensaje = {"mail_id": mail_id.decode()}
-                        # Decodificar asunto, remitente, fecha, cuerpo
-                        subject, encoding = decode_header(msg.get("Subject"))[0]
-                        if isinstance(subject, bytes):
-                            subject = subject.decode(encoding if encoding else "utf-8", errors="replace")
-                        mensaje["Asunto"] = subject or "(Sin asunto)"
-                        from_ = msg.get("From")
-                        mensaje["De"] = from_ or "(Sin remitente)"
-                        mensaje["Fecha"] = msg.get("Date")
-                        cuerpo = ""
-                        if msg.is_multipart():
-                            for part in msg.walk():
-                                if part.get_content_type() == "text/plain" and "attachment" not in str(part.get("Content-Disposition", "")):
-                                    cuerpo = part.get_payload(decode=True).decode("utf-8", errors="replace")
-                                    break
-                        else:
-                            cuerpo = msg.get_payload(decode=True).decode("utf-8", errors="replace")
-                        mensaje["Cuerpo"] = cuerpo or "(Sin contenido)"
-                        mensajes.append(mensaje)
-
-            return mensajes
-    except Exception as e:
-        print(f"Error en la función recibir: {str(e)}")  # Imprimir el error
-        return {"status": "error", "message": f"Error inesperado: {str(e)}"}
-    
-def recibir_individual(mail_id):
-    # Recibe un correo específico por ID
-    try:
-        mail = imaplib.IMAP4_SSL(imap_server)
-        mail.login(username, password)
-
-        # Seleccionar el buzón
-        mail.select("inbox")
-
-        # Buscar el correo por ID
+    # Iterar sobre los correos
+    for mail_id in mail_ids:
+        # Recuperar el correo por ID
         status, msg_data = mail.fetch(mail_id, "(RFC822)")
-        if status != "OK":
-            return {"mensaje": f"Correo con ID {mail_id} no encontrado"}
-
-        # Decodificar el correo
+        
         for response_part in msg_data:
             if isinstance(response_part, tuple):
+                mensaje = {}
+                # Decodificar el mensaje de correo
                 msg = email.message_from_bytes(response_part[1])
-                mensaje = {"mail_id": mail_id}
-
-                # Decodificar asunto
-                subject, encoding = decode_header(msg.get("Subject"))[0]
+                
+                # Obtener el asunto (Subject)
+                subject, encoding = decode_header(msg["Subject"])[0]
                 if isinstance(subject, bytes):
-                    subject = subject.decode(encoding if encoding else "utf-8", errors="replace")
-                mensaje["Asunto"] = subject or "(Sin asunto)"
-
-                # Decodificar remitente
+                    subject = subject.decode(encoding if encoding else "utf-8")
+                mensaje["Asunto"] = subject
+                
+                # Obtener el remitente (From)
                 from_ = msg.get("From")
-                mensaje["De"] = from_ or "(Sin remitente)"
+                mensaje["De"] = from_
 
-                # Decodificar fecha
-                mensaje["Fecha"] = msg.get("Date")
+                # Obtener la fecha (Date)
+                date = msg.get("Date")
+                mensaje["Fecha"] = date
 
-                # Decodificar cuerpo
-                cuerpo = ""
+                # Procesar el contenido del mensaje
                 if msg.is_multipart():
                     for part in msg.walk():
-                        if part.get_content_type() == "text/plain" and "attachment" not in str(part.get("Content-Disposition", "")):
-                            cuerpo = part.get_payload(decode=True).decode("utf-8", errors="replace")
-                            break
+                        content_type = part.get_content_type()
+                        content_disposition = str(part.get("Content-Disposition"))
+                        
+                        if content_type == "text/plain" and "attachment" not in content_disposition:
+                            # Obtener el cuerpo del correo
+                            body = part.get_payload(decode=True).decode("utf-8")
+                            mensaje["Cuerpo"] = body
                 else:
-                    cuerpo = msg.get_payload(decode=True).decode("utf-8", errors="replace")
-                mensaje["Cuerpo"] = cuerpo or "(Sin contenido)"
+                    body = msg.get_payload(decode=True).decode("utf-8")
+                    mensaje["Cuerpo"] = body
+                
+                mensajes.append(mensaje)
 
-                mail.close()
-                mail.logout()
-                return mensaje
+    # Cerrar conexión
+    mail.close()
+    mail.logout()
+    return mensajes
 
-    except Exception as e:
-        return {"mensaje": f"Error inesperado: {e}"}
+
+def recibir_por_fecha(fecha_objetivo):
+    # Conectar al servidor IMAP
+    mail = imaplib.IMAP4_SSL(imap_server)
+    mail.login(username, password)
+
+    # Seleccionar el buzón (INBOX por defecto)
+    mail.select("inbox")
+
+    # Buscar todos los correos electrónicos
+    status, messages = mail.search(None, "ALL")
+    mail_ids = messages[0].split()
+
+    # itera sobre cada id de los correos 
+    for mail_id in mail_ids:
+        # Recuperar el correo por ID
+        status, msg_data = mail.fetch(mail_id, "(RFC822)")
+        ##recuepra todo el contenido completo ; (RFC822)  le indicamos que querremos todo el contenido del cuerpo del mesnaje 
+        for response_part in msg_data:
+            if isinstance(response_part, tuple):
+                mensaje = {}
+                # Decodificar el mensaje de correo
+                msg = email.message_from_bytes(response_part[1])
+                
+                # Obtener la fecha (Date)
+                date = msg.get("Date")
+                
+                # Comparar la fecha del correo con la fecha objetivo
+                if date == fecha_objetivo:
+                    # Obtener el asunto (Subject)
+                    subject, encoding = decode_header(msg["Subject"])[0]
+                    if isinstance(subject, bytes):
+                        subject = subject.decode(encoding if encoding else "utf-8")
+                    mensaje["Asunto"] = subject
+                    
+                    # Obtener el remitente (From)
+                    from_ = msg.get("From")
+                    mensaje["De"] = from_
+
+                    mensaje["Fecha"] = date
+
+                    # Procesar el contenido del mensaje
+                    if msg.is_multipart():
+                        for part in msg.walk():
+                            content_type = part.get_content_type()
+                            content_disposition = str(part.get("Content-Disposition"))
+                            
+                            if content_type == "text/plain" and "attachment" not in content_disposition:
+                                body = part.get_payload(decode=True).decode("utf-8")
+                                mensaje["Cuerpo"] = body
+                    else:
+                        body = msg.get_payload(decode=True).decode("utf-8")
+                        mensaje["Cuerpo"] = body
+
+                    mail.close()
+                    mail.logout()
+                    return mensaje
+
+    # Cerrar conexión si no se encontró la fecha
+    mail.close()
+    mail.logout()
+    return {"mensaje": "Correo no encontrado para la fecha especificada"}

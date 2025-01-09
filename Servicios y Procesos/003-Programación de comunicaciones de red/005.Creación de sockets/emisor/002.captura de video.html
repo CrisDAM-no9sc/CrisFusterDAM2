@@ -12,13 +12,14 @@
         const video = document.getElementById('video');
         const lienzo = document.getElementById('lienzo');
         const contexto = lienzo.getContext('2d');
-        let socket;
+        let socket;  // declaramos esta variable para utilizarla despues en la conecxion
 
-        /////////////////////////////  ABRIMOS LA CONEXION A SOCKET  /////////////////////////////////////
+        /////////////////////////////  CONEXION A SOCKET  /////////////////////////////////////
 
         function inicializarSocket() {
+            //creamos una nueva conexion con el servidor que essta escuchando en el puerto 3000
             socket = new WebSocket("ws://localhost:3000");
-
+            // cuando la conexion se establece correctamente se envia un mensaje al servidor 
             socket.addEventListener("open", () => {
                 console.log("Se ha abierto una conexión");
                 socket.send(JSON.stringify({ mensaje: "hola" }));
@@ -37,7 +38,7 @@
         // INICIALIZA EL SOCKET UNA VEZ
         inicializarSocket();
 
-        ///////////////////////////////     PONEMOS EN MARCHA EL VIDEO   ///////////////////////////////
+        ///////////////////////////////   PONEMOS EN MARCHA EL VIDEO   ///////////////////////////////
 
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
