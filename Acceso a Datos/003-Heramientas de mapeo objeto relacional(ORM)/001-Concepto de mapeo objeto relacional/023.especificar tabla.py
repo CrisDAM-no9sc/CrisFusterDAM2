@@ -24,6 +24,7 @@ conexion = mysql.connector.connect(
     user = 'accesoadatos',
     password ='accesoadatos'
 )
+#creamos un cursor para que nos permita ejecutar consultas SQL
 cursor = conexion.cursor()
 
 ################## CREAMOS UNA LISTA DE PERSONAS  ########################### 
@@ -50,11 +51,12 @@ atributos = [
 
 #para cada uno de los atributos 
 for atributo in atributos:
+    #si no es una lista 
     if not isinstance(getattr(personas[0], atributo), list):
         #lo encadenamos a la peticion
-        #peticion += f"{atributo} VARCHAR(255) NOT NULL,"
         peticion += atributo+" VARCHAR(255) NOT NULL,"
     else:
+        #si lo es e crea una tabla secundaria con una clave foranea relacionada con la tabla personas 
         peticion2 = "DROP TABLE IF EXISTS "+atributo+""
         cursor.execute(peticion2)
         ## le metemos FK porque la clave forania es FOREY KEY

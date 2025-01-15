@@ -19,8 +19,8 @@ clase = "Producto"
 conexion = mysql.connector.connect(
     host='localhost',
     database = 'accesoadatos',
-    user = 'accesoadatos',
-    password ='accesoadatos'
+    user = 'crismon1',
+    password ='crismon1'
 )
 cursor = conexion.cursor()
 
@@ -40,19 +40,22 @@ cursor.execute(peticion)
 ################## PREPARAMOS CREACIÓN DINAMICA DE LA TABLA  ########################### 
 ##si ya esta creada la tabla, le podemos poner para que no nos salga fallo IF NOT EXISTS
 peticion = "CREATE TABLE IF NOT EXISTS "+clase+" (Identificador INT NOT NULL AUTO_INCREMENT,"
-#para listar los atributos de la clase
+#extraemos los nombre de los atributos de la primera persona de la lista
 atributos = [
-    attr for attr in dir(personas[0]) 
-    if not callable(getattr(personas[0], attr)) and not attr.startswith("__")
+    attr for attr in dir(personas[0])               # recorremos todos los nombres de atributos y métodos del objeto
+    if not callable(getattr(personas[0], attr))     # filtramos los metodos y funciones 
+    and not attr.startswith("__")                   #escluimos los elementos internos de python que comiencen por __
 ]
 
 #para cada uno de los atributos 
 for atributo in atributos:
+    #si el atributo no es una lista se creara una columna en la tabla producto
     if not isinstance(getattr(personas[0], atributo), list):
         #lo encadenamos a la peticion
-        #peticion += f"{atributo} VARCHAR(255) NOT NULL,"
+        # los atributos simples se añaden como columna de tipo varchar
         peticion += atributo+" VARCHAR(255) NOT NULL,"
     else:
+        # Si es una lista se creara una tabla secundaria 
         peticion2 = "DROP TABLE IF EXISTS "+atributo+""
         cursor.execute(peticion2)
         ## le metemos FK porque la clave forania es FOREY KEY
@@ -77,7 +80,9 @@ for indice, persona in enumerate(personas):
             # Accedemos dinámicamente al valor de cada atributo de la persona.
             peticion += "'"+str(getattr(persona, atributo))+"',"
         else:
+            # es cada categoría individual
             for elemento in getattr(persona, atributo):
+                # el valor de indice+1 se utiliza para la clave foranea para asociar esta actegoria con el producto que tiene este identificador en la taba principal 
                 peticion2 = "INSERT INTO "+atributo+" VALUES(NULL,"+str(indice+1)+",'"+str(elemento)+"')"
                 cursor.execute(peticion2) 
 
