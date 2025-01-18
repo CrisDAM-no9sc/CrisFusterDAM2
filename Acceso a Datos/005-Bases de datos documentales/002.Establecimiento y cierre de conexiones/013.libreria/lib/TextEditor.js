@@ -4,6 +4,7 @@ let textos = document.querySelectorAll("textarea");
 // Indicamos cuántos tenemos
 console.log("tengo", textos.length, "textarea");
 
+///////////////////////// reemplazar textaera por un contendor personalizado ///////////////////////
 textos.forEach(function (textarea) {
     // Creamos un contenedor para los textos
     let contenedor = document.createElement("div");
@@ -123,21 +124,22 @@ textos.forEach(function (textarea) {
 
     //////////////////// PARA HACER LISTAS  /////////////////
     function insertarLista(tipo){
-        let lista = document.createElement(tipo);
-        let item = document.createElement("li");
+        let lista = document.createElement(tipo);                  //utilizamos tipo para determinar el tipo de lista 
+        let item = document.createElement("li");                   //// Crea un elemento de lista (li)
         item.textContent = "Elemenyo de la lista";
-        lista.appendChild(item)
+        lista.appendChild(item)                                    // Agrega el elemento de lista a la lista creada
 
-        let rango = window.getSelection().getRangeAt(0);
-        rango.deleteContents();
-        rango.insertNode(lista);
-
+        let rango = window.getSelection().getRangeAt(0);           // Obtiene el rango de selección actual
+        rango.deleteContents();                                    // eliminamos el contenido 
+        rango.insertNode(lista);                                   // Inserta la lista en el lugar de la selección
+        // sincronizamos el contenido editable con el text area original
         actualizaTextarea();
         
     }
 
     ///////////////// Función para aplicar la alineación de texto////////////
-
+    //Esta función se encarga de aplicar una alineación específica 
+    //(izquierda, centro o derecha) al texto que se encuentra dentro del área de texto editable.
     function aplicarAlineacion(alineacion) {
         mitextarea.style.textAlign = alineacion;
         actualizaTextarea();
@@ -149,15 +151,16 @@ textos.forEach(function (textarea) {
     }
     //////////////////// Función para reemplazar con etiquetas ////////////////////////
     function reemplaza(etiqueta, value) {
-        let textoseleccion = window.getSelection().toString();
-        if (textoseleccion.length > 0) {
-            let rango = window.getSelection().getRangeAt(0);
+        let textoseleccion = window.getSelection().toString();       // Obtiene el texto seleccionado por el usuario
+        if (textoseleccion.length > 0) {                            // Verifica que haya texto seleccionado
+            let rango = window.getSelection().getRangeAt(0);        // Obtiene el rango de la selección
             let estiloTexto;
-
+    
             // Si el argumento es "color", aplica el color seleccionado
             if (etiqueta === "color") {
                 estiloTexto = document.createElement("span");
-                estiloTexto.style.color = color.value;
+                // Aplica el color seleccionado al estilo del span
+                estiloTexto.style.color = color.value; 
             } 
             // Si el argumento es "font-size", aplica el tamaño de la fuente
             else if (etiqueta === "font-size") {
@@ -171,13 +174,14 @@ textos.forEach(function (textarea) {
             }
             // Si no es un color ni tamaño, aplica el estilo de la etiqueta correspondiente (b, i, u)
             else {
-                estiloTexto = document.createElement(etiqueta);
+                estiloTexto = document.createElement(etiqueta); 
             }
-
-            estiloTexto.textContent = textoseleccion;
-            rango.deleteContents();
-            rango.insertNode(estiloTexto);
+    
+            estiloTexto.textContent = textoseleccion;       // Asigna el texto seleccionado como contenido de la nueva etiqueta
+            rango.deleteContents();                         // Elimina el texto seleccionado original
+            rango.insertNode(estiloTexto);                  // Inserta la nueva etiqueta en el lugar de la selección
         }
-        actualizaTextarea();
+        // Sincroniza el contenido actualizado con el <textarea> original
+        actualizaTextarea(); 
     }
 });
