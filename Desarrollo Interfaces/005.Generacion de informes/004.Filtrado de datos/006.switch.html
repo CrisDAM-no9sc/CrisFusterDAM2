@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        .NO {
+            background: rgb(240, 255, 240);
+        }
+        .SI {
+            background: rgb(152, 251, 152);
+        }
+    </style>
+</head>
+<body>
+    
+    <input type="text" inputvalidador="dni" placeholder="Introduce tu DNI">
+    <input type="text" inputvalidador="iban" placeholder="Introduce tu IBAN">
+    <script>
+        const entradas = document.querySelectorAll('input');
+        const validadores = Array.from(entradas).filter(input => input.getAttribute('inputvalidador') !== undefined);
+
+        validadores.forEach(function(validador) {
+            validador.onblur = function() {
+                switch(this.getAttribute('inputvalidador')){
+                    case "dni":
+                        validar(/^[0-9]{8}[A-Z]$/, this, this.value);
+                        break;
+                    case "iban":
+                        validar(/^[A-Z]{2}[0-9]{22}$/, this, this.value);
+                        break;
+                }
+            };
+            
+        });
+        function validar(expresionr, elemento, valor){
+            const expresionr = nuevovalor;
+            if(expresionr.test(valor)){
+                elemento.classList.remove("NO")
+                elemento.classList.add("SI");
+            }else{
+                elemento.classList.remove("SI");
+                elemento.classList.add("NO");
+            }
+        }
+    </script>
+</body>
+</html>

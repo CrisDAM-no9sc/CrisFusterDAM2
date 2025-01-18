@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="lienzograficas"></div>
+        <script>
+
+
+            function convertirHex(codigohexadecimal){
+                // Elimina el '#' al principio del código hexadecimal si está presente
+                codigohexadecimal = codigohexadecimal.replace(/^#/, '');
+                let numerohex = parseInt(codigohexadecimal, 16);
+                let rojo = (numerohex >> 16) & 255;
+                let verde = (numerohex >> 8) & 255;
+                let azul = numerohex & 255;
+
+                return[rojo, verde, azul]
+            }
+
+            function grafica(datos, color, selector){
+
+                let anchura = 512;
+                let altura = 512;
+
+                let lienzo = document.createElement("canvas")
+                // Configurar dimensiones del canvas
+                lienzo.width = anchura;
+                lienzo.height = altura;
+                lienzo.style.border = "1px solid silver";
+                // Obtener el contexto del canvas
+                let contexto = lienzo.getContext("2d");
+
+                let variaciones = 100;
+                let micolor = convertirHex(color)
+
+                document.querySelector(selector).appendChild(lienzo)
+
+                contexto.fillStyle = "white"; // Color de fondo
+                contexto.beginPath();
+                contexto.arc(anchura / 2, altura / 2, anchura / 2 - 50, 0, Math.PI * 2); // Círculo
+                contexto.fill();
+
+                let total = 0;
+                datos.forEach(function (dato) {
+                    total += dato.valor;
+                });
+
+                let inicioangulo = 0;
+                datos.forEach(function (dato) {
+
+                    let r = micolor[0] + Math.round((Math.random() - 0.5) * variaciones); 
+                    let g = micolor[1] + Math.round((Math.random() - 0.5) * variaciones); 
+                    let b = micolor[2] + Math.round((Math.random() - 0.5) * variaciones);
+                    contexto.fillStyle = "rgb("+r+","+g+","+b+")";
+                    
+                    let proporcion = dato.valor / total;
+                    let finangulo = inicioangulo + (proporcion * Math.PI * 2);
+
+                    // Comienza un nuevo camino
+                    contexto.beginPath();
+                    // Mueve el punto de inicio al centro
+                    contexto.moveTo(anchura / 2, altura / 2);
+                    // Dibuja un arco con el ángulo calculado
+                    contexto.arc(anchura / 2, altura / 2, anchura / 2 - 50, inicioangulo, finangulo);
+                    // Vuelve al centro para cerrar el segmento
+                    contexto.lineTo(anchura / 2, altura / 2);
+                    // Rellena el segmento
+                    contexto.fill();
+
+                    // Dibujar la línea de separación
+                    contexto.strokeStyle = "lightslategrey"; // Color de la línea de separación
+                    contexto.lineWidth = 1; // Ancho de la línea
+                    contexto.stroke(); // Traza el contorno del segmento
+
+                    // Actualizar el ángulo de inicio para el siguiente segmento
+                    inicioangulo = finangulo;
+                });
+            }
+
+            //////////////// CONJUNTOS DE DATOS QUE QUEREMOS REPRESENTAR  //////////////////
+            let datos = [
+                {"texto": "porcion1", "valor": 50},
+                {"texto": "porcion2", "valor": 60},
+                {"texto": "porcion3", "valor": 100}
+            ];
+
+            grafica(datos, "#20B2AA", "#lienzograficas");
+
+            datos = [
+                {"texto": "porcion1", "valor": 80},
+                {"texto": "porcion2", "valor": 200},
+                {"texto": "porcion3", "valor": 10}
+            ];
+
+            grafica(datos, "#20B2AA", "#lienzograficas");
+        </script>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas id="lienzo"></canvas>
+        <script>
+            let anchura = 512;
+            let altura = 512;
+
+            let lienzo = document.querySelector("#lienzo");
+            // Configurar dimensiones del canvas
+            lienzo.width = anchura;
+            lienzo.height = altura;
+            lienzo.style.border = "1px solid silver";
+            // Obtener el contexto del canvas
+            let contexto = lienzo.getContext("2d");
+
+            // Dibujar un círculo en el canvas
+            contexto.fillStyle = "lightseagreen"
+            contexto.beginPath()
+            contexto.arc(anchura/2, altura/2, anchura/2-50, 0, Math.PI*2);
+            contexto.fill();
+        </script>
+    </body>
+</html>

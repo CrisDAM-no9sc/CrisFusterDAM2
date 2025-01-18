@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+    <input type="text">
+    <input type="text" inputvalidador="dni">
+    <script>
+        const entradas = document.querySelectorAll('input');
+        const validadores = Array.from(entradas).filter(input => input.getAttribute('inputvalidador') !== undefined);
+        validadores.forEach(function(validador){
+            validador.onblur = function(){
+                const expresionr = /^[0-9]{8}[A-Z]$/;
+                if(expresionr.test(this.value)){
+                    this.style.background = "green";
+                }else{
+                    this.style.background = "red";
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+    <input type="text">
+    <input type="text" inputvalidador="dni">
+    <script>
+        const entradas = document.querySelectorAll('input');
+        const validadores = Array.from(entradas).filter(input => input.getAttribute('inputvalidador') !== undefined);
+        validadores.forEach(function(validador){
+            validador.onblur = function(){
+                console.log("Te has salido del input")
+            }
+        })
+    </script>
+</body>
+</html>

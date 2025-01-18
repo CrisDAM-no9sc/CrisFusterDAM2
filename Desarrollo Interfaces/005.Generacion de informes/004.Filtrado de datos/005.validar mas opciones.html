@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        .NO {
+            background: rgb(240, 255, 240);
+        }
+        .SI {
+            background: rgb(152, 251, 152);
+        }
+    </style>
+</head>
+<body>
+    
+    <input type="text" inputvalidador="dni" placeholder="Introduce tu DNI">
+    <input type="text" inputvalidador="iban" placeholder="Introduce tu IBAN">
+    <script>
+        const entradas = document.querySelectorAll('input');
+        const validadores = Array.from(entradas).filter(input => input.getAttribute('inputvalidador') !== undefined);
+
+        validadores.forEach(function(validador) {
+            validador.onblur = function() {
+                const tipoValidador = this.getAttribute('inputvalidador');
+                let expresionr;
+
+                // Validación según el tipo de input
+                if (tipoValidador === "dni") {
+                    expresionr = /^[0-9]{8}[A-Z]$/;  // Validador de DNI
+                } else if (tipoValidador === "iban") {
+                    expresionr = /^[A-Z]{2}[0-9]{22}$/;  // Validador de IBAN genérico
+                }
+
+                // Validar y aplicar estilos
+                if (expresionr && expresionr.test(this.value)) {
+                    this.classList.remove("NO");
+                    this.classList.add("SI");
+                } else {
+                    this.classList.remove("SI");
+                    this.classList.add("NO");
+                }
+            };
+            
+        });
+    </script>
+</body>
+</html>

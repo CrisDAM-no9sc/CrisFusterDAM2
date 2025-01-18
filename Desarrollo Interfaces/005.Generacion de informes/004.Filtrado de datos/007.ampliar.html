@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        form input[type="text"] {
+            width: 100%; /* Ancho completo */
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        /* Cuando el campo es válido (verde) */
+        form input[type="text"].SI {
+            background-color: #98FB98; /* Verde claro */
+            border-color: #4CAF50; /* Verde oscuro */
+        }
+
+        /* Cuando el campo es inválido (rojo) */
+        form input[type="text"].NO {
+            background-color: #F8D7DA; /* Rojo claro */
+            border-color: #DC3545; /* Rojo oscuro */
+        }
+
+        /* Efecto al hacer foco en el campo */
+        form input[type="text"]:focus {
+            border-color: #007BFF;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!----------------    ENTRADAS DE TEXTO CON VALIDADORES  --------------->
+    <form>
+        <p>Introudce tu DNI</p>
+        <input type="text" inputvalidador="dni" title="12345678Z">
+        <p>Introudce tu IBAN  de la cuenta bancaria</p>
+        <input type="text" inputvalidador="iban" title="ES9121000418450200051332">
+        <p>Introudce tu telefono mobil</p>
+        <input type="text" inputvalidador="telefono" title="+34612345678">
+        <p>Introudce tu Tarjeta de credito</p>
+        <input type="text" inputvalidador="tarjeta" title="4111111111111111">
+    </form>
+    <script>
+        //sELECCIONAMOS TODAS LAS ENTRDAS INPUTS 
+        const entradas = document.querySelectorAll('input');
+        //de esa lista solo se va a filtrar los que tengan el atributo inputvalidador
+        const validadores = Array.from(entradas).filter(input => input.getAttribute('inputvalidador') !== undefined);
+        ///////////////////////// ASIGNACION DE LOS VALIDADORES //////////////////////////////////
+        
+        validadores.forEach(function(validador) {
+            //a cada cmpo se le asigna un elemento onblur , para cuando el usuario se salga dl campo 
+            validador.onblur = function() {
+                //segun el tipo de dato se selecciona una expresion regular 
+                switch(this.getAttribute('inputvalidador')){
+                    //8 números seguidos de una letra mayúscula
+                    case "dni":
+                        validar(/^[0-9]{8}[A-Z]$/, this, this.value);
+                        break;
+                    //Comienza con 2 letras, seguido de 22 digitos
+                    case "iban":
+                        validar(/^[A-Z]{2}[0-9]{22}$/, this, this.value);
+                        break;
+                    // prefijo español y seguido de un nuemro que empiece por 6 o 7 y temga 9 digitos
+                    case "telefono":
+                        validar(/^(\+34|0034|34)?[6|7][0-9]{8}$/, this, this.value);
+                        break;
+                    //16 digitos 
+                    case "tarjeta":
+                        validar(/^\d{16}$/, this, this.value);
+                        break;    
+                }
+            };
+            
+        });
+
+        ////////////////////////// FUNCION DE VALIDAR ////////////////////////
+        // coje tres parametros la expresion regular, los campos inputs que seestan validando y el texto ingresado en este 
+        function validar(expresionr, elemento, valor) {
+            // para verificar si el valor coincide con la expresion regular
+            if (expresionr.test(valor)) {
+                elemento.classList.remove("NO");
+                elemento.classList.add("SI");
+            // si no es valido se elimmina la clase verde y añadimos la roja
+            } else {
+                elemento.classList.remove("SI");
+                elemento.classList.add("NO");
+            }
+        }
+    </script>
+</body>
+</html>
