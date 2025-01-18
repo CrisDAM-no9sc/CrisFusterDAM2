@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <!-- Campos Estáticos -->
+    <fields>
+        <field>
+            <name>nombreCliente</name>
+            <type>text</type>
+            <placeholder>Nombre del cliente</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+
+    <!-- Campos Dinámicos: Líneas de Factura -->
+    <dynamicFields>
+        <fieldGroup name="lineaFactura">
+            <field>
+                <name>descripcion</name>
+                <type>text</type>
+                <placeholder>Descripción</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>cantidad</name>
+                <type>number</type>
+                <placeholder>Cantidad</placeholder>
+                <required>true</required>
+            </field>
+            <field>
+                <name>precio</name>
+                <type>number</type>
+                <placeholder>Precio</placeholder>
+                <required>true</required>
+            </field>
+        </fieldGroup>
+    </dynamicFields>
+</form>

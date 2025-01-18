@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <!-- Información de Cliente -->
+    <fields>
+        <field>
+            <name>NombreCliente</name>
+            <type>text</type>
+            <placeholder>Nombre</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>Apellidos</name>
+            <type>text</type>
+            <placeholder>Apellidos</placeholder>
+            <required>true</required>
+        </field>
+        <field>
+            <name>Email</name>
+            <type>email</type>
+            <placeholder>Correo electrónico</placeholder>
+            <required>true</required>
+        </field>
+    </fields>
+</form>

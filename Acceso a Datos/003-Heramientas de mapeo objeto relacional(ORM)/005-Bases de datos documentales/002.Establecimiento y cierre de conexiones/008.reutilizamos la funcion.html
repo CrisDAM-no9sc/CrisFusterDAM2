@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .textocontenedor .textarea_nuevo {
+                width: 500px;
+                height: 500px;
+                border: 1px solid grey;
+                box-sizing: border-box;
+                padding: 20px;
+            }
+            .textocontenedor .barra_botones {
+                width: 500px;
+                height: 40px;
+                border: 1px solid grey;
+                box-sizing: border-box;
+                padding: 5px;
+                display: flex;
+                justify-content: start; /* Alinear los botones horizontalmente */
+            }
+
+            .textocontenedor .barra_botones button {
+                width: 30px;
+                height: 30px;
+                display: flex; /* Flexbox para centrar el contenido */
+                justify-content: center; /* Centra horizontalmente */
+                align-items: center; /* Centra verticalmente */
+                border: 1px solid black; 
+                background-color: #f0f0f0; 
+                border-radius: 5px;
+                cursor: pointer; /* Cambia el cursor al pasar por encima */
+            }
+
+            .textocontenedor .barra_botones button:hover {
+                background-color: #dcdcdc; 
+            }
+        </style>
+    </head>
+    <body>
+        <textarea></textarea>
+        <script>
+            // Enumeramos los elementos textarea
+            let textos = document.querySelectorAll("textarea");
+
+            // Indicamos cuántos tenemos
+            console.log("tengo", textos.length, "textarea");
+
+            textos.forEach(function (textarea) {
+                // Creamos un contenedor para los textos
+                let contenedor = document.createElement("div");
+                contenedor.setAttribute("class", "textocontenedor");
+                textarea.replaceWith(contenedor);
+                contenedor.appendChild(textarea);
+                textarea.style.display = "none";
+
+                // Creamos un div para los botones (barra_botones)
+                let barra = document.createElement("div");
+                barra.classList.add("barra_botones");
+                contenedor.appendChild(barra);
+
+                ////////////////// Botón de negrita //////////////////////
+                let negrita = document.createElement("button");
+                negrita.innerHTML = "<b>B</b>";
+                barra.appendChild(negrita);
+                // Añadimos un evento de clic al botón de negrita
+                negrita.onclick = function () {
+                    reemplaza("b");
+                };
+
+                ////////////////// Botón de cursiva //////////////////////
+                let cursiva = document.createElement("button");
+                cursiva.innerHTML = "<i>I</i>";
+                barra.appendChild(cursiva);
+                // Añadimos un evento de clic al botón de negrita
+                cursiva.onclick = function () {
+                    reemplaza("i");
+                };
+                
+                ///////////////////  Creamos el "textarea" editable  ///////////////////
+                let mitextarea = document.createElement("div");
+                mitextarea.classList.add("textarea_nuevo");
+                contenedor.appendChild(mitextarea);
+                mitextarea.setAttribute("contenteditable", "true");
+
+                ////////////// Función para reemplazar con etiquetas //////////////////
+                function reemplaza(etiqueta) {
+                    let textoseleccionado = window.getSelection().toString();
+                    if (textoseleccionado.length > 0) {
+                        let rango = window.getSelection().getRangeAt(0);
+                        let textonegrita = document.createElement(etiqueta);
+                        textonegrita.textContent = textoseleccionado;
+                        rango.deleteContents();
+                        rango.insertNode(textonegrita);
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

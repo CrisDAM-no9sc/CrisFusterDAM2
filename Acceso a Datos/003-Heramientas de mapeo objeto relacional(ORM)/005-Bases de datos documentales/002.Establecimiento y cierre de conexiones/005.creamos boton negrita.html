@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .textocontenedor .textarea_nuevo {
+                width: 500px;
+                height: 500px;
+                border: 1px solid grey;
+                box-sizing: border-box;
+                padding: 20px;
+            }
+            .textocontenedor .barra_botones {
+                width: 500px;
+                height: 40px;
+                border: 1px solid grey;
+                box-sizing: border-box;
+                padding: 5px;
+            }
+
+            .textocontenedor .barra_botones button {
+                width: 30px;
+                height: 30px;
+                display: flex; /* Flexbox para centrar el contenido */
+                justify-content: center; /* Centra horizontalmente */
+                align-items: center; /* Centra verticalmente */
+                border: 1px solid black; 
+                background-color: #f0f0f0; 
+                border-radius: 5px; /* Bordes redondeados */
+                font-weight: bold;
+                cursor: pointer; /* Cambia el cursor al pasar por encima */
+            }
+
+            .textocontenedor .barra_botones button:hover {
+                background-color: #dcdcdc; 
+            }
+        </style>
+    </head>
+    <body>
+        <textarea></textarea>
+        <script>
+            // Enumeramos los elementos textarea
+            let textos = document.querySelectorAll("textarea");
+
+            // Indicamos cuántos tenemos
+            console.log("tengo", textos.length, "textarea");
+
+            textos.forEach(function (textarea) {
+                // Creamos un contenedor para los textos
+                let contenedor = document.createElement("div");
+                contenedor.setAttribute("class", "textocontenedor");
+                //lo reemplazmso por el div
+                textarea.replaceWith(contenedor);
+                //le poenemos el texto dentro del contendor 
+                contenedor.appendChild(textarea)
+                textarea.style.display = "none";
+
+
+                // Creamos un div para los botones (barra_botones)
+                let barra = document.createElement("div");
+                 // Asignamos la clase para los botones
+                barra.classList.add("barra_botones");
+                // Añadimos la barra al contenedor
+                contenedor.appendChild(barra); 
+
+                let negrita = document.createElement("button");
+                negrita.innerHTML = "B";
+                barra.appendChild(negrita)
+
+                // Ahora creamos nuestro div que será el "textarea" editable
+                let mitextarea = document.createElement("div");
+                mitextarea.classList.add("textarea_nuevo"); 
+                contenedor.appendChild(mitextarea)
+                // Lo hacemos editable
+                mitextarea.setAttribute("contenteditable", "true"); 
+               
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<root>
+  <nombreCliente>Maria Garcia</nombreCliente>
+  <emailCliente>cristian@gmail.com</emailCliente>
+  <telefonoCliente>65416515651</telefonoCliente>
+  <lineasFactura>
+    <elemento0>
+      <descripcion>compra zapatos</descripcion>
+      <cantidad>100</cantidad>
+      <precio>50</precio>
+    </elemento0>
+    <elemento1>
+      <descripcion>Compra avalorios</descripcion>
+      <cantidad>20</cantidad>
+      <precio>60</precio>
+    </elemento1>
+  </lineasFactura>
+</root>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .textocontenedor .textarea_nuevo{
+                width: 500px;
+                height: 501px;
+                border-radius: 10px;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea></textarea>
+        <textarea></textarea>
+        <script>
+            //enumeramos los elementos 
+            let textos = document.querySelectorAll("textarea");
+            //indicamos cuanto tenemos de esos elementos 
+            console.log("tengo",textos.length, "textarea");
+            textos.forEach(function(textarea){
+                ////creamos un contenedor para los textos
+                let contenedor = document.createElement("div");
+                contenedor.setAttribute("class", "textocontenedor");
+                //reemplazamos el texarea con un div 
+                textarea.replaceWith(contenedor);
+                //ponemos el textarea dentro del contenedor 
+                contenedor.appendChild(textarea);
+                //y lo escondemos 
+                textarea.style.display = "none";
+                /////////////////// AHORA CREAMOS NUESTRO TEXTAREA ///////////////////
+                let mitextarea = document.createElement("div");
+                mitextarea.classList.add("textarea_nuevo");
+                contenedor.appendChild(mitextarea)
+                //////////////////// AHORA LE PONEMOS PARA QUE SEA EDITABLE ////////////
+                mitextarea.setAttribute("contenteditable","true");
+            });
+        </script>
+    </body>
+</html>

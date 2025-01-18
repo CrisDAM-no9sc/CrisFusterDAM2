@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="Stylesheet" href="estilo.css">
+        <title>Envío de Formulario</title>
+    </head>
+    <body>
+        <h1>Formulario de Contacto</h1>
+        <form id="formulariocontacto">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" requiered><br><br>
+
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" name="apeliidos" requiered><br><br>
+
+            <label for="email">Correo electronico:</label>
+            <input type="email" id="email" name="email" requiered><br><br>
+
+            <label for="telefono">Telefono:</label>
+            <input type="tel" id="telefono" name="telefono" requiered><br><br>
+
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" required></textarea><br><br>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <script>
+            document.getElementById('formulariocontacto').addEventListener('submit', async function(event){
+                event.preventDefault();
+                //para contruir un objeto formdata tenemos que cojer los valores de los ids de cada elemento
+                const formData = {
+                    nombre: document.getElementById('nombre').value,
+                    apellidos: document.getElementById('apellidos').value,
+                    email: document.getElementById('email').value,
+                    telefono: document.getElementById('telefono').value,
+                    mensaje: document.getElementById('mensaje').value,
+                };
+                console.log(formData);
+                try{
+                    const respuesta = await fetch('',{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+                    if(respuesta.ok){
+                        const reultado = await respuesta.json();
+                        alert('¡Formulario enviado exitosamente!')
+                    }else{
+                        alert('Error al enviar el formulario.')
+                    }
+                }catch (error){
+                    console.log('Error:', error)
+                    alert('Se produjo un error al enviar el formulario.')
+                }
+            });
+        </script>
+    </body>
+</html>

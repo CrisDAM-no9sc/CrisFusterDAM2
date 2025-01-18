@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<root>
+  <lineasFactura>
+    <elemento0>
+      <descripcion>compra zapatos</descripcion>
+      <cantidad>2</cantidad>
+      <precio>3</precio>
+    </elemento0>
+  </lineasFactura>
+</root>

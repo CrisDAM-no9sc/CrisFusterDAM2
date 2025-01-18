@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="Stylesheet" href="estilo.css">
+        <title>Envío de Formulario</title>
+    </head>
+    <body>
+        <h1>Formulario de Facturación</h1>
+        <form id="formfactura">
+            <div id="camposestaticos"></div>
+            <div id="contenedorlineas"></div>
+            <button type="button" id="botonañadirlinea" class="btn_mas_linea">+ Añadir línea</button>
+            <button type="submit">Enviar Factura</button>
+        </form>
+
+        <script>
+            //// ejecutamos la funcion una vez que el contenido este cargado
+            document.addEventListener('DOMContentLoaded', async function () {
+
+                // variables iniciales 
+                //obtenemos los datos de los elementos por su id
+                const contenedorcamposestaticos = document.getElementById('camposestaticos');       //donde vamos a cargar los datos estaticos
+                const contenedorlineas = document.getElementById('contenedorlineas');               //agregaremos las lineas de factura dinamicas
+                const botonañadirlinea = document.getElementById('botonañadirlinea');               //bton para añadir mas lienas facturas
+                ///////////////////// CARGA DEL ARCHIVO XML //////////////////////////
+                try {
+                    //solicitamos el archivo desde el servidor
+                    const respuesta = await fetch('modelo/factura.xml');
+                    //convertimosla respuesta en texto
+                    const textxml = await respuesta.text();
+                    // convertimos el texto del xml en un documento DOM para procesarlo
+                    const parser = new DOMParser();
+                    const xml = parser.parseFromString(textxml, 'application/xml');
+
+                    ////////////////////////// CARAGA DE LOS CAMPOS ESTATICOS /////////////////
+                    // seleccionamos todos los elementos field dentro de un contenedos fieleds en el xml
+                    const camposestaticos = xml.querySelectorAll('fields > field');
+                    // recorremos cada uno de los campos seleccionados 
+                    //para cada campos obtememos los datos del nombre, tipo, marcador y si es obligatorio
+                    camposestaticos.forEach(campo => {
+                        const nombre = campo.querySelector('name').textContent;                        
+                        const tipo = campo.querySelector('type').textContent;
+                        const marcador = campo.querySelector('placeholder').textContent;
+                        const obligatorio = campo.querySelector('required').textContent === 'true';
+                        // creamos un nuevo campo de entrada establecemos sus atributos segun el xml
+                        const input = document.createElement('input');
+                        input.type = tipo;
+                        input.name = nombre;
+                        input.placeholder = marcador;
+                        input.required = obligatorio;
+                        contenedorcamposestaticos.appendChild(input);
+                        contenedorcamposestaticos.appendChild(document.createElement('br'));
+                    });
+                    // llamamos a  la funcion que genera la primera linea de la factura 
+                    renderizarlineafactura();
+                    // para añadr nuevas lienas 
+                    botonañadirlinea.addEventListener('click', renderizarlineafactura);
+
+                    ////////////////// MANEJAMOS EL EVNIO DE FORMULARIO /////////////////////
+                    document.getElementById('formfactura').addEventListener('submit', async function (event) {
+                        event.preventDefault();
+                        //creamos un objeto donde vamos a guardadr los valores de los campos
+                        const datosestaticos = {};
+                        // y para cada uno de los campos obtenemos su valor mediante el selector name
+                        camposestaticos.forEach(campo => {
+                            const nombre = campo.querySelector('name').textContent;
+                            datosestaticos[nombre] = document.querySelector(`[name="${nombre}"]`).value;
+                        });
+                        //recorremos todas las lineas de la factura 
+                        const lineasFactura = Array.from(contenedorlineas.querySelectorAll('.linea-factura')).map(linea => ({
+                            descripcion: linea.querySelector('input[name="descripcion[]"]').value,
+                            cantidad: linea.querySelector('input[name="cantidad[]"]').value,
+                            precio: linea.querySelector('input[name="precio[]"]').value,
+                        }));
+                        // para cada linea obtenemos los valores de los campos de descripcion, cantidad y precio
+                        /// usamos el operador de propagacion para combinar todos los campos y lineas de factura en un solo obeto
+                        const datosFormulario = {
+                            ...datosestaticos,      
+                            lineasFactura,
+                        };
+                        ///////////////////////////////// ENVIO DE DATOS AL SERVIDOR ////////////////////////////////
+                        try {
+                            // enviamos los datos del formulario en fromato JSON al servidor mediante el POST
+                            const respuesta = await fetch('guardarxml.php', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(datosFormulario),
+                            });
+                            //si a tenido exito nos enseñara el mensaje 
+                            const resultado = await respuesta.text();
+                            console.log(resultado);
+                            alert('¡Factura enviada con éxito!');
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Ocurrió un error al enviar la factura.');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error al cargar el XML:', error);
+                }
+                ////////////////////////// FUNCION RENDERIZAR LINEA DE FACTURA /////////////////////////
+                ///creamos una nueva liena con campos de entrada y un botn de eleiminar 
+                function renderizarlineafactura() {
+                    const linea = document.createElement('div');
+                    linea.classList.add('linea-factura');
+                    linea.innerHTML = `
+                        <input type="text" name="descripcion[]" placeholder="Descripción" required>
+                        <input type="number" name="cantidad[]" placeholder="Cantidad" required>
+                        <input type="number" name="precio[]" placeholder="Precio" required>
+                        <button type="button" class="boton-quitar-linea">-</button>
+                    `;
+                    // la añadimos al contenedor de lineas 
+                    contenedorlineas.appendChild(linea);
+                    //cuando se hace clcik eliminamos la linea de la factura 
+                    linea.querySelector('.boton-quitar-linea').addEventListener('click', () => {
+                        contenedorlineas.removeChild(linea);
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

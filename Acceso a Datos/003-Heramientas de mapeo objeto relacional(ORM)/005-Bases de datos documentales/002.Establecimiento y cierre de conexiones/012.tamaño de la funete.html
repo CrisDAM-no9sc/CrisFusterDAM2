@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .textocontenedor .textarea_nuevo {
+                width: 500px;
+                height: 500px;
+                background-color: #FBFBFB; /* Fondo gris muy claro, casi blanco */
+                border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil con baja opacidad */
+                box-sizing: border-box;
+                padding: 20px;
+                border-radius: 5px; 
+                font-family: Arial, sans-serif; 
+                font-size: 14px; 
+                color: #333; 
+                transition: background-color 0.3s ease, border-color 0.3s ease;
+            }
+            .textocontenedor .textarea_nuevo:focus {
+                background-color: #ffffff; 
+                border-color: #A0A0A0; 
+                outline: none; /* Elimina el contorno por defecto */
+            }
+            .textocontenedor .barra_botones {
+                width: 500px;
+                height: 40px;
+                background-color: #F8F8F8; /* Fondo gris muy suave, casi blanco */
+                border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil con baja opacidad */
+                box-sizing: border-box;
+                padding: 5px;
+                display: flex;
+                justify-content: start; /* Alinear los botones horizontalmente */
+                border-radius: 5px; /* Bordes redondeados para un diseño más suave */
+                margin-bottom: 1px; 
+            }
+            .textocontenedor .barra_botones button,
+            .textocontenedor .barra_botones select,
+            .textocontenedor .barra_botones input[type="color"] {
+                width: 30px; 
+                height: 30px;
+                display: flex; /* Flexbox para centrar el contenido */
+                justify-content: center; /* Centrar horizontalmente */
+                align-items: center; /* Centrar verticalmente */
+                background-color: #E0E0E0; 
+                border-radius: 5px; 
+                cursor: pointer;
+                margin-right: 3px; /* Espaciado entre elementos */
+                font-size: 14px; 
+                text-align: center;
+                box-sizing: border-box;
+                color: #333333; 
+                border: none;
+            }
+
+            .textocontenedor .barra_botones button:hover,
+            .textocontenedor .barra_botones select:hover,
+            .textocontenedor .barra_botones input[type="color"]:hover {
+                background-color: #C5C5C5; /* Fondo más oscuro al pasar el cursor */
+            }
+
+            .textocontenedor .barra_botones select,
+            .textocontenedor .barra_botones input[type="color"] {
+                background-color: #F0F0F0; /* Fondo gris muy claro */
+                
+            }
+
+            .textocontenedor .textarea_nuevo b {
+                font-weight: bold;
+            }
+            .textocontenedor .textarea_nuevo i {
+                font-style: italic;
+            }
+            .textocontenedor .textarea_nuevo u {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea></textarea>
+        <script>
+            // Enumeramos los elementos textarea
+            let textos = document.querySelectorAll("textarea");
+
+            // Indicamos cuántos tenemos
+            console.log("tengo", textos.length, "textarea");
+
+            textos.forEach(function (textarea) {
+                // Creamos un contenedor para los textos
+                let contenedor = document.createElement("div");
+                contenedor.setAttribute("class", "textocontenedor");
+                textarea.replaceWith(contenedor);
+                contenedor.appendChild(textarea);
+                textarea.style.display = "none";
+
+                //////////////////// Creamos un div que va a ser el contenedor de los botones /////////////
+                let barra = document.createElement("div");
+                barra.classList.add("barra_botones");
+                contenedor.appendChild(barra);
+
+                ////////////////// Botón de negrita ///////////////////////
+                let negrita = document.createElement("button");
+                negrita.innerHTML = "<b>B</b>";
+                barra.appendChild(negrita);
+                negrita.onclick = function () {
+                    reemplaza("b");
+                };
+
+                ////////////////// Botón de cursiva ///////////////////////
+                let cursiva = document.createElement("button");
+                cursiva.innerHTML = "<i>I</i>";
+                barra.appendChild(cursiva);
+                cursiva.onclick = function () {
+                    reemplaza("i");
+                };
+
+                ////////////////// Botón de subrayado ///////////////////////
+                let subrayado = document.createElement("button");
+                subrayado.innerHTML = "<u>U</u>";
+                barra.appendChild(subrayado);
+                subrayado.onclick = function () {
+                    reemplaza("u");
+                };
+
+                ////////////////// Botón para color ///////////////////////
+                let color = document.createElement("input");
+                color.setAttribute("type", "color");
+                barra.appendChild(color);
+                color.oninput = function () {
+                    reemplaza("color");
+                };
+
+                ////////////////// Botón Pra el Tamaño de la fuente  ///////////////////////
+                let tamanioFuente = document.createElement("select");
+                let tamanios = [10,11,12,13,14,15,16,17,18,19,20];
+                tamanios.forEach(function(tamanio){
+                    let opcion = document.createElement("option"); 
+                    opcion.textContent = tamanio;
+                    opcion.value = tamanio + "px";
+                    tamanioFuente.appendChild(opcion);
+                })
+                barra.appendChild(tamanioFuente);
+                tamanioFuente.onchange = function() { reemplaza("font-size", tamanioFuente.value); };
+
+                /////////////////// Creamos el "textarea" editable ///////////////////
+                let mitextarea = document.createElement("div");
+                mitextarea.classList.add("textarea_nuevo");
+                contenedor.appendChild(mitextarea);
+                mitextarea.setAttribute("contenteditable", "true");
+                mitextarea.onkeypress = function(){actualizaTextarea()}
+
+                //////////////////// Funcion actualizar //////////////////////
+                function actualizaTextarea(){
+                    let contenido = mitextarea.innerHTML;
+                    textarea.value = contenido;
+                }
+                //////////////////// Función para reemplazar con etiquetas ////////////////////////
+                function reemplaza(etiqueta, value) {
+                    let textoseleccion = window.getSelection().toString();
+                    if (textoseleccion.length > 0) {
+                        let rango = window.getSelection().getRangeAt(0);
+                        let estiloTexto;
+
+                        // Si el argumento es "color", aplica el color seleccionado
+                        if (etiqueta === "color") {
+                            estiloTexto = document.createElement("span");
+                            estiloTexto.style.color = color.value;
+                        } 
+                        // Si el argumento es "font-size", aplica el tamaño de la fuente
+                        else if (etiqueta === "font-size") {
+                            estiloTexto = document.createElement("span");
+                            estiloTexto.style.fontSize = value;
+                        } 
+                        // Si no es un color ni tamaño, aplica el estilo de la etiqueta correspondiente (b, i, u)
+                        else {
+                            estiloTexto = document.createElement(etiqueta);
+                        }
+
+                        estiloTexto.textContent = textoseleccion;
+                        rango.deleteContents();
+                        rango.insertNode(estiloTexto);
+                    }
+                    actualizaTextarea();
+                }
+            });
+        </script>
+    </body>
+</html>

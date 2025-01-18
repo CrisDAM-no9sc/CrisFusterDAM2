@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<root>
+  <datosEstaticos>
+    <nombreCliente>Maria Garcia</nombreCliente>
+  </datosEstaticos>
+  <datosDinamicos>
+    <elemento0>
+      <null>
+        <elemento0>
+          <lineaFactura_descripcion>Collar</lineaFactura_descripcion>
+          <lineaFactura_cantidad>3</lineaFactura_cantidad>
+          <lineaFactura_precio>4</lineaFactura_precio>
+        </elemento0>
+      </null>
+    </elemento0>
+  </datosDinamicos>
+</root>

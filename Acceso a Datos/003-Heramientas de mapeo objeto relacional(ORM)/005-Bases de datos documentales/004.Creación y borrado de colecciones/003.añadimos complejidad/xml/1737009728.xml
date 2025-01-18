@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<root>
+  <clientenombre>Fuentes Antonia</clientenombre>
+  <datosfactura>
+    <elemento0>
+      <descripcion>Compra avalorios</descripcion>
+      <cantidad>4</cantidad>
+      <precio>5</precio>
+    </elemento0>
+    <elemento1>
+      <descripcion>alquileer</descripcion>
+      <cantidad>1</cantidad>
+      <precio>500</precio>
+    </elemento1>
+  </datosfactura>
+</root>

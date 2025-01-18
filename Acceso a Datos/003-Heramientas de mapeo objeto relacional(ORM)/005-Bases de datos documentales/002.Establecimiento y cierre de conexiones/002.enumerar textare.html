@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <textarea></textarea>
+        <textarea></textarea>
+        <script>
+            //enumeramos los elementos 
+            let textos = document.querySelectorAll("textarea");
+            //indicamos cuanto tenemos de esos elementos 
+            console.log("tengo",textos.length, "textarea");
+            textos.forEach(function(textarea){
+                ////creamos un contenedor para los textos
+                let contenedor = document.createElement("div");
+                contenedor.setAttribute("class", "textocontenedor");
+                //reemplazamos el texarea con un div 
+                textarea.replaceWith(contenedor);
+            });
+        </script>
+    </body>
+</html>

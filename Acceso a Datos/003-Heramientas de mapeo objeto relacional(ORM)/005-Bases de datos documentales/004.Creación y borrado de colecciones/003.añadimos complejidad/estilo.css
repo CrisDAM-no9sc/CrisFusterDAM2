@@ -1,0 +1,110 @@
+/* Estilos generales para el body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column; /* Cambié esto para que el título esté encima del formulario */
+}
+
+/* Estilos para el contenedor principal */
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Estilo para el título */
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+/* Estilos para las etiquetas de los campos */
+label {
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+/* Estilo para los campos de entrada */
+input[type="text"], input[type="number"], button {
+    width: 30%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    display: inline-block;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Estilo para las líneas de factura */
+.lineafactura {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.lineafactura input {
+    width: 30%;
+}
+
+/* Botones para añadir y eliminar */
+.btn-agregar, .btn-eliminar {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-agregar:hover, .btn-eliminar:hover {
+    background-color: #45a049;
+}
+
+/* Centrado de los botones */
+.btn-container {
+    text-align: center;
+}
+
+/* Estilo para el botón de enviar */
+button[type="submit"] {
+    background-color: #008CBA;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #007bb5;
+}

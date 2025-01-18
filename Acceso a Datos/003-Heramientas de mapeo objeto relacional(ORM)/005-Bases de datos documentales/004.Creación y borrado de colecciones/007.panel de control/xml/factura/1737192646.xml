@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<root>
+  <datosEstaticos>
+    <nombreCliente>Maria Garcia</nombreCliente>
+  </datosEstaticos>
+  <datosDinamicos>
+    <elemento0>
+      <null>
+        <elemento0>
+          <lineaFactura_descripcion>Collar</lineaFactura_descripcion>
+          <lineaFactura_cantidad>2</lineaFactura_cantidad>
+          <lineaFactura_precio>2</lineaFactura_precio>
+        </elemento0>
+        <elemento1>
+          <lineaFactura_descripcion>Collar</lineaFactura_descripcion>
+          <lineaFactura_cantidad>2</lineaFactura_cantidad>
+          <lineaFactura_precio>2</lineaFactura_precio>
+        </elemento1>
+        <elemento2>
+          <lineaFactura_descripcion>Collar</lineaFactura_descripcion>
+          <lineaFactura_cantidad>2</lineaFactura_cantidad>
+          <lineaFactura_precio>4</lineaFactura_precio>
+        </elemento2>
+        <elemento3>
+          <lineaFactura_descripcion>Calcetines</lineaFactura_descripcion>
+          <lineaFactura_cantidad>2</lineaFactura_cantidad>
+          <lineaFactura_precio>2</lineaFactura_precio>
+        </elemento3>
+      </null>
+    </elemento0>
+  </datosDinamicos>
+</root>

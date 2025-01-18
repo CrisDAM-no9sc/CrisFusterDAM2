@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<root>
+  <NombreCliente>Maeriano</NombreCliente>
+  <Apellidos>Mano Luis</Apellidos>
+  <Email>mskdsf@ksdfj.com</Email>
+  <lineasFactura>
+    <elemento0>
+      <descripcion>sdfsdzsd</descripcion>
+      <cantidad>10</cantidad>
+      <precio>50</precio>
+    </elemento0>
+    <elemento1>
+      <descripcion>dsfdsfsdfds</descripcion>
+      <cantidad>20</cantidad>
+      <precio>70</precio>
+    </elemento1>
+  </lineasFactura>
+</root>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="Stylesheet" href="estilo.css">
+        <title>Envío de Formulario</title>
+    </head>
+    <body>
+        <h1>Formulario de Facturación</h1>
+        <form id="formfactura">
+            <label for="clientenombre">Nombre de Cliente:</label>
+            <input type="text" id="clientenombre" name="clientenombre" requiered><br><br>
+
+            <div id="contenedorfactura">
+                <div class="datosfactura">
+                    <input type="text" name="descripcion[]" placeholder="Descripción" requiered>
+                    <input type="number" name="cantidad[]" placeholder="Cantidad" requiered>
+                    <input type="number" name="precio[]" placeholder="Precio" requiered>
+                    <button type="button" class="btn-eliminar">-</button>
+                </div>
+            </div>
+            <button type="button" id="btnagregar" class="btn-agregar">+</button><br><br>
+            <button type="submit">Enviar Factura</button>
+        </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                const contenedorfactura = document.getElementById('contenedorfactura');
+                const btnagregar = document.getElementById('btnagregar')
+
+                ///////////////// AGREGAMOS NUEVA LINEA DE FACTURACIÓN /////////////////////////
+
+                btnagregar.addEventListener('click',() =>{
+                    const nuevalinea = document.createElement('div');
+                    nuevalinea.classList.add('lineafactura');
+                    nuevalinea.innerHTML = `
+                        <input type="text" name="descripcion[]" placeholder="Descripción" required>
+                        <input type="number" name="cantidad[]" placeholder="Cantidad" required>
+                        <input type="number" name="precio[]" placeholder="Precio" required>
+                        <button type="button" class="btn-eliminar">-</button>
+                    `;
+                    contenedorfactura.appendChild(nuevalinea);
+
+                    //////////// AGREGAMOS EL BOTNN DE ELIMINAR 
+
+                    nuevalinea.querySelector('.btn-eliminar').addEventListener('click', function(){
+                        contenedorfactura.removeChild(nuevalinea)
+                    });
+                });
+
+                ///////////////////// MANEJAR LA ELIMINACIÓN DE LAS LINEAS QUE HAY ////////////////////
+
+                document.querySelectorAll('.btn-eliminar').forEach(boton =>{
+                    boton.addEventListener('click', function(){
+                        contenedorfactura.removeChild(boton.parentElement);
+                    });
+                });
+
+                /////////////////////////////////// MANEJAR EL ENVIO //////////////////////////////////
+
+                document.getElementById('formfactura').addEventListener('submit', async function (event) {
+                    event.preventDefault();
+
+                    // RECOPILAMOS DATOS DINAMICAMENTE
+                    const clientenombre = document.getElementById('clientenombre').value;
+                    const datosfactura = Array.from(document.querySelectorAll('#contenedorfactura > div')).map(linea => ({
+                        descripcion: linea.querySelector('input[name="descripcion[]"]').value,
+                        cantidad: linea.querySelector('input[name="cantidad[]"]').value,
+                        precio: linea.querySelector('input[name="precio[]"]').value,
+                    }));
+
+                    const datosformulario = {
+                        clientenombre: clientenombre, // Asignar correctamente
+                        datosfactura: datosfactura,
+                    };
+
+                    try {
+                    // Enviar datos al servidor
+                    const respuesta = await fetch('guardarxml.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(datosformulario),
+                    });
+
+                    const datosrespuesta = await respuesta.text();
+                    console.log(datosrespuesta);
+                    alert('Factura enviada exitosamente');
+
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al enviar la factura.');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

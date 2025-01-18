@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<root>
+  <datosEstaticos>
+    <NombreCliente>Maria </NombreCliente>
+    <Apellidos>Gonzalez</Apellidos>
+    <Email>hla@gamil.ocm</Email>
+  </datosEstaticos>
+  <datosDinamicos/>
+</root>
