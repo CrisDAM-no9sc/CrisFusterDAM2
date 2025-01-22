@@ -1,0 +1,430 @@
+/*********************   ESTILOS GLOBALES   ********************/
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo general verde claro */
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/*********************   ESTILO ENCABEZADO   ********************/
+header {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  padding: 40px 0;
+  text-align: center;
+  font-size: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 5px solid #4D869C; /* Línea azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+
+/*********************   ESTILO CONTENEDOR USUARIO   ********************/
+#contenedor-usuario {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column; /* Coloca elementos en columna */
+  align-items: center; /* Centra horizontalmente todos los elementos */
+  justify-content: center; /* Centra verticalmente los elementos */
+  gap: 10px; /* Espaciado entre el nombre y los botones */
+  padding: 10px; /* Espaciado interno */
+  border-radius: 8px;
+  background-color: rgba(74, 130, 130, 0.8); /* Fondo translúcido */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  color: #EEF7FF; /* Texto claro */
+  font-size: 0.9rem;
+  width: 150px; /* Ajusta el ancho del contenedor */
+}
+
+/* Nombre del usuario */
+#nombre-usuario {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center; /* Centra el texto */
+}
+
+/* Botones dentro del contenedor de usuario */
+#contenedor-usuario .boton button {
+  display: flex; /* Permite alinear contenido interno */
+  align-items: center; /* Centra verticalmente el contenido (icono y texto) */
+  justify-content: center; /* Centra horizontalmente */
+  background-color: #4D869C;
+  border: none;
+  color: #EEF7FF;
+  font-size: 0.9rem; /* Ajusta el tamaño del texto */
+  cursor: pointer;
+  padding: 8px 25px; /* Ajusta el tamaño del botón */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 90%; /* Ajusta el ancho del botón */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+#contenedor-usuario .boton button::before {
+  content: attr(tooltip); /* Usa el atributo tooltip para la información */
+  display: none; /* Oculta por defecto */
+  position: absolute;
+  bottom: -25px; /* Aparece debajo del botón */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4D869C;
+  color: #EEF7FF;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#contenedor-usuario .boton button:hover {
+  background-color: #7AB2B2; /* Color más claro al pasar el ratón */
+  transform: scale(1.05);
+}
+
+/* Botón "Salir" */
+#contenedor-usuario .boton #logout {
+  background-color: #FF5C5C; /* Color rojo para indicar salir */
+}
+
+#contenedor-usuario .boton #logout:hover {
+  background-color: #FF7F7F; /* Color más claro al pasar el ratón */
+}
+
+
+/* Contenedor Principal (Main) */
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Barra lateral y contenido */
+  grid-gap: 20px;
+}
+
+/*********************   ESTILO DE MENU   ***************/
+/* Estilo del nav (barra lateral) */
+main nav {
+  width: 200px;
+  background-color: #EEF7FF; /* Fondo azul muy claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo de los items de la lista */
+nav ul {
+  padding: 0;
+}
+
+nav ul li {
+  list-style: none;
+  margin: 15px;
+  padding: 15px;
+  background-color: #7AB2B2; /* Fondo verde azulado */
+  color: #EEF7FF; /* Texto azul claro */
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9; 
+  
+}
+
+nav ul li:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Efecto hover */
+  background-color: #4D869C; /* Fondo azul más oscuro al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+}
+/*********************   ESTILO SECCION PRINCIPAL   ********************/
+/* Estilo para la sección principal */
+main section {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  font-size: 1.2rem;
+}
+
+/* Título de la sección */
+section h2 {
+  margin: 0 0 20px;
+}
+
+
+/*********************   ESTILO LA TABLA   ********************/
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo para el encabezado de la tabla */
+table thead {
+  background-color: #7AB2B2; /* Fondo para encabezados */
+  color: #EEF7FF; /* Color de texto en encabezados */
+}
+
+table th{
+  text-transform: uppercase;
+}
+table th, table td {
+  padding: 15px; /* Aumentar el espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+  border-bottom: 1px solid #4D869C; /* Línea debajo de cada celda */
+  letter-spacing: 0.05rem; /* Espaciado entre letras */
+}
+
+table tr{
+  width: 50px;
+}
+/* Estilo para filas del cuerpo */
+tbody tr:hover {
+  background-color: #4D869C; /* Color de fondo al hacer hover en filas */
+  color: #EEF7FF; /* Color de texto al hacer hover */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #CDE8E5; /* Fondo alternativo para filas */
+}
+
+/******************************* BOTÓN INSERTAR *******************/
+
+#insertar {
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: 1px solid white;
+  border-radius: 50%;
+  width:30px;
+  height:30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 96%; 
+  top:40%; 
+}
+
+#insertar:hover {
+  background-color: #4D869C;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/******************* ESTILO VENTANA EMERGENTE ************************/
+
+/* Modal */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos para las animaciones de aparición y desaparición */
+.aparece {
+  display: flex;
+  opacity: 1;
+  animation: animaparece 1s forwards;
+}
+
+@keyframes animaparece {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.desaparece {
+  animation: animdesaparece 1s forwards;
+}
+
+@keyframes animdesaparece {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/*********************   ESTILO PANTALLA MODAL  ********************/
+#contienemodal {
+  background-color: #EEF7FF;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #4D869C;
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Título dentro del Modal */
+#contienemodal h1 {
+  text-align: center;
+  width: 100%; 
+  margin-bottom: 20px;
+}
+
+/* Section dentro del Modal */
+#contienemodal section {
+  column-count: 2;
+  column-gap: 50px;
+  text-align: left;
+}
+
+/* Divs dentro del Section del Modal */
+#contienemodal div {
+  break-inside: avoid-column;
+  margin-bottom: 10px;
+}
+
+/* Contenedores de Inputs en Modal */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+  box-sizing: border-box;
+}
+
+/* Párrafos dentro del Modal */
+#contienemodal p {
+  margin: 0 0 10px;
+  color: #4D869C;
+}
+
+/* Inputs dentro del Modal */
+#contienemodal input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #4D869C;
+  border-radius: 8px;
+  background-color: #EEF7FF;
+  color: #4D869C;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#contienemodal input:focus {
+  border-color: #7AB2B2;
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5);
+  background-color: #F0F8FF;
+}
+
+/* Botón Enviar en el modal */
+#contienemodal button {
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#contienemodal button:hover {
+  background-color: #4D869C;
+  transform: scale(1.05);
+}
+/********************** ESTILO TITULO TABLA *******************/
+
+.titulotabla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #7AB2B2;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: #EEF7FF;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;  
+
+  
+}
+
+.titulotabla h5 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.titulotabla p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+  color: #EEF7FF;
+}
+
+/*********************   ESTILO BOTONES CON LOS ICONOS   ********************/
+.boton{
+  /*
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  */
+  width:30px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.botoneliminar{
+  background:#4D869C;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+li .botontabla{ 
+  position: absolute;
+  background:#4D869C; 
+  gap: 10px;
+}
+.botonlupa{
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 30px;
+}
+.boton img{
+  width: 100%;
+}
+
+
+section iframe{
+  width: 100%;
+  height: 100%;
+  border: none;
+}

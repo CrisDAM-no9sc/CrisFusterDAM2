@@ -1,0 +1,59 @@
+  /* Estilo de la Página General */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #CDE8E5; 
+    margin: 0;
+    color: #4D869C; 
+  }
+
+
+/* Estilo General del Contenedor */
+.ampliador {
+    background-color: #EEF7FF; 
+    padding: 8px;
+    border-radius: 12px; /* Esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 2px;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    /* Asegura que siempre esté encima */
+    z-index: 9999; 
+    align-items: center; 
+  }
+  
+  /* Estilo de los Botones */
+  .ampliador button {
+    font-family: 'Segoe UI Emoji', sans-serif;
+    background-color: #7AB2B2; 
+    color: #EEF7FF;
+    border: none;
+    border-radius: 50%; /* Forma circular */
+    padding: 8px; /* Botones más pequeños */
+    width: 40px; /* Anchura fija */
+    height: 40px; /* Altura fija */
+    font-size: 18px; /* Texto ajustado */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ampliador button:hover {
+    background-color: #4D869C;
+    /* Ligero agrandamiento al pasar el cursor */
+    transform: scale(1.05); 
+  }
+  
+  /* Botón Activo */
+  .ampliador button:active {
+    /* Restablecer escala al hacer clic */
+    transform: scale(1); 
+    background-color: #3C6F81;
+  }
+  
+
+  

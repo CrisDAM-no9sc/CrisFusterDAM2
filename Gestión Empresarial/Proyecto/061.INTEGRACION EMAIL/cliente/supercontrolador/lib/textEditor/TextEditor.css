@@ -1,0 +1,71 @@
+.textocontenedor .textarea_nuevo {
+    width: 450px;
+    height: 200px;
+    background-color: #FBFBFB; /* Fondo gris muy claro, casi blanco */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil con baja opacidad */
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 5px; 
+    font-family: Arial, sans-serif; 
+    font-size: 14px; 
+    color: #333; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.textocontenedor .textarea_nuevo:focus {
+    background-color: #ffffff; 
+    border-color: #A0A0A0; 
+    outline: none; /* Elimina el contorno por defecto */
+}
+.textocontenedor .barra_botones {
+    width: 450px;
+    height: 40px;
+    background-color: #F8F8F8; /* Fondo gris muy suave, casi blanco */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil con baja opacidad */
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    justify-content: start; /* Alinear los botones horizontalmente */
+    border-radius: 5px; /* Bordes redondeados para un diseño más suave */
+    margin-bottom: 1px; 
+}
+.textocontenedor .barra_botones button,
+.textocontenedor .barra_botones select,
+.textocontenedor .barra_botones input[type="color"] {
+    width: 40px; 
+    height: 30px;
+    display: flex; /* Flexbox para centrar el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    background-color: #E0E0E0; 
+    border-radius: 5px; 
+    cursor: pointer;
+    margin-right: 3px; /* Espaciado entre elementos */
+    font-size: 14px; 
+    text-align: center;
+    box-sizing: border-box;
+    color: #333333; 
+    border: none;
+}
+
+.textocontenedor .barra_botones button:hover,
+.textocontenedor .barra_botones select:hover,
+.textocontenedor .barra_botones input[type="color"]:hover {
+    background-color: #C5C5C5; /* Fondo más oscuro al pasar el cursor */
+}
+
+.textocontenedor .barra_botones select,
+.textocontenedor .barra_botones input[type="color"] {
+    background-color: #F0F0F0; /* Fondo gris muy claro */
+    
+}
+
+.textocontenedor .textarea_nuevo b {
+    font-weight: bold;
+}
+.textocontenedor .textarea_nuevo i {
+    font-style: italic;
+}
+.textocontenedor .textarea_nuevo u {
+    text-decoration: underline;
+}
+

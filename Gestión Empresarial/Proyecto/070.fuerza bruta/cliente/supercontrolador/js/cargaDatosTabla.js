@@ -1,0 +1,220 @@
+/////////////////////////////////// CREO UNA FUNCIÓN PARA CARGAR DINÁMICAMENTE TABLAS /////////////////////////////////////////////
+
+function cargaDatosTabla(tabla){
+    /////////////////////////////////// COMPROVAMOS SI TENEMOS APLICACIONES /////////////////////////////////////////////
+
+    listaaplicaciones = [];
+
+
+    console.log("las aplicaciones son: ", aplicaciones);
+    try{
+        aplicaciones.forEach(function(aplicacion){
+            if(aplicacion.entidad == tabla){
+                console.log("si que tenemos aplciaciones: ", aplicacion.aplicaciones);
+                listaaplicaciones = aplicacion.aplicaciones;
+            }
+        })
+    }catch(error){
+        console.log("tenemos un problema al cargar las aplciaciones: ",error);
+    }
+
+
+    let campoclave;                                                          
+    /////////////////////////////////// LISTADO DE COLUMNAS DE TABLA /////////////////////////////////////////////
+     
+     fetch("../../servidor/?o=columnastabla&tabla="+tabla)                
+         .then(response => {
+           return response.json();                                           
+         })
+
+         .then(datos => {
+            //console.log('Respuesta de columnastabla:', datos);
+             columnas_tabla = []                                         
+             tipos_tabla = []																
+             claves_tabla = []																
+             campos_busqueda = []														
+             let cabeceras_tabla = document.querySelector("table thead tr"); 
+             cabeceras_tabla.innerHTML = "" 
+
+             datos.forEach(function(dato){ 
+                console.log("Aqui esñenamos los datos:" ,dato)                               
+                 let elemento = document.createElement("th")             
+                 columnas_tabla.push(dato['Field'])                       
+                  
+                 elemento.textContent = dato['Field']                       
+                 campos_busqueda.push(document.createElement("input"))											
+                 campos_busqueda[campos_busqueda.length-1].setAttribute("placeholder",dato['Field'] )	
+                 
+                 claves_tabla.push(dato['Key'])										
+                 
+                 campos_busqueda[campos_busqueda.length-1].setAttribute("type",convierteTipoDato(dato['Type']) )
+                 tipos_tabla.push(convierteTipoDato(dato['Type']))
+                 
+                 elemento.appendChild(campos_busqueda[campos_busqueda.length-1])										
+                 cabeceras_tabla.appendChild(elemento)                     
+                 if(dato['Key'] == "PRI"){                                 
+                     campoclave = dato['Field']                            
+                 }
+             })
+
+             //////////////// AQUI AGREGAMOS LA COLUMNAS DE APLCIACIONES //////////////////
+
+             if(listaaplicaciones.length > 0){
+                let elemento = document.createElement("th") 
+                elemento.textContent = "APPS";
+                cabeceras_tabla.appendChild(elemento) 	
+             }
+
+             ////////////////// AQUI AGREGAMOS LA COLUMNAS DE APLCIACIONES //////////////////
+             let elemento = document.createElement("th") 					
+             elemento.innerHTML = "<span class='boton botonlupa'><img src='../img/lupa.png'></span>";											
+             cabeceras_tabla.appendChild(elemento) 								
+             elemento.onclick = function(){											
+ 
+                 mensaje = {}															
+                 campos_busqueda.forEach(function(campo){							
+                     let columna = campo.getAttribute("placeholder")				
+                     let valor = campo.value												
+                     if(valor != ""){														
+                         mensaje[columna] = valor										
+                     }
+                 })
+                 fetch("../../servidor/?o=buscarSimilar&tabla="+tabla, {		
+                           method: 'POST', 
+                           headers: {
+                             'Content-Type': 'application/json', 
+                           },
+                           body: JSON.stringify(mensaje), 
+                         })
+                       .then(response => {
+                          return response.json();                                                      
+                       })
+                       .then(datos => {			  
+                            pueblaTabla(datos,campoclave)							
+                       })
+             }
+             
+             
+            /////////////////////////////////// LISTADO DE COLUMNAS DE TABLA /////////////////////////////////////////////
+            let coleccioncampos = []                                                                
+            let contiene_modal = document.querySelector("#contienemodal")                           
+            contiene_modal.innerHTML = "<h1>Formulario de inserción: "+tabla+"</h1>"                                                           
+            let seccion = document.createElement("section")
+            columnas_tabla.forEach(function(columna,index){                                           
+                let contenedor = document.createElement("div")
+                let texto = document.createElement("p")
+                texto.textContent = "Inserta un nuevo elemento para: "+columna+""
+                contenedor.appendChild(texto)
+
+                if(claves_tabla[index] != "MUL"){
+                    //////----------- AQUI LE VAMOS A PONER LA FUNCION DE TEXTEDITOR -------------///
+                    if (tipos_tabla[index] == "textarea") {
+                        // Crear el elemento textarea
+                        coleccioncampos.push(document.createElement("textarea"));
+
+                        
+                    }else{
+                        coleccioncampos.push(document.createElement("input"))  
+                    }                         
+                    coleccioncampos[coleccioncampos.length-1].setAttribute("type",tipos_tabla[index]) 
+                    coleccioncampos[coleccioncampos.length-1].setAttribute("placeholder",columna)                                                  
+                    contenedor.appendChild(coleccioncampos[coleccioncampos.length-1])                                                                            
+                
+                }else{
+                    //si es del tipo mul creamos un select
+                    let selectElement = document.createElement("select");
+                    coleccioncampos.push(selectElement);
+                    //añadimos la opcion por defecto
+                    let defaultOption = document.createElement("option");
+                    defaultOption.textContent = "Selecciona una opción:";
+                    selectElement.appendChild(defaultOption);
+                    //llamamos a la funcion para llenar las opciones del selector
+                    fetchOptionsForSelect(selectElement, columna);
+                    selectElement.setAttribute("placeholder", columna);
+                    //añadimos el select al contenedor 
+                    contenedor.appendChild(selectElement);
+                    //aqui integramos la funcion para personalizar el select
+                    selectjv(selectElement)
+                }  
+
+                seccion.appendChild(contenedor)                                               
+                    
+                })
+                
+                 contiene_modal.appendChild(seccion) 
+                 
+                 let boton_enviar = document.createElement("button")                                    
+                 boton_enviar.textContent = "Enviar"                                                    
+                 boton_enviar.onclick = function(){
+                     //let mensaje = "DATOS ENVIADOS CORRECTAMENTE" ;                                       
+                     console.log("Vamos a procesar el formulario")                                      
+                     console.log(coleccioncampos)
+                     //let mensaje = {}
+                     let jsonObject = {};
+                     coleccioncampos.forEach(function(campo){
+                         if(campo.getAttribute('placeholder') != "Identificador"){
+                             //mensaje[campo.getAttribute('placeholder')] = campo.value
+                             if (campo.getAttribute('type') === "file") {
+                                console.log("Archivos no soportados en esta versión.");
+                            } else {
+                                jsonObject[campo.getAttribute('placeholder')] = campo.value;
+                            }
+              
+                         }
+                     })
+                     //console.log(mensaje)
+                     console.log("Objeto JSON enviado:", jsonObject);
+
+                     fetch("../../servidor/?o=insertar&tabla="+tabla, {
+                           method: 'POST', 
+                           headers: {
+                             'Content-Type': 'application/json', 
+                           },
+                           body: JSON.stringify(jsonObject), 
+                         })
+                     .then(function(response){
+                         return response.text()
+                     })
+                     .then(function(datos){
+                         console.log(datos)
+                         document.querySelector("#modal").classList.remove("aparece")
+                         document.querySelector("#modal").classList.add("desaparece")
+                         setTimeout(function(){
+                             document.querySelector("#modal").style.display = "none"
+                         },1000)
+                     })
+                     
+                 }
+                 contienemodal.appendChild(boton_enviar)                                                 
+                 /////////////////////////////////// LISTADO DE COLUMNAS DE TABLA /////////////////////////////////////////////
+             
+             /////////////////////////////////// CONTENIDO DE LA TABLA /////////////////////////////////////////////
+  
+             fetch("../../servidor/?o=tabla&tabla="+tabla)                         
+                 .then(response => {
+                   return response.json();                                                  
+                 })
+                 .then(datos => {
+                     pueblaTabla(datos,campoclave,tabla,listaaplicaciones)
+                 })
+         })
+     
+  }
+  
+  /////////////////////////////////// CREO UNA FUNCIÓN PARA CARGAR DINÁMICAMENTE TABLAS /////////////////////////////////////////////
+  
+  
+  
+  function fetchOptionsForSelect(selectElement, column) {
+     fetch("../../servidor/?o=tabla&tabla=" + column.split("_")[0])
+         .then(response => response.json())
+         .then(datos => {
+             datos.forEach(function(dato) {
+                 //console.log('Opciones para', column, ':', datos);
+                 let option = document.createElement("option");
+                 option.value = dato['Identificador'];
+                 option.textContent = Object.values(dato).join(' - ');
+                 selectElement.appendChild(option);
+             });
+         });
+ }
