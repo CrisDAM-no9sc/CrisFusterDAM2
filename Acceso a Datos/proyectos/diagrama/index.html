@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Diagrama Sankey - Trabajadores</title>
+  <link rel="stylesheet" href="diagrama-sankey.css">
+</head>
+<body>
+  <h2>Diagrama Sankey - Relación de Trabajadores, Categorías y Puestos</h2>
+  <div id="chart-container"></div>
+
+  <script src="diagrama-sankey.js"></script>
+  <script>
+    async function fetchData() {
+      try {
+        const response = await fetch('data.php');
+        const data = await response.json();
+
+        if (!data.nodes || !data.links || data.links.length === 0) {
+          console.error("Error: No hay enlaces en los datos.");
+          return;
+        }
+
+        console.log("Datos recibidos:", data); 
+
+        DiagramaSankey.crearDiagramaSankey({
+          element: '#chart-container',
+          data: data,
+          width: 800,
+          height: 600,
+          nodeWidth: 120,
+          nodePadding: 15
+        });
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchData);
+  </script>
+</body>
+</html>
