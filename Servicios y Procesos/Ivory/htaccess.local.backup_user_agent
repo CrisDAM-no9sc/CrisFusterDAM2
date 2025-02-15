@@ -1,0 +1,20 @@
+
+# BEGIN Blocked IPs by Country
+<RequireAll>
+    Require all granted
+    Require not ip 198.51.100.2
+    Require not ip 203.0.113.1
+    Require not ip 10.0.0.5
+</RequireAll>
+    Require not ip 10.0.0.5
+    Require not ip 203.0.113.1
+    Require not ip 198.51.100.2
+# END Blocked IPs by Country
+
+# BEGIN Blocked IPs by User Agent
+<RequireAll>
+    Require all granted
+    Require not ip 203.0.113.5
+    Require not ip 127.0.0.1
+</RequireAll>
+# END Blocked IPs by User Agent
