@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EstiloCacada</string>
+    <string name="cadena_1" translatable="false">HELLO WORD</string>
+</resources>

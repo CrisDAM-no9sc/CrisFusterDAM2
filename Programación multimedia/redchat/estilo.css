@@ -1,0 +1,149 @@
+ /* ----- Estilos generales ----- */
+ body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    height: 100%;
+  }
+  /* ----- Sección de Login ----- */
+  #login-section {
+    width: 100%;
+    max-width: 350px;
+    margin: 80px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  #login-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  #login-section input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  #login-section button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4a76a8;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #login-section button:hover {
+    background-color: #3a5f85;
+  }
+  #login-message {
+    margin-top: 10px;
+    color: red;
+  }
+  /* ----- Sección de Chat ----- */
+  #chat-section {
+    display: none;
+    height: 100vh;
+  }
+  #container {
+    display: flex;
+    height: 100%;
+  }
+  /* Lista de contactos */
+  #contacts {
+    width: 250px;
+    background-color: #4a76a8;
+    color: #fff;
+    overflow-y: auto;
+  }
+  #contacts h2 {
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+    background-color: #3a5f85;
+  }
+  #contacts ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  #contacts ul li {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+  }
+  #contacts ul li:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+  /* Área de chat */
+  #chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+  #chat-header {
+    background-color: #ededed;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  #chat-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  #messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #e5ddd5;
+  }
+  .message {
+    max-width: 60%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    line-height: 1.4;
+    font-size: 15px;
+  }
+  .sent {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+  }
+  .received {
+    background-color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+  }
+  #message-input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #f7f7f7;
+  }
+  #messageInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+  }
+  #sendBtn {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: #4a76a8;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  #sendBtn:hover {
+    background-color: #3a5f85;
+  }

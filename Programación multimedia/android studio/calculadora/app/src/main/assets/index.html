@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Calculadora Empresarial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e3f2fd;
+            margin: 0;
+            padding: 20px;
+        }
+        img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        .calculator {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            margin: auto;
+            border: 2px solid #2196f3;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #1565c0;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            background-color: #e3f2fd;
+        }
+
+        .result, .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        table {
+            width: 250px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #42a5f5;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #1e88e5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+<img src="icono.png">
+<h1 style="color: #0d47a1;">Calculadora Empresarial</h1>
+
+<div class="calculator">
+    <!--las entradas de usuario donde pone el precio , donde llamamos a la funcion calcular  --->
+    <label for="precio">Precio Base (€):</label>
+    <input type="number" id="precio" placeholder="Introduce el precio base" oninput="calcular()">
+
+    <label for="iva">IVA (%):</label>
+    <select id="iva" onchange="calcular()">
+        <option value="21">21% (General)</option>
+        <option value="10">10% (Reducido)</option>
+        <option value="4">4% (Superreducido)</option>
+        <option value="0">0% (Exento)</option>
+    </select>
+
+    <label for="irpf">IRPF (% Retención):</label>
+    <select id="irpf" onchange="calcular()">
+        <option value="0">0% (Sin retención)</option>
+        <option value="15">15% (Profesional Autónomo)</option>
+        <option value="7">7% (Nuevos Autónomos)</option>
+    </select>
+
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" value="1" min="1" oninput="calcular()">
+
+    <label for="margen">Margen de Beneficio (%):</label>
+    <input type="number" id="margen" value="0" min="0" oninput="calcular()">
+
+    <!--Cada span se actualiza automáticamente con el resultado de la función --->
+    <div class="result">
+        <p>Precio con IVA: <span id="precioConIva">0.00</span> €</p>
+        <p>Retención IRPF: <span id="retencionIrpf">0.00</span> €</p>
+        <p>Precio Total por Unidad: <span id="precioUnidad">0.00</span> €</p>
+        <p><strong>Total Final (Incluyendo Margen): <span id="totalFinal">0.00</span> €</strong></p>
+        <!--Botón que guarda el cálculo en el historial cuando el usuario lo presiona.--->
+        <div class="button-container">
+            <button onclick="guardarHistorial()">Guardar Cálculo</button>
+        </div>
+    </div>
+</div>
+<!-- creamos una tabla donde se van a guardar los resultados  --->
+<div class="history">
+    <h2 style="color: #0d47a1;">Historial de Cálculos</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Precio Base</th>
+            <th>IVA</th>
+            <th>IRPF</th>
+            <th>Total Final</th>
+        </tr>
+        </thead>
+        <tbody id="historial"></tbody>
+    </table>
+</div>
+
+<script>
+    /*  coje los valores y los comvierte en numeros
+        parseFloat() convierte cadenas en números decimales.
+        parseInt() convierte valores en números enteros.
+        || 0 garantiza que si el usuario deja el campo vacío, se use 0.
+    */
+    function calcular() {
+        let precio = parseFloat(document.getElementById("precio").value) || 0;
+        let iva = parseFloat(document.getElementById("iva").value) / 100;
+        let irpf = parseFloat(document.getElementById("irpf").value) / 100;
+        let cantidad = parseInt(document.getElementById("cantidad").value) || 1;
+        let margen = parseFloat(document.getElementById("margen").value) / 100;
+
+        let precioConIva = precio + (precio * iva);
+        let retencionIrpf = precio * irpf;
+        let precioUnidad = (precioConIva - retencionIrpf) / cantidad;
+        let totalFinal = (precioUnidad * cantidad) + (precioUnidad * margen);
+
+        // Muestra los resultados en la pagina y redondea los deciimales actualizando los valores en tiempo real
+        document.getElementById("precioConIva").textContent = precioConIva.toFixed(2);
+        document.getElementById("retencionIrpf").textContent = retencionIrpf.toFixed(2);
+        document.getElementById("precioUnidad").textContent = precioUnidad.toFixed(2);
+        document.getElementById("totalFinal").textContent = totalFinal.toFixed(2);
+    }
+    //guardamos los calculos en el historial
+    function guardarHistorial() {
+        let precio = document.getElementById("precio").value;
+        let iva = document.getElementById("iva").value;
+        let irpf = document.getElementById("irpf").value;
+        let total = document.getElementById("totalFinal").textContent;
+
+        let fila = `<tr><td>${precio} €</td><td>${iva}%</td><td>${irpf}%</td><td>${total} €</td></tr>`;
+        document.getElementById("historial").innerHTML += fila;
+    }
+</script>
+
+</body>
+</html>

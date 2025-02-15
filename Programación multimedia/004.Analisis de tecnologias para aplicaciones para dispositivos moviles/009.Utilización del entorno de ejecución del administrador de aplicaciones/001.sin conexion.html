@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+            #piloto{
+                width: 30px;
+                height: 30px;
+                border-radius: 3px;
+                border: 1px rgb(37, 102, 37);
+                background: rgb(133, 202, 133);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="piloto"></div>
+        <script>
+            // lo que hacemos en el bucle es mirar por segundo la conexion a internet
+            var temporizador = setTimeout("bucle()", 1000)
+            let piloto = document.querySelector('#piloto')
+            function bucle(){
+                if(navigator.onLine){
+                    piloto.style.background = "blue"
+                //si no hay internet
+                }else{
+                    piloto.style.background = "black"
+                }
+                clearTimeout(temporizador)
+                temporizador = setTimeout("bucle()", 1000)
+            }
+
+        </script>
+    </body>
+</html>

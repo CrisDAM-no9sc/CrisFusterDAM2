@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>RedChat - Inicia Sesión</title>
+  <!-- Se enlaza el archivo CSS externo para mantener el HTML limpio -->
+  <link rel="stylesheet"  href="estilo.css">
+</head>
+<body>
+
+  <div id="login-section">
+    <h2>Inicia Sesión en RedChat</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Nombre de usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <!-- Aquí se mostrarán los mensajes de error en el login -->
+    <div id="login-message"></div>
+  </div>
+
+  <div id="chat-section">
+    <div id="container">
+      <!-- Lista de contactos -->
+      <div id="contacts">
+        <h2>Contactos</h2>
+        <ul id="contactsList">
+          <!-- Se cargarán dinámicamente desde la base de datos -->
+        </ul>
+      </div>
+      <!-- Área de chat -->
+      <div id="chat">
+        <div id="chat-header">
+          <h2 id="chatTitle">Selecciona un contacto</h2>
+        </div>
+        <div id="messages">
+          <!-- Aquí se mostrarán los mensajes del chat -->
+        </div>
+        <div id="message-input-container">
+          <input type="text" id="messageInput" placeholder="Escribe un mensaje..." autocomplete="off">
+          <button id="sendBtn">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales para almacenar la información del usuario y la conexión del chat
+    let currentUserId = null;      // ID del usuario actualmente logeado
+    let currentUsername = null;      // Nombre del usuario
+    let currentReceiverId = null;    // ID del contacto seleccionado (destinatario del mensaje)
+    let ws;                        // Variable para la conexión WebSocket
+
+    // ---------------------------
+    // Lógica de Login
+    // ---------------------------
+    // Se agrega un listener al formulario para manejar el envío de datos
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault(); // Evita que el formulario se envíe de forma tradicional (refrescando la página)
+
+      // Obtener y limpiar los valores ingresados por el usuario
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Validación: Verifica que ambos campos no estén vacíos
+      if (username === '' || password === '') {
+        document.getElementById('login-message').textContent = 'Por favor, rellena todos los campos.';
+        return;
+      }
+
+      // Crear un objeto FormData para enviar los datos del login mediante POST
+      const formData = new FormData();
+      formData.append('action', 'login');
+      formData.append('username', username);
+      formData.append('password', password);
+
+      // Enviar la información al servidor (archivo auth.php) para validar el login
+      fetch('auth.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json()) // Convertir la respuesta en formato JSON
+      .then(data => {
+        if (data.success) {
+          // Si el login es exitoso, guardar los datos del usuario
+          currentUserId = data.user_id;
+          currentUsername = username;
+
+          // Ocultar la sección de login y mostrar la sección de chat
+          document.getElementById('login-section').style.display = 'none';
+          document.getElementById('chat-section').style.display = 'block';
+
+          // Iniciar la conexión WebSocket y cargar la lista de contactos
+          initWebSocket();
+          loadContacts();
+        } else {
+          // Si ocurre un error, mostrar el mensaje de error recibido
+          document.getElementById('login-message').textContent = data.message;
+        }
+      })
+      .catch(err => {
+        // En caso de error en la conexión o en la llamada fetch
+        console.error('Error en el login:', err);
+        document.getElementById('login-message').textContent = 'Error en la conexión.';
+      });
+    });
+
+    // ---------------------------
+    // Función para inicializar la conexión WebSocket
+    // ---------------------------
+    function initWebSocket() {
+      // Crear una nueva conexión WebSocket al servidor
+      ws = new WebSocket('ws://localhost:8080');
+
+      // Evento: Conexión abierta
+      ws.onopen = function() {
+        console.log('Conectado al servidor WebSocket');
+        // Enviar un mensaje de autenticación para asociar el socket con el usuario actual
+        const authMsg = JSON.stringify({ type: 'auth', user_id: currentUserId });
+        ws.send(authMsg);
+      };
+
+      // Evento: Mensaje recibido del servidor
+      ws.onmessage = function(e) {
+        // Convertir el mensaje recibido (en formato JSON) a un objeto JavaScript
+        const data = JSON.parse(e.data);
+        console.log('Mensaje recibido:', data);
+        // Mostrar el mensaje solo si está relacionado con el contacto seleccionado
+        if (currentReceiverId && (data.sender_id === currentReceiverId || data.receiver_id === currentUserId)) {
+          displayMessage(data);
+        }
+      };
+
+      // Evento: Error en la conexión WebSocket
+      ws.onerror = function(e) {
+        console.error('Error en WebSocket:', e);
+      };
+
+      // Evento: Conexión WebSocket cerrada
+      ws.onclose = function() {
+        console.log('Conexión WebSocket cerrada');
+      };
+    }
+
+    // ---------------------------
+    // Función para cargar la lista de contactos desde la base de datos
+    // ---------------------------
+    function loadContacts() {
+      // Crear los parámetros a enviar en la petición (en este caso, el ID del usuario)
+      const params = new URLSearchParams();
+      params.append('user_id', currentUserId);
+
+      // Enviar una petición POST a get_contacts.php para obtener la lista de contactos
+      fetch('get_contacts.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Seleccionar el elemento donde se mostrará la lista de contactos
+          const contactsList = document.getElementById('contactsList');
+          // Limpiar el contenido anterior
+          contactsList.innerHTML = '';
+          // Recorrer cada contacto recibido y agregarlo a la lista
+          data.contacts.forEach(contact => {
+            const li = document.createElement('li');
+            li.setAttribute('data-id', contact.id);
+            li.textContent = contact.username;
+            contactsList.appendChild(li);
+          });
+        } else {
+          console.error('Error al cargar contactos:', data.message);
+        }
+      })
+      .catch(err => console.error('Error en loadContacts:', err));
+    }
+
+    // ---------------------------
+    // Evento para gestionar la selección de un contacto
+    // ---------------------------
+    document.getElementById('contactsList').addEventListener('click', function(e) {
+      // Verificar que se haya hecho clic en un elemento de lista (<li>)
+      if (e.target && e.target.nodeName === 'LI') {
+        // Almacenar el ID del contacto seleccionado
+        currentReceiverId = parseInt(e.target.getAttribute('data-id'));
+        // Actualizar el título del chat para reflejar el contacto seleccionado
+        document.getElementById('chatTitle').textContent = 'Chat con ' + e.target.textContent;
+        // Limpiar el área de mensajes (aquí podrías cargar el historial si estuviera implementado)
+        document.getElementById('messages').innerHTML = '';
+      }
+    });
+
+    // ---------------------------
+    // Evento para enviar mensajes al hacer clic en el botón "Enviar"
+    // ---------------------------
+    document.getElementById('sendBtn').addEventListener('click', function() {
+      // Obtener el mensaje ingresado y eliminar espacios innecesarios
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      // Verificar que el mensaje no esté vacío y que se haya seleccionado un contacto
+      if (message !== '' && currentReceiverId !== null) {
+        // Crear un objeto con los datos del mensaje
+        const data = { 
+          sender_id: currentUserId, 
+          receiver_id: currentReceiverId, 
+          message: message 
+        };
+        // Enviar el mensaje al servidor a través del WebSocket en formato JSON
+        ws.send(JSON.stringify(data));
+        // Mostrar el mensaje en la interfaz como enviado por el usuario actual
+        displayMessage({ sender_id: currentUserId, message: message });
+        // Limpiar el campo de entrada del mensaje
+        input.value = '';
+      }
+    });
+
+    // ---------------------------
+    // Permitir enviar el mensaje al presionar la tecla "Enter"
+    // ---------------------------
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+      // Si la tecla presionada es "Enter", simular el clic en el botón de enviar
+      if (e.key === 'Enter') {
+        document.getElementById('sendBtn').click();
+      }
+    });
+
+    // ---------------------------
+    // Función para mostrar mensajes en el área de chat
+    // ---------------------------
+    function displayMessage(data) {
+      // Seleccionar el contenedor de mensajes
+      const messagesDiv = document.getElementById('messages');
+      // Crear un nuevo div para el mensaje
+      const msgDiv = document.createElement('div');
+      // Asignar la clase base "message" para aplicar estilos generales
+      msgDiv.classList.add('message');
+
+      // Verificar si el mensaje fue enviado por el usuario actual o recibido de otro
+      if (data.sender_id === currentUserId) {
+        // Si es del usuario actual, agregar la clase 'sent' y etiquetar el mensaje como "Yo:"
+        msgDiv.classList.add('sent');
+        msgDiv.textContent = 'Yo: ' + data.message;
+      } else {
+        // Si es de otro usuario, agregar la clase 'received'
+        msgDiv.classList.add('received');
+        msgDiv.textContent = data.message;
+      }
+
+      // Agregar el mensaje al contenedor de mensajes
+      messagesDiv.appendChild(msgDiv);
+      // Ajustar el scroll para que el último mensaje sea visible
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/backgroundColor">
+
+    <!-- Título / Logo -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MyChat"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
+        android:layout_marginBottom="40dp" />
+
+    <!-- Campo de Nombre de Usuario -->
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de Usuario"
+        android:textColor="@color/primaryTextColor"
+        android:textColorHint="@color/secondaryTextColor"
+        android:background="@drawable/input_background"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"/>
+
+    <!-- Campo de Contraseña -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:textColor="@color/primaryTextColor"
+        android:textColorHint="@color/secondaryTextColor"
+        android:background="@drawable/input_background"
+        android:inputType="textPassword"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"/>
+
+    <!-- Botón de Iniciar Sesión -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesión"
+        android:background="@color/buttonColor"
+        android:textColor="@color/white"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botón para Registrarse (Opcional) -->
+    <TextView
+        android:id="@+id/tvSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿No tienes cuenta? Registrarse"
+        android:textColor="@color/linkColor"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

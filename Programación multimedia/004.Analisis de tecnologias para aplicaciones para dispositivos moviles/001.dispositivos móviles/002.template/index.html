@@ -1,0 +1,44 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <title>Lista de Productos Crismon</title>
+        <script>
+            window.onload = function(){
+                fetch("http://localhost/Gesti%c3%b3n%20Empresarial/Proyecto/078.endpoint%20publico/public/")
+                .then(function(resultado){
+                    return resultado.json()
+                })
+                .then(function(datos){
+                    console.log(datos)
+                    let contenedor = document.querySelector("body");
+                    let plantilla = document.querySelector("#plantilla_articulos");
+                    datos.forEach(function(dato){ 
+                        let instancia = plantilla.content.cloneNode(true);
+
+                        console.log(instancia)
+
+						instancia.querySelector("h2").textContent = dato.nombre
+						instancia.querySelector(".descripcion").textContent = dato.descripcion
+						instancia.querySelector(".precio").textContent = dato.precio
+
+
+                        contenedor.appendChild(instancia);
+                    })
+                })
+            }
+        </script>
+    </head>
+    <body>
+        <template id="plantilla_articulos">
+            <div class="productos">
+                <img src="https://content.elmueble.com/medio/2021/06/01/norden-mesa-alas-abatibles-blanco__0745737_ph144379_s5_8cc96850_1200x630.jpg" alt="Producto">
+                <h2>Articulo</h2>
+                <p class="descripcion">Descripcion</p>
+                <p class="precio">Precio</p>
+            </div>
+        </template>
+    </body>
+
+
+
+</html>

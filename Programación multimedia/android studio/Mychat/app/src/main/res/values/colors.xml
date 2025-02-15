@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Agrega este color -->
+    <color name="backgroundColor">#F0F2F5</color>
+    <color name="vector_background">#3DDC84</color>
+    <color name="vector_grid">#33FFFFFF</color>
+
+    <!-- Colores adicionales -->
+    <color name="primaryTextColor">#212121</color>       <!-- Texto principal (gris oscuro) -->
+    <color name="secondaryTextColor">#757575</color>     <!-- Texto secundario (gris medio) -->
+    <color name="buttonColor">#6200EE</color>             <!-- Puedes usar el mismo que purple_500 -->
+    <color name="linkColor">#1E88E5</color>
+</resources>

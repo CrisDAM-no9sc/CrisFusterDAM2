@@ -1,0 +1,87 @@
+/* Estilo global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Fondo de la página */
+body {
+    background: #F8F8FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* Título de la pregunta */
+#pregunta {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Opciones de respuestas */
+#o {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #888;
+    margin: 20px 0;
+}
+
+/* Estilo de las opciones A y B */
+#a {
+    background: #ADD8E6;
+    padding: 40px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    height: 80%;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+#b {
+    background: #E0FFFF;
+    padding: 40px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    height: 80%;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+#a:hover, #b:hover {
+    transform: scale(1.05); /* Efecto de ampliación al pasar el cursor */
+}
+
+/* Estilo de las estadísticas */
+.estadistica {
+    display:none;
+    color: green;
+    padding: 5px 10px;
+    font-size: 1rem;
+    border-radius: 20px;
+    margin-top: 120px;
+}
+
+/* Estilo del texto en las opciones */
+#a p, #b p {
+    color: #555;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 120px;
+}
+
+/* Asegura que el contenedor "o" esté centrado */
+#o {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #444;
+    margin: 20px;
+}
