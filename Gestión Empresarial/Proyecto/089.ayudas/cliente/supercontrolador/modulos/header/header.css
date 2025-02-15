@@ -1,0 +1,125 @@
+/* Estilo del header */
+header {
+    background-color: #7AB2B2; 
+    color: #EEF7FF;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 2.5rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom: 5px solid #4D869C;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+  }
+
+  
+/* Posicionar el contenedor en la esquina superior izquierda */
+#contenedor-usuario {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    align-items: flex-start; 
+    padding: 10px; 
+    border-radius: 10px; 
+    color: white; 
+    align-items: center;
+  }
+  
+  /* Estilo del nombre del usuario */
+  #nombre-usuario{
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  
+/* Estilo de los botones */
+.boton button {
+  
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .boton button:hover {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+    transform: scale(1.05); 
+  }
+
+
+/** ESTILO CON MEDIA PRINT ***/
+@media print {
+  /* Ocultamos elementos innecesarios */
+  header, nav, .ampliador {
+      display: none !important;
+  }
+  iframe{
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    font-size: 18px !important;
+    overflow: visible !important;
+  }
+  /* Asegurar que el main section ocupe todo el espacio */
+  main section {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      margin: 0 auto !important;
+      padding: 20px !important;
+      font-size: 18px !important;
+      overflow: visible !important;
+  }
+
+  /* Evitamos que el contenido tenga scroll o se recorte */
+  body {
+      zoom: 1 !important;
+      background: none !important;
+  }
+
+  /* Ajuste de imágenes para evitar que se recorten */
+  img {
+      max-width: 100% !important;
+      height: auto !important;
+  }
+
+  /* Asegurar que toda la página use el tamaño adecuado */
+  @page {
+      size: A4;
+      margin: 15mm;
+  }
+}
+  #ayuda section, iframe{
+    width: 100%;
+    height: 100%; 
+    border: none; 
+    display: block; 
+  }
+  #contenedorconsulta section, iframe{
+    width: 100%;
+    height: 100%; 
+    border: none; 
+    display: block; 
+    overflow: hidden;
+  }
+
+  #correo-iframe {
+    width: 100%;
+    height: 100%; 
+    border: none; 
+    display: block; 
+  }
+
+

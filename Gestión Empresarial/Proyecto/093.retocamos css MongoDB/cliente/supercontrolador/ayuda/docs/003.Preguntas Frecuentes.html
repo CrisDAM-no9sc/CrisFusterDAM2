@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalla de Configuración de Accesibilidad</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            background: #f4f4f4; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 700px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+            font-size: 24px;
+        }
+        h2 { 
+            color: #3498db; 
+            font-size: 20px;
+        }
+        p { 
+            color: #333; 
+            font-size: 16px;
+        }
+        .boton { 
+            font-weight: bold; 
+            color: #e74c3c; 
+        }
+        .icono { 
+            font-size: 1.2em; 
+        }
+        /*Estilos para el índice */
+        .indice {
+            background: #ecf0f1; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        }
+        .indice ul {
+            list-style: none;
+            padding: 0;
+        }
+        .indice ul li {
+            margin: 8px 0;
+        }
+        .indice a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .indice a:hover {
+            text-decoration: underline;
+        }
+        /*Botón de "Volver al índice" */
+        .volver {
+            display: block;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .volver a {
+            text-decoration: none;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .volver a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>🔧 Pantalla de Configuración de Accesibilidad</h1>
+
+        <!--Índice de navegación -->
+        <div class="indice">
+            <h2>📖 Índice</h2>
+            <ul>
+                <li><a href="#modo-oscuro"> Modo Oscuro y Claro</a></li>
+                <li><a href="#fuente"> Cambio de Fuente</a></li>
+                <li><a href="#restablecer"> Restablecer Configuración</a></li>
+                <li><a href="#zoom"> Ampliación de Pantalla</a></li>
+            </ul>
+        </div>
+
+  
+        <h2 id="modo-oscuro"> Modo Oscuro y Claro</h2>
+        <p>Activa o desactiva el modo oscuro para reducir la fatiga visual.</p>
+        <p>Se encuentra en la barra de navegación superior derecha.</p>
+        <p><span class="icono">☼</span> <span class="boton">Modo Claro:</span> Aumenta la iluminación del sistema.</p>
+        <p><span class="icono">🔾</span> <span class="boton">Modo Oscuro:</span> Activa el modo oscuro.</p>
+        <p>Para restablecer la configuración, usa el botón <span class="icono">⭯</span>.</p>
+        <p class="volver"><a href="#">⬆️ Volver al índice</a></p>
+
+        <!-- Sección 2 -->
+        <h2 id="fuente">Cambio de Fuente</h2>
+        <p>Modifica el tema del texto en la interfaz.</p>
+        <p>Ubicado en la barra de navegación superior derecha, representado por el icono "F".</p>
+        <p>Ajusta la fuente con una variedad de estilos según necesidad.</p>
+        <p>Si deseas restablecer la configuración original, usa el botón <span class="icono">⭯</span>.</p>
+        <p class="volver"><a href="#">⬆️ Volver al índice</a></p>
+
+        <!-- ✅ Sección 3 -->
+        <h2 id="restablecer"> Restablecer Configuración</h2>
+        <p>Restaura la apariencia del sistema a los valores predeterminados.</p>
+        <p>Se encuentra en la barra de navegación superior derecha, identificado con el icono <span class="icono">⭯</span>.</p>
+        <p class="volver"><a href="#">⬆️ Volver al índice</a></p>
+
+        <!-- ✅ Sección 4 -->
+        <h2 id="zoom"> Ampliación del Contenido en Pantalla</h2>
+        <p>Ubicado en la barra de navegación superior derecha.</p>
+        <p><span class="boton">Botón +:</span> Aumenta el zoom de la página.</p>
+        <p><span class="boton">Botón -:</span> Reduce el zoom de la página.</p>
+        <p>También puedes usar <strong>Ctrl + rueda del ratón</strong> para ajustar el zoom.</p>
+        <p>Si deseas restablecer los cambios, usa el botón <span class="icono">⭯</span>.</p>
+        <p class="volver"><a href="#">⬆️ Volver al índice</a></p>
+
+    </div>
+
+</body>
+</html>

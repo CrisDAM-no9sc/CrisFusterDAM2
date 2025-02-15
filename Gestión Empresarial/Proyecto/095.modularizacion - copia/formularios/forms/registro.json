@@ -1,0 +1,62 @@
+{
+    "formulario": {
+      "titulo": "Registro de Cliente",
+      "descripcion": "Completa este formulario para disfrutar de ofertas y novedades exclusivas."
+    },
+    "campos": [
+      {
+        "tipo": "text",
+        "nombre": "nombre",
+        "titulo": "Nombre Completo",
+        "descripcion": "Introduce tu nombre y apellido.",
+        "valorejemplo": "Juan Pérez",
+        "validadorForm": "text",
+        "min": "2",
+        "max": "50"
+      },
+      {
+        "tipo": "email",
+        "nombre": "correo",
+        "titulo": "Correo Electrónico",
+        "descripcion": "Te enviaremos promociones y novedades.",
+        "valorejemplo": "ejemplo@correo.com",
+        "validadorForm": "email"
+      },
+      {
+        "tipo": "tel",
+        "nombre": "telefono",
+        "titulo": "Teléfono",
+        "descripcion": "Número de contacto (opcional).",
+        "valorejemplo": "+34 600 123 456",
+        "validadorForm": "tel"
+      },
+      {
+        "tipo": "date",
+        "nombre": "fecha_nacimiento",
+        "titulo": "Fecha de Nacimiento",
+        "descripcion": "Para ofrecerte ofertas personalizadas."
+      },
+      {
+        "tipo": "select",
+        "nombre": "pais",
+        "titulo": "País",
+        "descripcion": "Selecciona tu país de residencia.",
+        "opciones": ["España", "Francia", "Alemania", "Italia", "Suecia", "Otro"]
+      },
+      {
+        "tipo": "textarea",
+        "nombre": "comentarios",
+        "titulo": "Comentarios",
+        "descripcion": "¿Tienes alguna sugerencia o preferencia?",
+        "max": "500"
+      },
+      {
+        "tipo": "checkbox",
+        "nombre": "suscripcion",
+        "titulo": "Suscribirme a promociones",
+        "descripcion": "Recibe descuentos y noticias.",
+        "valorejemplo": "true"
+      }
+    ]
+  }
+  

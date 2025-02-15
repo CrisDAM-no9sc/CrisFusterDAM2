@@ -1,0 +1,12 @@
+.tooltip {
+    background: cornflowerblue;
+    color: white;
+    border: none;
+    top: 0;
+    left: 0;
+    display: none;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    position: absolute; /* Asegúrate de tener esto */
+    padding: 5px; /* Opcional: para darle un poco de espacio interno */
+    border-radius: 5px; /* Opcional: para bordes redondeados */
+}

@@ -1,0 +1,14 @@
+{
+  "titulo": {
+      "contenido": "Crismon ERP"
+  },
+  "login": {
+      "contenido": "Login"
+  },
+  "usuario": {
+      "contenido": "Username"
+  },
+  "contrasena": {
+      "contenido": "Password"
+  }
+}

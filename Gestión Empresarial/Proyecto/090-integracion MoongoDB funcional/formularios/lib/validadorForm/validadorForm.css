@@ -1,0 +1,11 @@
+/* Clase para campos inválidos (error) */
+.ko {
+    border: 2px solid red; /* Borde rojo para error */
+    background: #eb6060; /* Fondo rojo claro */
+}
+
+/* Clase para campos válidos (éxito) */
+input.ok {
+    border: 2px solid green; /* Borde verde para éxito */
+    background-color: #6ff16f; /* Fondo verde claro */
+}

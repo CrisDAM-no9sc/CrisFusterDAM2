@@ -1,0 +1,428 @@
+/* Estilo global */
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #CDE8E5; /* Fondo general verde claro */
+  color: #4D869C; /* Texto principal en azul oscuro */
+}
+
+/* Estilo del header */
+header {
+  background-color: #7AB2B2; /* Verde azulado medio */
+  color: #EEF7FF; /* Texto en azul claro */
+  padding: 40px 0;
+  text-align: center;
+  font-size: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 5px solid #4D869C; /* Línea azul oscuro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+}
+
+
+/* Posicionar el contenedor en la esquina superior izquierda */
+#contenedor-usuario {
+  position: absolute;
+  top: 20px; /* Espacio desde la parte superior */
+  left: 20px; /* Espacio desde la parte izquierda */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado entre los elementos */
+  align-items: flex-start; /* Alinear los elementos a la izquierda */
+  padding: 10px; /* Espaciado dentro del contenedor */
+  border-radius: 10px; /* Bordes redondeados */
+  /*  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);Sombra suave */
+  color: white; /* Texto en azul oscuro */
+  align-items: center;
+}
+
+/* Estilo del nombre del usuario */
+#nombre-usuario{
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Estilo de los botones */
+.boton button {
+  
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton button:hover {
+  background-color: #7AB2B2; /* Fondo al pasar el cursor */
+  color: #EEF7FF; /* Color de texto al pasar el cursor */
+  transform: scale(1.05); /* Efecto de ampliación */
+}
+/* Contenedor Principal (Main) */
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Barra lateral y contenido */
+  grid-gap: 20px;
+}
+
+/* Estilo del nav (barra lateral) */
+main nav {
+  width: 250px;
+  background-color: #EEF7FF; /* Fondo azul muy claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo de los items de la lista */
+nav ul {
+  padding: 0;
+}
+
+nav ul li {
+
+  width: 200px;
+  margin-top: 10px; 
+  list-style: none;
+  margin: 15px;
+  padding: 15px;
+  background-color: #7AB2B2; /* Fondo verde azulado */
+  color: #EEF7FF; /* Texto azul claro */
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9; 
+  
+}
+
+nav ul li:hover {
+  opacity: 1;
+  transform: scale(1.05); /* Efecto hover */
+  background-color: #4D869C; /* Fondo azul más oscuro al hacer hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más marcada */
+
+
+  margin-bottom: 10px; 
+}
+
+/* Estilo para la sección principal */
+main section {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  font-size: 1.2rem;
+
+  margin-left: 40px;
+}
+
+/* Título de la sección */
+section h2 {
+  margin: 0 0 20px;
+}
+
+
+/* Estilos para la tabla */
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo para el encabezado de la tabla */
+table thead {
+  background-color: #7AB2B2; /* Fondo para encabezados */
+  color: #EEF7FF; /* Color de texto en encabezados */
+}
+
+table th{
+  text-transform: uppercase;
+}
+table th, table td {
+  padding: 15px; /* Aumentar el espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+  border-bottom: 1px solid #4D869C; /* Línea debajo de cada celda */
+  letter-spacing: 0.05rem; /* Espaciado entre letras */
+}
+
+table tr{
+  width: 50px;
+}
+/* Estilo para filas del cuerpo */
+tbody tr:hover {
+  background-color: #4D869C; /* Color de fondo al hacer hover en filas */
+  color: #EEF7FF; /* Color de texto al hacer hover */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #CDE8E5; /* Fondo alternativo para filas */
+}
+
+/******************************* BOTÓN INSERTAR *******************/
+
+#insertar {
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: 1px solid white;
+  border-radius: 50%;
+  width:30px;
+  height:30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 96%; 
+  top:40%; 
+}
+
+#insertar:hover {
+  background-color: #4D869C;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/******************* ESTILO VENTANA EMERGENTE ************************/
+
+/* Modal */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos para las animaciones de aparición y desaparición */
+.aparece {
+  
+  display: flex;
+  opacity: 1;
+  animation: animaparece 1s forwards;
+}
+
+@keyframes animaparece {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.desaparece {
+ 
+  animation: animdesaparece 1s forwards;
+}
+
+@keyframes animdesaparece {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Contenido del Modal */
+#contienemodal {
+  background-color: #EEF7FF;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #4D869C;
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Título dentro del Modal */
+#contienemodal h1 {
+  text-align: center;
+  width: 100%; 
+  margin-bottom: 20px;
+}
+
+/* Section dentro del Modal */
+#contienemodal section {
+  column-count: 2;
+  column-gap: 50px;
+  text-align: left;
+}
+
+/* Divs dentro del Section del Modal */
+#contienemodal div {
+  break-inside: avoid-column;
+  margin-bottom: 10px;
+}
+
+/* Contenedores de Inputs en Modal */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+  box-sizing: border-box;
+}
+
+/* Párrafos dentro del Modal */
+#contienemodal p {
+  margin: 0 0 10px;
+  color: #4D869C;
+}
+
+/* Inputs dentro del Modal */
+#contienemodal input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #4D869C;
+  border-radius: 8px;
+  background-color: #EEF7FF;
+  color: #4D869C;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#contienemodal input:focus {
+  border-color: #7AB2B2;
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5);
+  background-color: #F0F8FF;
+}
+
+/* Botón Enviar en el modal */
+#contienemodal button {
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#contienemodal button:hover {
+  background-color: #4D869C;
+  transform: scale(1.05);
+}
+/********************** ESTILO TITULO TABLA *******************/
+
+.titulotabla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #7AB2B2;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: #EEF7FF;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;  
+
+  
+}
+
+.titulotabla h5 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.titulotabla p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+  color: #EEF7FF;
+}
+
+.boton{
+  
+  width:30px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.botoneliminar{
+  background:#4D869C;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+li .botontabla{ 
+  margin-right: 10px;
+  position: absolute;
+  /*background:#4D869C; */
+  gap: 10px;
+}
+.botonlupa{
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 30px;
+}
+
+.boton .botndocumento{
+  margin-right: 10px;
+  position: absolute;
+  /*background:#4D869C; */
+  gap: 10px;
+}
+
+.boton img {
+  width: 24px; /* Ajusta el tamaño del ícono */
+  height: 24px;
+  margin-right: 10px; /* Espacio entre ícono y texto */
+}
+
+
+article:hover {
+  border-color: #7AB2B2;
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5);
+  background-color: #F0F8FF;
+  transform:scale(1.1,1.1);
+}
+table article{
+	width:200px;
+	height:300px;
+	border:1px solid grey;
+	background:#EEF7FF;
+	box-shadow:0px 4px 8px rgba(0,0,0,0.4);
+	display:inline-block;
+	margin:5px;
+	padding:10px;
+}
+
+#correo-iframe {
+  width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+  height: 100%; /* Asegura que ocupe todo el alto del contenedor */
+  border: none; /* Elimina el borde */
+  display: block; /* Asegura que se comporte como un bloque */
+}

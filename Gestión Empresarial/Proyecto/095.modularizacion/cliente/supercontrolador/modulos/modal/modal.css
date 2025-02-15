@@ -1,0 +1,138 @@
+/******************* ESTILO VENTANA EMERGENTE ************************/
+
+/* Modal */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos para las animaciones de aparición y desaparición */
+.aparece {
+  
+  display: flex;
+  opacity: 1;
+  animation: animaparece 1s forwards;
+}
+
+@keyframes animaparece {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.desaparece {
+ 
+  animation: animdesaparece 1s forwards;
+}
+
+@keyframes animdesaparece {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Contenido del Modal */
+#contienemodal {
+  background-color: #EEF7FF;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #4D869C;
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Título dentro del Modal */
+#contienemodal h1 {
+  text-align: center;
+  width: 100%; 
+  margin-bottom: 20px;
+}
+
+/* Section dentro del Modal */
+#contienemodal section {
+  column-count: 2;
+  column-gap: 50px;
+  text-align: left;
+}
+
+/* Divs dentro del Section del Modal */
+#contienemodal div {
+  break-inside: avoid-column;
+  margin-bottom: 10px;
+}
+
+/* Contenedores de Inputs en Modal */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+  box-sizing: border-box;
+}
+
+/* Párrafos dentro del Modal */
+#contienemodal p {
+  margin: 0 0 10px;
+  color: #4D869C;
+}
+
+/* Inputs dentro del Modal */
+#contienemodal input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #4D869C;
+  border-radius: 8px;
+  background-color: #EEF7FF;
+  color: #4D869C;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#contienemodal input:focus {
+  border-color: #7AB2B2;
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5);
+  background-color: #F0F8FF;
+}
+
+/* Botón Enviar en el modal */
+#contienemodal button {
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+#contienemodal button:hover {
+  background-color: #4D869C;
+  transform: scale(1.05);
+}

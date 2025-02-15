@@ -1,0 +1,13 @@
+{
+    "titulo": {
+      "contenido": "Crismon ERP"
+    },
+    "login": {
+      "contenido": "Login",
+      "usuario_placeholder": "Username",
+      "contrasena_placeholder": "Password",
+      "boton": "Sign In",
+      "error": "Incorrect username or password",
+      "exito": "Login successful. Redirecting..."
+    }
+  }

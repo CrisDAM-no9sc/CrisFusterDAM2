@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Crimson ERP</title>
+    <meta charset="utf-8">
+    <!-- Enlace a las hojas de estilo (CSS) en el <head> -->
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="lib/selectjv/selectjv.css">
+    <link rel="stylesheet" href="lib/ampliador/ampliador.css">
+    <link rel="stylesheet" href="lib/texteditor/TextEditor.css">
+    <link rel="stylesheet" href="lib/tooltip/tooltip.css">
+    <script src="../supercontrolador/js/polyfill-browser.js"></script>
+  </head>
+  <body>
+    <header>
+      supercontrolador
+      <div id="contenedor-usuario">
+        <div id="nombre-usuario">
+          
+        </div>
+        <div class="boton email">
+          <button id="correo" tooltip="Entrar en el correo">🖂</button>
+          <button id="conf" tooltip="Ir a configuraciones">⚙️</button>
+          <button id="logout" tooltip="Salir de la Aplicación">Salir</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <nav>
+        <ul></ul>
+      </nav>
+    
+      <section>
+
+        <div class="titulotabla">
+          <button id="insertar" tooltip="Insertar nuevo registro">+</button>
+          <h5>Clientes</h5>
+          <p>Aqui podremos ver los registros y ingresar nuevos</p>
+        </div>
+        <table>
+          <thead>
+            <tr></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <div id="contenedorConsola" style="display: none;">
+        <div class="consolaSQL">
+          <div class="barraTitulo">
+            <span>🖥️ Consola SQL</span>
+            <button id="cerrarConsola">❌</button>
+          </div>
+          <div class="terminal">
+            <span class="cursor">> </span>
+            <input type="text" id="comandoSQL" placeholder="Escribe tu consulta aquí..." autofocus>
+          </div>
+          <button id="ejecutarSQL">Ejecutar</button>
+        </div>
+      </div>
+    </main>
+    <div id="modal">
+      <div id="contienemodal"></div>
+    </div> 
+
+    <!-- Archivos JavaScript al final del body -->
+    <script src="js/convierteTipoDato.js"></script>
+    <script src="js/crearMenuTablas.js"></script>
+    <script src="lib/texteditor/TextEditor.js"></script>
+    <script src="js/cargaDatosTabla.js"></script>
+    <script src="js/pueblaTabla.js"></script>
+    <script src="comportamiento.js"></script>
+    <script src="js/cargarDatosColeccion.js"></script>
+    <script src="lib/selectjv/selectjv.js"></script>
+    <script src="lib/ampliador/ampliador.js"></script>
+    <script src="lib/tooltip/tooltip.js"></script>
+    <script src="lib/graficos/graficos.js"></script>
+  </body>
+</html>

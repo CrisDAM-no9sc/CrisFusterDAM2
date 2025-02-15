@@ -1,0 +1,74 @@
+[
+    {
+        "nombre": "nombre",
+        "tipo": "text",
+        "min": 2,
+        "max": 50,
+        "valorejemplo":"p.ej.: Mariam",
+		"titulo":"Nombre",
+		"descripcion": "Introduce el nombre",
+		"tabla":"clientes",
+		"campo":"nombre",
+		"validadorForm":"texto"
+    },
+    {
+        "nombre": "apellidos",
+        "tipo": "text",
+        "min": 2,
+        "max": 50,
+        "valorejemplo":"p.ej: Marco Fuentes",
+		"titulo":"Apellidos",
+		"descripcion": "Introduce apellidos",
+		"tabla":"clientes",
+		"campo":"apellidos",
+        "validadorForm":"texto"
+    },
+    {
+        "nombre": "email",
+        "tipo": "email",
+        "min": 5,
+        "max": 100,
+        "valorejemplo":"p.ej: ejemplo@gmail.com",
+		"titulo":"Apellidos",
+		"descripcion": "Introduce correo electronico",
+		"tabla":"clientes",
+		"campo":"email",
+        "validadorForm":"email"
+    },
+    {
+        "nombre": "telefono",
+        "tipo": "tel",
+        "min": 10,
+        "max": 15,
+        "valorejemplo":"p.ej: 665 223 069",
+		"titulo":"Telefono",
+		"descripcion": "Introduce telefono",
+		"tabla":"clientes",
+		"campo":"telefono",
+        "validadorForm":"tel"
+    },
+    {
+        "nombre": "direccion",
+        "tipo": "text",
+        "min": 5,
+        "max": 100,
+        "valorejemplo":"p.ej: C/Carreixet 45",
+		"titulo":"Dirección",
+		"descripcion": "Introduce direccion",
+		"tabla":"clientes",
+		"campo":"direccion",
+        "validadorForm":"texto"
+    },
+    {
+        "nombre": "codigopostal",
+        "tipo": "number",
+        "min": 5,
+        "max": 100,
+        "valorejemplo":"p.ej: 46117",
+		"titulo":"Dirección",
+		"descripcion": "Introduce codigo postal",
+		"tabla":"clientes",
+		"campo":"codigopostal",
+        "validadorForm":"cp"
+    }
+]
