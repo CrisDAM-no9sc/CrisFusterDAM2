@@ -1,0 +1,7 @@
+('192.168.1.210', 59304): hola
+('192.168.1.210', 59304): holassss
+2025-02-08 20:51:22 - Usuario registrado: hola, Email: soyyo
+2025-02-14 09:03:51 - lola, lola@gmail.com
+2025-02-14 09:06:46 - no guarda, no guard
+2025-02-14 09:07:33 - no estoy des, no estoy des
+2025-02-14 09:30:37 - fgsdfsd, fdsfsdf
