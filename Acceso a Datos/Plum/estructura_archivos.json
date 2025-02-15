@@ -1,0 +1,430 @@
+[
+    {
+        "nombre": "api",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\api",
+        "tipo": "directorio",
+        "tamaño": 4399,
+        "fecha_modificacion": 1739429784.4791794,
+        "numero_archivos": 3,
+        "contenido": [
+            {
+                "nombre": "inc",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\api\\inc",
+                "tipo": "directorio",
+                "tamaño": 3537,
+                "fecha_modificacion": 1739429784.4984918,
+                "numero_archivos": 3,
+                "contenido": []
+            }
+        ]
+    },
+    {
+        "nombre": "cliente",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente",
+        "tipo": "directorio",
+        "tamaño": 164075,
+        "fecha_modificacion": 1739429785.510305,
+        "numero_archivos": 3,
+        "contenido": [
+            {
+                "nombre": "analisis",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\analisis",
+                "tipo": "directorio",
+                "tamaño": 17929,
+                "fecha_modificacion": 1739429784.5534792,
+                "numero_archivos": 3,
+                "contenido": []
+            },
+            {
+                "nombre": "aplicaciones",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones",
+                "tipo": "directorio",
+                "tamaño": 0,
+                "fecha_modificacion": 1739429784.5814047,
+                "numero_archivos": 0,
+                "contenido": [
+                    {
+                        "nombre": "cms",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones\\cms",
+                        "tipo": "directorio",
+                        "tamaño": 0,
+                        "fecha_modificacion": 1727981497.5391073,
+                        "numero_archivos": 0,
+                        "contenido": []
+                    },
+                    {
+                        "nombre": "crm",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones\\crm",
+                        "tipo": "directorio",
+                        "tamaño": 0,
+                        "fecha_modificacion": 1727981493.0560482,
+                        "numero_archivos": 0,
+                        "contenido": []
+                    }
+                ]
+            },
+            {
+                "nombre": "escritorio",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\escritorio",
+                "tipo": "directorio",
+                "tamaño": 25000,
+                "fecha_modificacion": 1739429784.6312745,
+                "numero_archivos": 3,
+                "contenido": [
+                    {
+                        "nombre": "img",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\escritorio\\img",
+                        "tipo": "directorio",
+                        "tamaño": 18300,
+                        "fecha_modificacion": 1739429784.6582036,
+                        "numero_archivos": 3,
+                        "contenido": []
+                    }
+                ]
+            },
+            {
+                "nombre": "img",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\img",
+                "tipo": "directorio",
+                "tamaño": 19242,
+                "fecha_modificacion": 1739429784.848692,
+                "numero_archivos": 14,
+                "contenido": []
+            },
+            {
+                "nombre": "include",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\include",
+                "tipo": "directorio",
+                "tamaño": 231,
+                "fecha_modificacion": 1739429784.86764,
+                "numero_archivos": 1,
+                "contenido": []
+            },
+            {
+                "nombre": "supercontrolador",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador",
+                "tipo": "directorio",
+                "tamaño": 93622,
+                "fecha_modificacion": 1739429785.3267963,
+                "numero_archivos": 3,
+                "contenido": [
+                    {
+                        "nombre": "apps",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps",
+                        "tipo": "directorio",
+                        "tamaño": 356,
+                        "fecha_modificacion": 1739429784.9843795,
+                        "numero_archivos": 1,
+                        "contenido": [
+                            {
+                                "nombre": "clientes",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes",
+                                "tipo": "directorio",
+                                "tamaño": 107,
+                                "fecha_modificacion": 1739429784.967428,
+                                "numero_archivos": 0,
+                                "contenido": [
+                                    {
+                                        "nombre": "ficha_clientes",
+                                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes\\ficha_clientes",
+                                        "tipo": "directorio",
+                                        "tamaño": 52,
+                                        "fecha_modificacion": 1739429784.9603918,
+                                        "numero_archivos": 1,
+                                        "contenido": []
+                                    },
+                                    {
+                                        "nombre": "historico_compra",
+                                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes\\historico_compra",
+                                        "tipo": "directorio",
+                                        "tamaño": 55,
+                                        "fecha_modificacion": 1739429784.9764028,
+                                        "numero_archivos": 1,
+                                        "contenido": []
+                                    }
+                                ]
+                            },
+                            {
+                                "nombre": "pedidos",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\pedidos",
+                                "tipo": "directorio",
+                                "tamaño": 44,
+                                "fecha_modificacion": 1739429784.9923577,
+                                "numero_archivos": 0,
+                                "contenido": [
+                                    {
+                                        "nombre": "detalle_pedido",
+                                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\pedidos\\detalle_pedido",
+                                        "tipo": "directorio",
+                                        "tamaño": 44,
+                                        "fecha_modificacion": 1739429784.9973443,
+                                        "numero_archivos": 1,
+                                        "contenido": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "nombre": "ayuda",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\ayuda",
+                        "tipo": "directorio",
+                        "tamaño": 6029,
+                        "fecha_modificacion": 1739429785.0357916,
+                        "numero_archivos": 1,
+                        "contenido": [
+                            {
+                                "nombre": "docs",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\ayuda\\docs",
+                                "tipo": "directorio",
+                                "tamaño": 4750,
+                                "fecha_modificacion": 1739429785.04876,
+                                "numero_archivos": 1,
+                                "contenido": []
+                            }
+                        ]
+                    },
+                    {
+                        "nombre": "img",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\img",
+                        "tipo": "directorio",
+                        "tamaño": 4186,
+                        "fecha_modificacion": 1739429785.092641,
+                        "numero_archivos": 3,
+                        "contenido": []
+                    },
+                    {
+                        "nombre": "js",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\js",
+                        "tipo": "directorio",
+                        "tamaño": 25926,
+                        "fecha_modificacion": 1739429785.155491,
+                        "numero_archivos": 6,
+                        "contenido": []
+                    },
+                    {
+                        "nombre": "lib",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib",
+                        "tipo": "directorio",
+                        "tamaño": 34459,
+                        "fecha_modificacion": 1739429785.290912,
+                        "numero_archivos": 0,
+                        "contenido": [
+                            {
+                                "nombre": "ampliador",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\ampliador",
+                                "tipo": "directorio",
+                                "tamaño": 4715,
+                                "fecha_modificacion": 1739429785.198358,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "graficos",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\graficos",
+                                "tipo": "directorio",
+                                "tamaño": 6370,
+                                "fecha_modificacion": 1739429785.2133174,
+                                "numero_archivos": 1,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "selectjv",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\selectjv",
+                                "tipo": "directorio",
+                                "tamaño": 6671,
+                                "fecha_modificacion": 1739429785.2332637,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "textEditor",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\textEditor",
+                                "tipo": "directorio",
+                                "tamaño": 9473,
+                                "fecha_modificacion": 1739429785.2502193,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "tooltip",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\tooltip",
+                                "tipo": "directorio",
+                                "tamaño": 982,
+                                "fecha_modificacion": 1739429785.282912,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "vistaTabla",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\vistaTabla",
+                                "tipo": "directorio",
+                                "tamaño": 6248,
+                                "fecha_modificacion": 1739429785.312832,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            }
+                        ]
+                    },
+                    {
+                        "nombre": "modulos",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos",
+                        "tipo": "directorio",
+                        "tamaño": 21285,
+                        "fecha_modificacion": 1739429785.4704118,
+                        "numero_archivos": 0,
+                        "contenido": [
+                            {
+                                "nombre": "cabecera",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\cabecera",
+                                "tipo": "directorio",
+                                "tamaño": 6280,
+                                "fecha_modificacion": 1739429785.3726716,
+                                "numero_archivos": 3,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "cierre",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\cierre",
+                                "tipo": "directorio",
+                                "tamaño": 469,
+                                "fecha_modificacion": 1739429785.4025917,
+                                "numero_archivos": 2,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "librerias",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\librerias",
+                                "tipo": "directorio",
+                                "tamaño": 1000,
+                                "fecha_modificacion": 1739429785.4205446,
+                                "numero_archivos": 1,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "modal",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\modal",
+                                "tipo": "directorio",
+                                "tamaño": 4593,
+                                "fecha_modificacion": 1739429785.4574463,
+                                "numero_archivos": 3,
+                                "contenido": []
+                            },
+                            {
+                                "nombre": "principal",
+                                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\principal",
+                                "tipo": "directorio",
+                                "tamaño": 8943,
+                                "fecha_modificacion": 1739429785.5013285,
+                                "numero_archivos": 3,
+                                "contenido": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "nombre": "traductor",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\traductor",
+                "tipo": "directorio",
+                "tamaño": 440,
+                "fecha_modificacion": 1739429785.5711415,
+                "numero_archivos": 2,
+                "contenido": []
+            }
+        ]
+    },
+    {
+        "nombre": "documentación",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\documentación",
+        "tipo": "directorio",
+        "tamaño": 38367,
+        "fecha_modificacion": 1739429785.5980701,
+        "numero_archivos": 2,
+        "contenido": []
+    },
+    {
+        "nombre": "formularios",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios",
+        "tipo": "directorio",
+        "tamaño": 22151,
+        "fecha_modificacion": 1739429785.735704,
+        "numero_archivos": 5,
+        "contenido": [
+            {
+                "nombre": "documentos",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\documentos",
+                "tipo": "directorio",
+                "tamaño": 650,
+                "fecha_modificacion": 1739429785.6938148,
+                "numero_archivos": 3,
+                "contenido": []
+            },
+            {
+                "nombre": "forms",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\forms",
+                "tipo": "directorio",
+                "tamaño": 4999,
+                "fecha_modificacion": 1739429785.727724,
+                "numero_archivos": 3,
+                "contenido": []
+            },
+            {
+                "nombre": "lib",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\lib",
+                "tipo": "directorio",
+                "tamaño": 2350,
+                "fecha_modificacion": 1739429785.742682,
+                "numero_archivos": 0,
+                "contenido": [
+                    {
+                        "nombre": "validadorForm",
+                        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\lib\\validadorForm",
+                        "tipo": "directorio",
+                        "tamaño": 2350,
+                        "fecha_modificacion": 1739429785.786566,
+                        "numero_archivos": 2,
+                        "contenido": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "nombre": "public",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\public",
+        "tipo": "directorio",
+        "tamaño": 946,
+        "fecha_modificacion": 1739429785.8513918,
+        "numero_archivos": 1,
+        "contenido": []
+    },
+    {
+        "nombre": "servidor",
+        "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor",
+        "tipo": "directorio",
+        "tamaño": 37270,
+        "fecha_modificacion": 1739429786.0179472,
+        "numero_archivos": 3,
+        "contenido": [
+            {
+                "nombre": "antiguo",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor\\antiguo",
+                "tipo": "directorio",
+                "tamaño": 5598,
+                "fecha_modificacion": 1739429786.0059795,
+                "numero_archivos": 7,
+                "contenido": []
+            },
+            {
+                "nombre": "lib",
+                "ruta": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor\\lib",
+                "tipo": "directorio",
+                "tamaño": 4484,
+                "fecha_modificacion": 1739429786.0528533,
+                "numero_archivos": 4,
+                "contenido": []
+            }
+        ]
+    }
+]

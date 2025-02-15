@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Gráfico Sunburst Interactivo</title>
+<style>
+  /* ----- Reset y estilos generales ----- */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f4f7f9, #e2e8f0);
+    color: #333;
+  }
+  /* ----- Contenedor centrado ----- */
+  .contenedor-central {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  /* ----- Tarjeta de Login ----- */
+  .tarjeta-login {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 90%;
+    padding: 30px;
+    margin-bottom: 20px;
+  }
+  .tarjeta-login h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+  .tarjeta-login label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: 600;
+  }
+  .tarjeta-login input[type="text"],
+  .tarjeta-login input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dfe3e8;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .tarjeta-login button {
+    background: #3498db;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .tarjeta-login button:hover {
+    background: #2980b9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transform: scale(1.03);
+  }
+  .mensaje-error {
+    color: #c0392b;
+    font-weight: 600;
+    margin-top: 5px;
+    min-height: 18px;
+  }
+  /* ----- Contenedor del Gráfico ----- */
+  #contenedor-grafico {
+    display: none;
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .titulo-grafico {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  .controles-grafico, .controles-exportacion {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .controles-grafico button,
+  .controles-exportacion button {
+    background: #27ae60;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .controles-grafico button:hover,
+  .controles-exportacion button:hover {
+    background: #2ecc71;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transform: scale(1.03);
+  }
+  .grafico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    overflow: auto;
+  }
+  /* ----- Tooltip mejorado ----- */
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 10px 12px;
+    font: 13px sans-serif;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(-10px);
+  }
+  .tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Responsividad del SVG */
+  .grafico svg {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="contenedor-central">
+  <!-- FORMULARIO DE LOGIN -->
+  <div class="tarjeta-login" id="tarjeta-login">
+    <h1>Login</h1>
+    <label for="usuario">Usuario</label>
+    <input type="text" id="usuario" placeholder="Usuario" />
+    <label for="contrasena">Contraseña</label>
+    <input type="password" id="contrasena" placeholder="Contraseña" />
+    <button onclick="intentarLogin()">Iniciar sesión</button>
+    <div class="mensaje-error" id="mensaje-error"></div>
+  </div>
+
+  <!-- CONTENEDOR DEL GRÁFICO (oculto hasta el login) -->
+  <div id="contenedor-grafico">
+    <div class="titulo-grafico">Gráfico Sunburst Interactivo</div>
+    <div class="controles-grafico">
+      <button onclick="irAlPadre()">Ir al directorio padre</button>
+      <button onclick="irARaiz()">Ir al directorio raíz</button>
+    </div>
+    <div class="controles-exportacion">
+      <button onclick="exportarCSV()">Exportar CSV</button>
+      <button onclick="exportarPDF()">Exportar PDF</button>
+    </div>
+    <div class="grafico">
+      <svg id="sunburst" width="800" height="800"></svg>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- D3.js v7 desde CDN -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- jsPDF para exportar PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  const USUARIO_VALIDO = "cris";
+  const CONTRASENA_VALIDA = "cris";
+
+  let raiz;              // Raíz de la jerarquía
+  let nodoActual;        // Nodo actualmente seleccionado (zoom)
+  let rutasArcos;        // Referencia a los arcos del gráfico
+  let contenedorArcos;   // Contenedor 'g' para los arcos
+  let generadorArcos;    // Generador de arcos
+  let svg;               // Referencia al elemento SVG
+  const radio = 400;     // Radio del gráfico
+  let particion;         // Layout de partición de d3
+
+  // Datos jerárquicos obtenidos desde Python
+  const datos = {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\api", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\api\\inc", "value": 3537, "fecha_modificacion": 1739429784.4984918, "numero_archivos": 3}], "fecha_modificacion": 1739429784.4791794, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\analisis", "value": 17929, "fecha_modificacion": 1739429784.5534792, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones\\cms", "value": 0, "fecha_modificacion": 1727981497.5391073, "numero_archivos": 0}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\aplicaciones\\crm", "value": 0, "fecha_modificacion": 1727981493.0560482, "numero_archivos": 0}], "fecha_modificacion": 1739429784.5814047, "numero_archivos": 0}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\escritorio", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\escritorio\\img", "value": 18300, "fecha_modificacion": 1739429784.6582036, "numero_archivos": 3}], "fecha_modificacion": 1739429784.6312745, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\img", "value": 19242, "fecha_modificacion": 1739429784.848692, "numero_archivos": 14}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\include", "value": 231, "fecha_modificacion": 1739429784.86764, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes\\ficha_clientes", "value": 52, "fecha_modificacion": 1739429784.9603918, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\clientes\\historico_compra", "value": 55, "fecha_modificacion": 1739429784.9764028, "numero_archivos": 1}], "fecha_modificacion": 1739429784.967428, "numero_archivos": 0}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\pedidos", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\apps\\pedidos\\detalle_pedido", "value": 44, "fecha_modificacion": 1739429784.9973443, "numero_archivos": 1}], "fecha_modificacion": 1739429784.9923577, "numero_archivos": 0}], "fecha_modificacion": 1739429784.9843795, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\ayuda", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\ayuda\\docs", "value": 4750, "fecha_modificacion": 1739429785.04876, "numero_archivos": 1}], "fecha_modificacion": 1739429785.0357916, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\img", "value": 4186, "fecha_modificacion": 1739429785.092641, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\js", "value": 25926, "fecha_modificacion": 1739429785.155491, "numero_archivos": 6}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\ampliador", "value": 4715, "fecha_modificacion": 1739429785.198358, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\graficos", "value": 6370, "fecha_modificacion": 1739429785.2133174, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\selectjv", "value": 6671, "fecha_modificacion": 1739429785.2332637, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\textEditor", "value": 9473, "fecha_modificacion": 1739429785.2502193, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\tooltip", "value": 982, "fecha_modificacion": 1739429785.282912, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\lib\\vistaTabla", "value": 6248, "fecha_modificacion": 1739429785.312832, "numero_archivos": 2}], "fecha_modificacion": 1739429785.290912, "numero_archivos": 0}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\cabecera", "value": 6280, "fecha_modificacion": 1739429785.3726716, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\cierre", "value": 469, "fecha_modificacion": 1739429785.4025917, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\librerias", "value": 1000, "fecha_modificacion": 1739429785.4205446, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\modal", "value": 4593, "fecha_modificacion": 1739429785.4574463, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\supercontrolador\\modulos\\principal", "value": 8943, "fecha_modificacion": 1739429785.5013285, "numero_archivos": 3}], "fecha_modificacion": 1739429785.4704118, "numero_archivos": 0}], "fecha_modificacion": 1739429785.3267963, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\cliente\\traductor", "value": 440, "fecha_modificacion": 1739429785.5711415, "numero_archivos": 2}], "fecha_modificacion": 1739429785.510305, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\documentación", "value": 38367, "fecha_modificacion": 1739429785.5980701, "numero_archivos": 2}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\documentos", "value": 650, "fecha_modificacion": 1739429785.6938148, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\forms", "value": 4999, "fecha_modificacion": 1739429785.727724, "numero_archivos": 3}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\lib", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\formularios\\lib\\validadorForm", "value": 2350, "fecha_modificacion": 1739429785.786566, "numero_archivos": 2}], "fecha_modificacion": 1739429785.742682, "numero_archivos": 0}], "fecha_modificacion": 1739429785.735704, "numero_archivos": 5}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\public", "value": 946, "fecha_modificacion": 1739429785.8513918, "numero_archivos": 1}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor", "children": [{"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor\\antiguo", "value": 5598, "fecha_modificacion": 1739429786.0059795, "numero_archivos": 7}, {"nombre": "C:\\xampp\\htdocs\\Gestión Empresarial\\Proyecto\\096.implemnetar mejora en vistaTabla\\servidor\\lib", "value": 4484, "fecha_modificacion": 1739429786.0528533, "numero_archivos": 4}], "fecha_modificacion": 1739429786.0179472, "numero_archivos": 3}]};
+
+  function intentarLogin() {
+    const campoUsuario = document.getElementById("usuario");
+    const campoContrasena = document.getElementById("contrasena");
+    const mensajeError = document.getElementById("mensaje-error");
+
+    if (campoUsuario.value === USUARIO_VALIDO && campoContrasena.value === CONTRASENA_VALIDA) {
+      document.getElementById("tarjeta-login").style.display = "none";
+      document.getElementById("contenedor-grafico").style.display = "block";
+      iniciarSunburst();
+    } else {
+      mensajeError.textContent = "Usuario o contraseña inválidos";
+    }
+  }
+
+  function iniciarSunburst() {
+    const ancho = 800;
+    const formato = d3.format(",d");
+
+    svg = d3.select("#sunburst")
+      .attr("viewBox", [0, 0, ancho, ancho])
+      .style("font", "12px sans-serif");
+
+    contenedorArcos = svg.append("g")
+      .attr("transform", "translate(" + (ancho / 2) + "," + (ancho / 2) + ")");
+
+    raiz = d3.hierarchy(datos)
+      .sum(d => d.value || 0)
+      .sort((a, b) => b.value - a.value);
+
+    particion = d3.partition().size([2 * Math.PI, radio]);
+    particion(raiz);
+    raiz.each(d => d.current = d);
+
+    const color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, raiz.children.length + 1));
+
+    generadorArcos = d3.arc()
+      .startAngle(d => d.x0)
+      .endAngle(d => d.x1)
+      .padAngle(d => Math.min((d.x1 - d.x0) / 2, 0.005))
+      .padRadius(radio / 2)
+      .innerRadius(d => d.y0)
+      .outerRadius(d => d.y1 - 1);
+
+    const tooltip = d3.select("#tooltip");
+
+    rutasArcos = contenedorArcos.selectAll("path")
+      .data(raiz.descendants())
+      .join("path")
+        .attr("d", d => generadorArcos(d.current))
+        .attr("fill", d => {
+          while (d.depth > 1) d = d.parent;
+          return color(d.data.nombre);
+        })
+        .attr("fill-opacity", d => arcoVisible(d.current) ? 0.8 : 0)
+        .on("mouseover", function(event, d) {
+          let detalles = "";
+          if(d.data.numero_archivos !== undefined && d.data.numero_archivos !== null) {
+            detalles += `<br>Número de archivos: ${d.data.numero_archivos}`;
+          }
+          if(d.data.fecha_modificacion) {
+            detalles += `<br>Última modificación: ${new Date(d.data.fecha_modificacion * 1000).toLocaleString()}`;
+          }
+          tooltip.classed("show", true)
+                 .html(() => {
+                    const tamStr = d.value ? formato(d.value) + " bytes" : "0 bytes";
+                    return `<strong>${d.data.nombre}</strong><br/>${tamStr}${detalles}`;
+                 })
+                 .style("left", (event.pageX + 10) + "px")
+                 .style("top", (event.pageY - 28) + "px");
+          d3.select(this)
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1);
+        })
+        .on("mousemove", function(event) {
+          d3.select("#tooltip")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+          d3.select("#tooltip").classed("show", false);
+          d3.select(this)
+            .attr("stroke", null)
+            .attr("stroke-width", null);
+        })
+        .on("click", clicEnNodo);
+
+    rutasArcos.filter(d => d.children).style("cursor", "pointer");
+    nodoActual = raiz;
+    window.clicEnNodo = clicEnNodo;
+  }
+
+  function arcoVisible(d) {
+    return d.y1 <= radio && d.y0 >= 0 && d.x1 > d.x0;
+  }
+
+  function clicEnNodo(event, p) {
+    if (p === nodoActual) return;
+    nodoActual = p;
+
+    raiz.each(d => {
+      const nuevoX0 = (d.x0 - p.x0) / (p.x1 - p.x0) * 2 * Math.PI;
+      const nuevoX1 = (d.x1 - p.x0) / (p.x1 - p.x0) * 2 * Math.PI;
+      d.target = {
+        x0: nuevoX0 < 0 ? 0 : nuevoX0,
+        x1: nuevoX1 > 2 * Math.PI ? 2 * Math.PI : nuevoX1,
+        y0: Math.max(0, d.y0 - p.depth),
+        y1: Math.max(0, d.y1 - p.depth)
+      };
+    });
+
+    const transicion = contenedorArcos.transition().duration(750);
+    rutasArcos.transition(transicion)
+      .tween("data", d => {
+        const interpolador = d3.interpolate(d.current, d.target);
+        return t => d.current = interpolador(t);
+      })
+      .attrTween("d", d => () => generadorArcos(d.current))
+      .attr("fill-opacity", d => arcoVisible(d.target) ? 0.8 : 0);
+  }
+
+  function irAlPadre() {
+    if (!nodoActual || !nodoActual.parent) return;
+    window.clicEnNodo(new Event("click"), nodoActual.parent);
+  }
+
+  function irARaiz() {
+    if (!raiz) return;
+    window.clicEnNodo(new Event("click"), raiz);
+  }
+
+  // Función para exportar la estructura a CSV
+  function exportarCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Nombre,Ruta,Tipo,Tamaño,Fecha Modificación,Número Archivos\n";
+
+    function recorrer(nodo) {
+      if(nodo.nombre) {
+        let fecha = nodo.fecha_modificacion ? new Date(nodo.fecha_modificacion * 1000).toLocaleString() : "";
+        let numArch = nodo.numero_archivos !== undefined ? nodo.numero_archivos : "";
+        csvContent += `"${nodo.nombre}","${nodo.ruta || nodo.nombre}","${nodo.tipo || (nodo.value ? "archivo" : "directorio")}","${nodo.value || ""}","${fecha}","${numArch}"\n`;
+      }
+      if(nodo.contenido) {
+        nodo.contenido.forEach(item => recorrer(item));
+      }
+    }
+    // Empezamos a recorrer desde los datos originales (global 'datos')
+    recorrer(datos);
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "estructura_archivos.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Función para exportar PDF usando jsPDF
+  function exportarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text("Estructura de Archivos", 10, 20);
+    // Aquí se puede mejorar recorriendo 'datos' para incluir detalles en el PDF.
+    // También se podría capturar una imagen del gráfico.
+    doc.save("estructura_archivos.pdf");
+  }
+</script>
+</body>
+</html>
