@@ -1,0 +1,271 @@
+/* Estilo general del formulario */
+form {
+
+    color: #4D869C;
+    font-size: 1.2rem;
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+/* Estilo del título del formulario */
+form h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #7AB2B2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+}
+
+/* Estilo del contenedor de cada artículo (input, textarea, select) */
+article {
+    margin-bottom: 20px;
+}
+
+/* Estilo para los textos dentro de cada artículo (títulos y descripciones) */
+.texto h3 {
+    margin: 0;
+    padding: 5px 0;
+    color: #4D869C;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+}
+.texto p {
+    margin: 0;
+    padding: 5px 0;
+    color: #4D869C;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   
+}
+/* Estilo para los labels (si los hubiera) */
+.texto strong {
+    font-size: 1.1rem;
+    color: #7AB2B2;
+}
+
+/* Estilo para los campos de entrada (input, textarea, select) */
+form input[type="text"],
+form input[type="date"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="number"],
+form select{
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+input[type="textarea"]{
+    resize: vertical; /* Permite cambiar el tamaño del textarea solo en vertical */
+    padding: 15px;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    width: 100%;
+    min-height: 150px;
+    max-height: 300px; /* Limitar altura máxima para el textarea */
+    scroll-behavior: smooth;
+}
+/* Foco en los campos de entrada */
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #7AB2B2; /* Color de borde cuando está enfocado */
+    box-shadow: 0 0 5px rgba(122, 178, 178, 0.5); /* Sombra */
+}
+
+/* Placeholder */
+form input::placeholder,
+form textarea::placeholder {
+    color: #A1B5C0; /* Color gris claro */
+    font-style: italic;
+}
+
+/* Estilo del botón de envío */
+form input[type="submit"] {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Hover del botón de envío */
+form input[type="submit"]:hover {
+    background-color: #4D869C;
+    transform: scale(1.05);
+}
+
+/* Estilos para los errores de validación */
+form .error {
+    color: #D9534F;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* Estilo para los mensajes o placeholders */
+form .mensaje {
+    font-size: 0.9rem;
+    color: #4D869C;
+    margin-top: 10px;
+}
+
+/* Estilo para los selects */
+form select {
+    background-color: #F9F9F9; /* Fondo gris claro */
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #4D869C;
+    width: 100%;
+    font-size: 1rem;
+    color: #4D869C;
+}
+
+/**** ESTILOS PANEL *****/
+
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #CDE8E5; 
+    color: #4D869C;
+}
+
+main section {
+    background-color: #EEF7FF;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #4D869C;
+    font-size: 1.2rem;
+    margin-left: 40px;
+    max-width: 900px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table thead {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #4D869C;
+    letter-spacing: 0.05rem;
+}
+
+tbody tr:hover {
+    background-color: #4D869C;
+    color: #EEF7FF;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #CDE8E5;
+}
+
+.titulotabla {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #7AB2B2;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #EEF7FF;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.titulotabla h5 {
+    margin: 0;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.titulotabla p {
+    margin: 5px 0 0;
+    font-size: 1rem;
+    color: #EEF7FF;
+}
+
+.boton {
+    background-color: #7AB2B2;
+    color: #EEF7FF;
+    width: 50%;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.boton:hover {
+    background-color: #4D869C;
+}
+
+/********** vista documentos ***********/
+/********** vista documentos ***********/
+.contenedor-vista {
+    margin-top: 30px;
+    background-color: #EEF7FF;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #4D869C;
+    font-size: 1.2rem;
+    margin-left: 40px;
+    max-width: 900px;
+    text-align: center; 
+}
+
+.contenedor-vista pre, h1 {
+    
+    padding: 30px;
+    margin: 20px auto;
+}
+
+.boton-vista {
+    background-color:#7AB2B2;
+    color: #EEF7FF;
+    width: 50%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: center; 
+    display: inline-block; 
+    margin: 20px auto; 
+}
+
+.boton-vista a:hover {
+    background-color: #4D869C;
+}
+.boton-vista:hover{
+    background-color: #4D869C;
+}
+/*Para que el enlace dentro del botón se vea correctamente */
+.boton-vista a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}

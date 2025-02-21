@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Crimson ERP</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="estilo.css">
+    <script src="comportamiento.js"></script>
+    <script src="../supercontrolador/js/polyfill-browser.js"></script>
+  </head>
+  <body>
+
+    <!-- 
+      # Página Principal de Crimson ERP
+
+      ## Descripción:
+      Esta página representa la interfaz principal de **Crimson ERP**, donde se cargan las aplicaciones 
+      disponibles para el usuario. 
+
+      ## Funcionalidades:
+      - Muestra el logo del sistema en la cabecera.
+      - Permite cerrar sesión mediante el botón de `cerrar_sesion.png`.
+      - Renderiza dinámicamente las aplicaciones disponibles en el `main` mediante `plantilla_aplicacion`.
+      - Incluye `comportamiento.js` que gestiona la carga de datos y eventos.
+      - Carga un **polyfill** para mejorar compatibilidad con navegadores antiguos.
+
+      ## Estructura:
+      - **Header**: Contiene el logo de Crimson ERP.
+      - **Botón de Cerrar Sesión**: Imagen que permite cerrar la sesión del usuario.
+      - **Main**: Sección donde se cargarán dinámicamente las aplicaciones disponibles.
+      - **Template**: Plantilla de una aplicación para clonarla y agregarla dinámicamente.
+
+    -->
+    <header>
+     <img src="img/logo.png" id="logologin">
+    </header>
+    <!-- Contenedor principal donde se renderizarán las aplicaciones -->
+    <img src="img/cerrar_sesion.png" id="cerrar">
+
+    <main></main>
+    <!-- 
+      ## Plantilla de Aplicación
+      Este template se usará para generar dinámicamente las aplicaciones en la interfaz.
+      - La imagen representa el icono de la aplicación.
+      - El `<p>` contendrá el nombre de la aplicación.
+    -->
+    <template id="plantilla_aplicacion">
+      <div class="aplicacion">
+        <img src="img/icono.png" alt="icono">
+        <p>Plantilla</p>
+      </div>
+    </template>
+  </body>
+</html>

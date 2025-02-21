@@ -1,0 +1,316 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #CDE8E5; 
+    color: #4D869C; 
+}
+
+/*********************** ESTILOS PARA EL CONTENEDOR **********************/
+#contenedor {
+
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #EEF7FF; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #4D869C;
+    font-size: 1.2rem;
+    margin: 40px auto; 
+    gap: 20px; 
+    max-width: 1200px; 
+}
+
+/* Ajuste para pantallas grandes */
+@media (min-width: 1025px) {
+    #contenedor {
+        flex-direction: row; 
+        align-items: flex-start; 
+    }
+
+    #contenedor .seleccion, 
+    #contenedor .resultados {
+        width: 45%; 
+    }
+
+    /* Añadir margen entre selección y resultados */
+    #buscarBtn {
+        align-self: center; 
+        margin-top: 20px;
+    }
+}
+
+/* Estilo para la sección de selección */
+#contenedor .seleccion {
+    width: 100%; 
+    background-color: #CDE8E5; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo para la sección de resultados */
+#contenedor .resultados {
+    width: 100%; 
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 100%;
+}
+
+/* Estilo del iframe dentro de los resultados */
+#contenedor iframe {
+    width: 100%; 
+    height: 100vh; 
+    border: none; 
+    border-radius: 8px;
+}
+
+/*********************** ESTILOS PARA EL SELECT **********************/
+#tablas {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: #4D869C;
+    background-color: #ffffff; 
+    border: 2px solid #4D869C;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+}
+
+/* Efecto al pasar el mouse sobre el select */
+#tablas:hover {
+    background-color: #f5f5f5;
+}
+
+/* Estilo para las opciones */
+#tablas option {
+    padding: 10px;
+    font-size: 1rem;
+    color: #4D869C;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo al seleccionar una opción */
+#tablas option:checked {
+    background-color: #CDE8E5;
+    font-weight: bold;
+}
+
+/*********************** ESTILOS PARA LOS CAMPOS **********************/
+#campotabla {
+    width: 100%;
+    background-color: #CDE8E5;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 10px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+/* Estilo para los labels y checkboxes */
+#campotabla label {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #4D869C;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#campotabla label:hover {
+    background-color: #e0f0f0;
+}
+
+#campotabla input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 10px;
+    accent-color: #4D869C;
+}
+
+/*********************** ESTILOS PARA EL BOTÓN **********************/
+/* Estilo del botón Mostrar Resultados */
+#buscarBtn {
+    background-color: #4D869C;
+    color: #ffffff; 
+    padding: 12px 24px;
+    font-size: 1rem; 
+    border: none;
+    border-radius: 6px;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    align-self: center;
+    margin-top: 20px; 
+}
+
+#buscarBtn:hover {
+    background-color: #3b6a80; /* Cambio de color de fondo */
+    transform: translateY(-2px); /* Efecto de elevación */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+#buscarBtn:active {
+    background-color: #2f5570; /* Cambio de color de fondo al hacer clic */
+    transform: translateY(0); /* Revertir la elevación */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra reducida */
+}
+
+/*********************** ESTILOS DE LOS RESULTADOS **********************/
+.resultados table {
+    width: 100%; /* Ancho completo */
+    border-collapse: collapse; /* Eliminar espacios entre bordes */
+    margin-top: 20px; /* Espaciado superior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor de la tabla */
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Ocultar desbordamientos */
+}
+
+.resultados th {
+    background-color: #4D869C; /* Color de fondo de los encabezados */
+    color: #ffffff; /* Color del texto de los encabezados */
+    padding: 12px 15px; /* Espaciado interno */
+    text-align: left; /* Alineación del texto */
+    font-size: 1rem; /* Tamaño de fuente */
+}
+
+.resultados td {
+    border-bottom: 1px solid #dddddd; /* Línea divisoria */
+    padding: 12px 15px; /* Espaciado interno */
+    font-size: 0.95rem; /* Tamaño de fuente */
+    color: #333333; /* Color del texto */
+}
+/* Color de fondo para filas pares */
+.resultados tr:nth-child(even) {
+    background-color: #f9f9f9; 
+}
+
+.resultados tr:hover {
+    background-color: #f1f1f1; 
+}
+
+.resultados h2 {
+    color: #4D869C; 
+    font-size: 1.5rem; 
+    margin-bottom: 15px; 
+}
+
+/*********************** ESTILOS RESPONSIVE **********************/
+@media (max-width: 1024px) {
+    #contenedor {
+        gap: 10px; 
+        padding: 20px;
+        margin-left: 0; 
+    }
+
+    #contenedor .seleccion, 
+    #contenedor .resultados {
+        width: 100%; 
+    }
+
+    /* Ajustar el botón para pantallas medianas */
+    #buscarBtn {
+        align-self: center;
+        width: 50%;
+        margin-top: 20px; 
+    }
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+    #contenedor {
+        padding: 15px;
+        gap: 5px;
+    }
+
+    #contenedor .seleccion, 
+    #contenedor .resultados {
+        width: 100%; 
+        min-height: auto;
+    }
+
+    #contenedor iframe {
+        height: 60vh;
+    }
+
+    #tablas {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    #campotabla label {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+
+    #campotabla input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Ajustes para el botón en móviles */
+    #buscarBtn {
+        width: 100%; 
+        padding: 10px 0;
+        font-size: 1rem;
+    }
+
+    /* Ajustes para la tabla en móviles */
+    .resultados table {
+        font-size: 0.9rem;
+    }
+
+    .resultados th, .resultados td {
+        padding: 10px;
+    }
+}
+
+.descargas {
+    display: flex;
+    justify-content: center;  
+    align-items: center;    
+    gap: 10px;                
+    margin-top: 20px;        
+}
+/* Botones de descarga (CSV y PDF) */
+.boton-descarga {
+    background-color: #4D869C;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 5px;
+}
+
+.boton-descarga:hover {
+    background-color: #3b6a80;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.boton-descarga:active {
+    background-color: #2f5570;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

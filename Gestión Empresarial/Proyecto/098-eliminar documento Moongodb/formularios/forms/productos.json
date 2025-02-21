@@ -1,0 +1,49 @@
+[
+    {
+        "nombre": "nombre",
+        "titulo": "Nombre",
+        "descripcion": "Introduce tu nombre completo",
+        "tipo": "text",
+        "min": 5,
+        "max": 30,
+        "valorejemplo": "Silla Kartem",
+        "validadorForm": ""
+    },
+    {
+        "nombre": "precio",
+        "titulo": "Precio",
+        "descripcion": "Introduce el precio en euros",
+        "tipo": "number",
+        "min": 1,
+        "max": 1000,
+        "valorejemplo": "Ej: 50",
+        "validadorForm": ""
+    },
+    {
+        "nombre": "descripcion",
+        "titulo": "Descripción",
+        "descripcion": "Escribe una breve descripción del producto",
+        "tipo": "text",
+        "min": 10,
+        "max": 500,
+        "valorejemplo": "Ej: Producto de alta calidad",
+        "validadorForm": ""
+    },
+    {
+        "nombre": "stock",
+        "titulo": "Stock",
+        "descripcion": "Cantidad de unidades disponibles",
+        "tipo": "number",
+        "min": 0,
+        "max": 1000,
+        "valorejemplo": "Ej: 100",
+        "validadorForm": ""
+    },
+    {
+        "nombre": "categoria",
+        "titulo": "Categoría",
+        "descripcion": "Selecciona una categoría",
+        "tipo": "select",
+        "opciones": ["Cocina", "Salon", "Decoracion", "Electrodomesticos"]
+    }
+]

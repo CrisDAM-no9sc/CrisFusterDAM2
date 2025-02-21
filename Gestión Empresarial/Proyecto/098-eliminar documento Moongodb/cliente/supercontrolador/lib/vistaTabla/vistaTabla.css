@@ -1,0 +1,59 @@
+
+/**
+ * # Estilos de Tablas Dinámicas
+ *
+ * ## Descripción:
+ * Define los estilos visuales para mejorar la apariencia de las tablas.
+ *
+ * ## Funcionalidades principales:
+ * - Aplicar colores y formatos a cabeceras, filas y celdas.
+ * - Alternar colores para mejorar la legibilidad.
+ * - Resaltar filas al pasar el cursor sobre ellas.
+ */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 20px;
+  }
+  table caption {
+    caption-side: top; 
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff; 
+    color: #333; 
+  }
+  table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  /* Cabecera con el color más intenso de la paleta */
+  thead th {
+    background-color: #81A8B8;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+    border-bottom: 3px solid #C2CBCE;
+  }
+  /* Filas del cuerpo */
+  tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #C2CBCE;
+  }
+  /* Filas alternas para mejorar la legibilidad */
+  tbody tr:nth-child(odd) {
+    background-color: #E8F3F8;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #DBE6EC; 
+  }
+  /* Efecto hover para resaltar la fila */
+  tbody tr:hover {
+    background-color: #A4BCC2;
+    color: white;
+  }

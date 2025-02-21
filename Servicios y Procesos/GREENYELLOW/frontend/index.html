@@ -1,0 +1,58 @@
+<!-- frontend/index.html -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Greenyellow - Autocompletado y Acceso</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header>
+    <h1>Greenyellow</h1>
+  </header>
+
+  <!-- Sección de Login -->
+  <section id="login-section" class="form-section">
+    <h2>Iniciar Sesión</h2>
+    <form id="login-form">
+      <label for="login-username">Usuario:</label>
+      <input type="text" name="username" id="login-username" required>
+      <br>
+      <label for="login-password">Contraseña:</label>
+      <input type="password" name="password" id="login-password" required>
+      <br>
+      <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a></p>
+  </section>
+
+  <!-- Sección de Registro -->
+  <section id="register-section" class="form-section" style="display: none;">
+    <h2>Registro</h2>
+    <form id="register-form">
+      <label for="register-username">Usuario:</label>
+      <input type="text" name="username" id="register-username" required>
+      <br>
+      <label for="register-password">Contraseña:</label>
+      <input type="password" name="password" id="register-password" required>
+      <br>
+      <button type="submit">Registrar</button>
+    </form>
+    <p>¿Ya tienes cuenta? <a href="#" id="show-login">Inicia Sesión</a></p>
+  </section>
+
+  <!-- Sección principal de Autocompletado (visible cuando se está logueado) -->
+  <section id="main-section" style="display: none;">
+    <div>
+      <label for="nValue">Tamaño de n (para n-gramas):</label>
+      <input type="range" id="nValue" min="2" max="5" value="3">
+      <span id="nDisplay">3</span>
+    </div>
+    <textarea id="entrada" placeholder="Escribe algo..."></textarea>
+    <div id="sugerencias"></div>
+    <button id="logout-btn">Cerrar sesión</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+main {
+  box-sizing: border-box;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 250px 1fr; /* Barra lateral y contenido */
+  grid-gap: 20px;
+}
+
+/* Estilo del nav (barra lateral) */
+main nav {
+  width: 250px;
+  background-color: #EEF7FF; /* Fondo azul muy claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo de los items de la lista */
+nav ul {
+  padding: 0;
+}
+
+nav ul li {
+
+  width: 200px;
+  margin-top: 10px; 
+  list-style: none;
+  margin: 15px;
+  padding: 15px;
+  background-color: #7AB2B2;
+  color: #EEF7FF; 
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.9; 
+  
+}
+
+nav ul li:hover {
+  opacity: 1;
+  transform: scale(1.05); 
+  background-color: #4D869C; 
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
+  margin-bottom: 10px; 
+
+}
+
+
+/* Estilo para el icono dentro de los elementos de la lista */
+nav ul li .boton img {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px; 
+}
+
+#toggleConsola {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-weight: 500;
+}
+/* Estilo para la sección principal */
+main section {
+  background-color: #EEF7FF; /* Fondo azul claro */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  color: #4D869C; /* Texto azul oscuro */
+  font-size: 1.2rem;
+
+  margin-left: 40px;
+}
+
+/* Título de la sección */
+section h2 {
+  margin: 0 0 20px;
+}
+
+
+/* Estilos para la tabla */
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilo para el encabezado de la tabla */
+table thead {
+  background-color: #7AB2B2; /* Fondo para encabezados */
+  color: #EEF7FF; /* Color de texto en encabezados */
+}
+
+table th{
+  text-transform: uppercase;
+}
+table th, table td {
+  padding: 15px; /* Aumentar el espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+  border-bottom: 1px solid #4D869C; /* Línea debajo de cada celda */
+  letter-spacing: 0.05rem; /* Espaciado entre letras */
+}
+
+table tr{
+  width: 50px;
+}
+/* Estilo para filas del cuerpo */
+tbody tr:hover {
+  background-color: #4D869C; /* Color de fondo al hacer hover en filas */
+  color: #EEF7FF; /* Color de texto al hacer hover */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #CDE8E5; /* Fondo alternativo para filas */
+}
+
+
+/********************** ESTILO TITULO TABLA *******************/
+
+.titulotabla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #7AB2B2;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: #EEF7FF;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;  
+
+  
+}
+
+.titulotabla h5 {
+  margin: 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.titulotabla p {
+  margin: 5px 0 0;
+  font-size: 1rem;
+  color: #EEF7FF;
+}
+
+.boton{
+  
+  width:30px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.botoneliminar{
+  background:#4D869C;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+li .botontabla{ 
+  margin-right: 10px;
+  position: absolute;
+  /*background:#4D869C; */
+  gap: 10px;
+}
+.botonlupa{
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 30px;
+}
+
+.boton .botndocumento{
+  margin-right: 10px;
+  position: absolute;
+  /*background:#4D869C; */
+  gap: 10px;
+}
+
+.boton img {
+  width: 24px; /* Ajusta el tamaño del ícono */
+  height: 24px;
+  margin-right: 10px; /* Espacio entre ícono y texto */
+}
+
+
+article:hover {
+  border-color: #7AB2B2;
+  box-shadow: 0 0 5px rgba(74, 169, 169, 0.5);
+  background-color: #F0F8FF;
+  transform:scale(1.1,1.1);
+}
+table article{
+	width:200px;
+	height:300px;
+	border:1px solid grey;
+	background:#EEF7FF;
+	box-shadow:0px 4px 8px rgba(0,0,0,0.4);
+	display:inline-block;
+	margin:5px;
+	padding:10px;
+}
+
+#correo-iframe {
+  width: 100%;
+  height: 100%; 
+  border: none; 
+  display: block; 
+}
+
+
+/******************************* BOTÓN INSERTAR *******************/
+
+#insertar {
+  background-color: #7AB2B2;
+  color: #EEF7FF;
+  border: 1px solid white;
+  border-radius: 50%;
+  width:30px;
+  height:30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 96%; 
+  top:40%; 
+}
+
+#insertar:hover {
+  background-color: #4D869C;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/**************************** ESTILO PARA CARTA MONGO ************/
+
+/* Contenedor de las tarjetas */
+#docsContainer {
+  display: flex;  /* Asegura que los elementos se alineen en fila */
+  flex-direction: row; /* Alineación horizontal */
+  flex-wrap: wrap; /* Permite que las tarjetas pasen a la siguiente línea si no caben */
+  gap: 10px; /* Espaciado entre tarjetas */
+  padding: 10px;
+  justify-content: center; /* Centra las tarjetas en el contenedor */
+}
+
+/* Estilos de las tarjetas */
+.document-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 300px; /* Tamaño fijo para mantener consistencia */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.document-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Título de cada tarjeta */
+.document-card h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* Contenido dentro de la tarjeta */
+.document-card div {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Listas dentro del contenido JSON */
+.document-card ul {
+  list-style-type: square;
+  padding-left: 20px;
+}
+
+/* Claves dentro del JSON */
+.document-card strong {
+  color: #007BFF;
+}
+
+/* Estilos para el mensaje de "No hay documentos" */
+#docsContainer p {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #666;
+  padding: 20px;
+}
+
+/* Detalles del documento desplegados */
+.detalle-documento {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  animation: expand 0.3s ease-in-out;
+}
+
+/* Campos editables */
+.campo-editable {
+  margin-bottom: 10px;
+}
+
+.valor-editable {
+  cursor: pointer;
+  color: #007BFF;
+}
+
+/*Estilo del input al editar */
+.input-edicion {
+  width: 80%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-eliminar:hover {
+  background-color: #c82333;
+}
+
+/* Mensaje sin documentos */
+.sin-documentos {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #666;
+  padding: 20px;
+}

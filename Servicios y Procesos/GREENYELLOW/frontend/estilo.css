@@ -1,0 +1,164 @@
+/* Estilos Globales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #4CAF50;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Secciones de Formularios (Login y Registro) */
+.form-section {
+  max-width: 400px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-section input[type="text"],
+.form-section input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-section button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-section button:hover {
+  background-color: #45a049;
+}
+
+.form-section p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.form-section a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Sección Principal de Autocompletado */
+#main-section {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative; 
+}
+
+#main-section > div {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#main-section label {
+  font-weight: bold;
+}
+
+#nValue {
+  vertical-align: middle;
+  appearance: auto;
+  cursor: default;
+  color: light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+  padding: initial;
+  border: initial;
+  margin: 2px;
+  color: #4CAF50;
+}
+
+#nDisplay {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+/* Área de Texto para Autocompletado */
+#entrada {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 16px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Sugerencias de Autocompletado */
+#sugerencias {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  width: calc(100% - 42px); 
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 100;
+  display: none; /
+}
+
+#sugerencias p {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#sugerencias p:hover {
+  background-color: #f0f0f0;
+}
+
+/* Botón de Logout */
+#logout-btn {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+  background-color: #2b5c2c;
+}
