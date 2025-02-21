@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <h1>Insertar Cliente</h1>
+    <form action="api.php?o=insertarCliente" method="POST">
+        <h1>Registrar Nuevo Cliente</h1>
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" placeholder="Ingrese el nombre" required>
+    
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" name="apellidos" placeholder="Ingrese los apellidos" required>
+    
+        <input type="hidden" name="clave" value="claveprueba">
+        <button type="submit">Registrar Cliente</button>
+    </form>
+
+    <form method="GET" action="api.php">
+        <input type="hidden" name="o" value="clientes">
+    
+        <!-- Filtro por ID de Pedido -->
+        <label for="id">Filtrar por ID de Pedido:</label>
+        <input type="number" name="id" placeholder="Ingrese el ID del pedido" min="1">
+    
+        <!-- Filtro por Fecha -->
+        <label for="fecha">Filtrar por Fecha:</label>
+        <input type="date" name="fecha">
+
+        <!--  Botón de búsqueda -->
+        <button type="submit">Buscar</button>
+    </form>
+    
+    </form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+
+## Activa el motor de reescritura de URLs en Apache 
+RewriteEngine On
+
+# Redirige /clientes a la nueva URL con el parámetro o=clientes
+# Redirige /clientes a la nueva URL con el parámetro o=clientes
+RewriteRule ^clientes$ /Servicios%20y%20Procesos/004-Generaci%C3%B3n%20de%20servicios%20de%20red/001-Protocolos%20est%C3%A1ndar%20de%20comunicacio%CC%81n%20en%20red%20a%20nivel%20de%20aplicacio%CC%81n/004.htaccess/api.php?o=clientes [QSA,L]
+
+# Redirige /cliente/ID a la nueva URL con el parámetro o=cliente&id=ID
+# QSA(query string append) asegura que si ya existe una cadena de consulta se le agrege al final de la nueva url
+# L (last) detiene el procesamiento de reglas y si esta esta aplicada no seguira evaluando las mas reglas 
+# Redirige /cliente/ID a la nueva URL con el parámetro o=cliente&id=ID
+RewriteRule ^cliente/([0-9]+)$ /Servicios%20y%20Procesos/004-Generaci%C3%B3n%20de%20servicios%20de%20red/001-Protocolos%20est%C3%A1ndar%20de%20comunicacio%CC%81n%20en%20red%20a%20nivel%20de%20aplicacio%CC%81n/004.htaccess/api.php?o=cliente&id=$1 [QSA,L]
+
+# Lo que permite este archivo esque el serviodr maneje urls mas legibles y las redirige de manera interna que son entendidas por la api
+# este archivo leva a adecir al servidor apache como tineen que manejar las solicitudes para una carpeta o para todo el sitio web
+# El .htaccess permite que, al escribir la URL más simple (/clientes), Apache internamente redirija la solicitud a la URL completa que # procesará la API (api.php?o=clientes).
