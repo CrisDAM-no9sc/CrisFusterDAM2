@@ -1,0 +1,11 @@
+{
+    "welcome": {
+      "image": "recursos/welcom.jpg",
+      "title": "Bienvenido al Instalador",
+      "text": "Este instalador le guiará a través del proceso de instalación..."
+    },
+    "license": {
+      "text": "Términos y condiciones...\n\nEste es un ejemplo de licencia extendida. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ...\n\n(Agrega aquí el texto completo de la licencia.)"
+    }
+  }
+  
